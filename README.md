@@ -18,25 +18,36 @@
 
 ---
 
-## 💡 Proposed Solution: Uplift Modeling
+## 💡 Proposed Solution: Uplift Modeling & Value-Based Scoring
 
-### แนวคิดหลัก
-ใช้ **Uplift Model** (Incremental Response Model) เพื่อ predict **incremental effect** ของ promotion ต่อพฤติกรรมการซื้อของลูกค้าแต่ละราย
+### 1. Uplift Segmentation (4-Quadrant Model)
+การทำโปรโมชันแบบเดิมจะดูเพียงโอกาสในการซื้อ (Propensity) แต่ Uplift Model จะคำนวณ **Incremental Effect** เพื่อแบ่งลูกค้าออกเป็น 4 กลุ่มหลักอย่างชัดเจน:
 
+*   **Persuadables (กลุ่มจูงใจได้):** ลูกค้าที่จะซื้อ**ก็ต่อเมื่อ**ได้รับโปรโมชันเท่านั้น (Uplift > 0 สูง) 🎯 *ควรส่งโปรโมชันให้กลุ่มนี้เพื่อสร้างยอดขายเพิ่ม (Incremental Revenue)*
+*   **Sure Things (กลุ่มของตาย):** ลูกค้าที่จะซื้อ**ไม่ว่าจะได้**โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity สูง) 💸 *ไม่ควรส่งโปรโมชันให้ เพราะทำให้เสียส่วนลดเปล่าประโยชน์ (Cannibalization)*
+*   **Lost Causes (กลุ่มปล่อยไป):** ลูกค้าที่**อย่างไรก็ไม่ซื้อ** ไม่ว่าจะได้โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity ต่ำ) 💤 *ไม่ควรส่งโปรโมชันให้ เพราะสิ้นเปลืองงบการตลาด*
+*   **Sleeping Dogs (กลุ่มหมาหลับ - Do Not Disturb):** ลูกค้าที่จะซื้อหากปล่อยไว้เฉยๆ แต่**หากส่งโปรโมชันไปจะเลิกซื้อ** (Uplift < 0 ต่ำมาก) ⚠️ *ห้ามส่งโปรโมชันให้เด็ดขาด เช่น ลูกค้าเกิดความรำคาญจน Unsubscribe หรือส่วนลดทำให้ภาพลักษณ์แบรนด์ลดลง (Cheapening Effect) การหลีกเลี่ยงกลุ่มนี้ช่วยป้องกันการสูญเสียรายได้โดยตรง*
+
+### 2. แนวคิดการคำนวณ Uplift Score
 ```
-Uplift Score = P(buy | treatment) − P(buy | no treatment)
+Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
 ```
 
-- **Score > 0 สูง** → ลูกค้ากลุ่มนี้ตอบสนองต่อ promo → ควร target
-- **Score ≈ 0** → ซื้ออยู่แล้วหรือไม่ซื้ออยู่ดี → ข้าม
+### 3. Value-Based Scoring: Expected Incremental Profit (EIP)
+เนื่องจากเป้าหมายคือการเพิ่มรายได้และกำไรสูงสุด การใช้เพียง Uplift Score อาจไม่สะท้อนมูลค่าจริง (เช่น ลูกค้าเปลี่ยนมาซื้อสินค้าถูกลง) เราจึงนำผลลัพธ์จากโมเดลมาคำนวณเป็นตัวเงินด้วย **Expected Incremental Profit (EIP)** สำหรับลูกค้าแต่ละคน $i$:
 
-### approach ที่เลือก: Two-Model (T-Learner)
-```
-Model T  = train บน treatment group (ได้รับ promo)
-Model C  = train บน control group  (ไม่ได้รับ promo)
-Uplift   = Model_T.predict(x) − Model_C.predict(x)
-```
-เลือกแนวนี้เพราะ interpretable, ใช้ library มาตรฐาน (LightGBM), และ implement ได้ใน 1 notebook
+*   **Expected Incremental Revenue (EIR):**
+    $$EIR_i = \tau_i \times \text{Price} - \text{Discount} \times P(\text{Buy} | \text{Treatment})_i$$
+*   **Expected Incremental Profit (EIP):**
+    $$EIP_i = \tau_i \times (\text{Price} - \text{COGS}) - \text{Discount} \times P(\text{Buy} | \text{Treatment})_i - \text{Cost}_{\text{campaign}}$$
+
+เราจะ Target เฉพาะลูกค้าที่มี **EIP > 0** เท่านั้นเพื่อการันตีว่า Campaign จะเพิ่มกำไรได้จริง
+
+### 4. Approach ที่เลือก: Two-Model (T-Learner)
+เราใช้ **T-Learner** ในการประมาณค่าความน่าจะเป็น:
+*   **Model T:** Train บนกลุ่ม Treatment (ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Treatment})$
+*   **Model C:** Train บนกลุ่ม Control (ไม่ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Control})$
+*   **Uplift Score (τ):** คำนวณจากผลต่างของคำทำนายจากทั้งสองโมเดล
 
 ---
 
@@ -111,10 +122,10 @@ LEFT JOIN store_master     s  ON t.store_id      = s.store_id
 | `recency_days` | วันนับจากครั้งสุดท้ายที่ซื้อ — RFM feature สำคัญ |
 | `frequency_30d` | จำนวนครั้งที่ซื้อใน 30 วันที่ผ่านมา |
 | `monetary_90d` | ยอดใช้จ่ายใน 90 วัน |
-| `is_treatment` | 1 = ได้รับ promo, 0 = control group (simulate) |
-| `bought_after_promo` | binary label — ซื้อภายใน 7 วันหลัง promo หรือเปล่า |
+| `is_treatment` | 1 = ได้รับ promo, 0 = control group (Randomized Holdout) |
+| `bought_after_promo` | binary label — ซื้อสินค้าประเภทนั้นภายใน 7 วันหลังเริ่ม Campaign หรือไม่ |
 
-> **Assumption:** simulate control group จาก historical period ก่อนที่ promo จะเริ่ม (pre-period as proxy control)
+> **Assumption:** ใช้การออกแบบ **Randomized Holdout (A/B Test)** โดยสุ่มลูกค้า 20% ไว้เป็น Control Group เพื่อเป็นเกณฑ์เปรียบเทียบมาตรฐาน (Gold Standard) หรือในกรณีที่ไม่มีการเก็บ Holdout สามารถทำ **Synthetic Control** จากกลุ่มลูกค้าที่มีพฤติกรรมคล้ายคลึงกันและไม่ได้รับโปรโมชันในช่วงเวลาเดียวกัน
 
 ---
 
