@@ -1,0 +1,1001 @@
+customer_id,customer_taxonomies
+C0001,Frequent Shopper
+C0002,Occasional
+C0003,Price Sensitive
+C0004,Price Sensitive
+C0005,High Value
+C0006,High Value
+C0007,High Value
+C0008,Occasional
+C0009,Price Sensitive
+C0010,Price Sensitive
+C0011,High Value
+C0012,Occasional
+C0013,Occasional
+C0014,Frequent Shopper
+C0015,High Value
+C0016,High Value
+C0017,Frequent Shopper
+C0018,Price Sensitive
+C0019,Frequent Shopper
+C0020,Frequent Shopper
+C0021,Price Sensitive
+C0022,High Value
+C0023,Frequent Shopper
+C0024,Frequent Shopper
+C0025,Frequent Shopper
+C0026,Price Sensitive
+C0027,High Value
+C0028,Price Sensitive
+C0029,Price Sensitive
+C0030,High Value
+C0031,Price Sensitive
+C0032,High Value
+C0033,High Value
+C0034,Occasional
+C0035,Occasional
+C0036,Occasional
+C0037,Frequent Shopper
+C0038,High Value
+C0039,Price Sensitive
+C0040,Frequent Shopper
+C0041,High Value
+C0042,Frequent Shopper
+C0043,High Value
+C0044,Occasional
+C0045,Frequent Shopper
+C0046,Price Sensitive
+C0047,Frequent Shopper
+C0048,Price Sensitive
+C0049,Price Sensitive
+C0050,High Value
+C0051,Occasional
+C0052,Price Sensitive
+C0053,Occasional
+C0054,Occasional
+C0055,Price Sensitive
+C0056,Occasional
+C0057,High Value
+C0058,High Value
+C0059,High Value
+C0060,Frequent Shopper
+C0061,Frequent Shopper
+C0062,Frequent Shopper
+C0063,Occasional
+C0064,Frequent Shopper
+C0065,Frequent Shopper
+C0066,Price Sensitive
+C0067,High Value
+C0068,Occasional
+C0069,High Value
+C0070,Occasional
+C0071,Price Sensitive
+C0072,High Value
+C0073,High Value
+C0074,Occasional
+C0075,Price Sensitive
+C0076,Price Sensitive
+C0077,Price Sensitive
+C0078,High Value
+C0079,Frequent Shopper
+C0080,High Value
+C0081,Occasional
+C0082,Price Sensitive
+C0083,Frequent Shopper
+C0084,High Value
+C0085,Frequent Shopper
+C0086,Frequent Shopper
+C0087,Price Sensitive
+C0088,Price Sensitive
+C0089,Occasional
+C0090,Frequent Shopper
+C0091,High Value
+C0092,Price Sensitive
+C0093,Price Sensitive
+C0094,Price Sensitive
+C0095,Price Sensitive
+C0096,Frequent Shopper
+C0097,Price Sensitive
+C0098,Frequent Shopper
+C0099,High Value
+C0100,High Value
+C0101,High Value
+C0102,Price Sensitive
+C0103,Frequent Shopper
+C0104,Price Sensitive
+C0105,Occasional
+C0106,Frequent Shopper
+C0107,Frequent Shopper
+C0108,Price Sensitive
+C0109,Frequent Shopper
+C0110,High Value
+C0111,Frequent Shopper
+C0112,High Value
+C0113,Occasional
+C0114,Occasional
+C0115,Price Sensitive
+C0116,Occasional
+C0117,Occasional
+C0118,High Value
+C0119,Occasional
+C0120,Price Sensitive
+C0121,Occasional
+C0122,Occasional
+C0123,Frequent Shopper
+C0124,High Value
+C0125,Frequent Shopper
+C0126,Frequent Shopper
+C0127,Occasional
+C0128,Occasional
+C0129,High Value
+C0130,Price Sensitive
+C0131,Frequent Shopper
+C0132,Frequent Shopper
+C0133,High Value
+C0134,Frequent Shopper
+C0135,Occasional
+C0136,Frequent Shopper
+C0137,Price Sensitive
+C0138,Price Sensitive
+C0139,Frequent Shopper
+C0140,Occasional
+C0141,Occasional
+C0142,Frequent Shopper
+C0143,Frequent Shopper
+C0144,Frequent Shopper
+C0145,Frequent Shopper
+C0146,High Value
+C0147,Price Sensitive
+C0148,Price Sensitive
+C0149,High Value
+C0150,Frequent Shopper
+C0151,Occasional
+C0152,Frequent Shopper
+C0153,High Value
+C0154,Frequent Shopper
+C0155,Occasional
+C0156,Frequent Shopper
+C0157,Price Sensitive
+C0158,Price Sensitive
+C0159,Frequent Shopper
+C0160,Price Sensitive
+C0161,Frequent Shopper
+C0162,Price Sensitive
+C0163,Price Sensitive
+C0164,Price Sensitive
+C0165,High Value
+C0166,Occasional
+C0167,Frequent Shopper
+C0168,High Value
+C0169,High Value
+C0170,Price Sensitive
+C0171,Price Sensitive
+C0172,High Value
+C0173,Price Sensitive
+C0174,Frequent Shopper
+C0175,Price Sensitive
+C0176,High Value
+C0177,Price Sensitive
+C0178,Frequent Shopper
+C0179,Occasional
+C0180,High Value
+C0181,Frequent Shopper
+C0182,High Value
+C0183,Occasional
+C0184,Occasional
+C0185,Frequent Shopper
+C0186,Price Sensitive
+C0187,Occasional
+C0188,Price Sensitive
+C0189,Price Sensitive
+C0190,Frequent Shopper
+C0191,High Value
+C0192,Occasional
+C0193,Occasional
+C0194,Price Sensitive
+C0195,Frequent Shopper
+C0196,Frequent Shopper
+C0197,Price Sensitive
+C0198,Occasional
+C0199,Occasional
+C0200,Price Sensitive
+C0201,Price Sensitive
+C0202,High Value
+C0203,High Value
+C0204,Occasional
+C0205,Price Sensitive
+C0206,High Value
+C0207,High Value
+C0208,Price Sensitive
+C0209,High Value
+C0210,High Value
+C0211,Price Sensitive
+C0212,Price Sensitive
+C0213,Price Sensitive
+C0214,Frequent Shopper
+C0215,Price Sensitive
+C0216,Frequent Shopper
+C0217,Frequent Shopper
+C0218,Price Sensitive
+C0219,Price Sensitive
+C0220,Occasional
+C0221,Price Sensitive
+C0222,Price Sensitive
+C0223,High Value
+C0224,Frequent Shopper
+C0225,Frequent Shopper
+C0226,Frequent Shopper
+C0227,Occasional
+C0228,Frequent Shopper
+C0229,Occasional
+C0230,Price Sensitive
+C0231,Price Sensitive
+C0232,Price Sensitive
+C0233,Price Sensitive
+C0234,Frequent Shopper
+C0235,High Value
+C0236,Price Sensitive
+C0237,Frequent Shopper
+C0238,High Value
+C0239,Price Sensitive
+C0240,High Value
+C0241,Occasional
+C0242,Occasional
+C0243,Occasional
+C0244,Frequent Shopper
+C0245,High Value
+C0246,Occasional
+C0247,Frequent Shopper
+C0248,Occasional
+C0249,Occasional
+C0250,Occasional
+C0251,Frequent Shopper
+C0252,Frequent Shopper
+C0253,Occasional
+C0254,Frequent Shopper
+C0255,High Value
+C0256,Price Sensitive
+C0257,Occasional
+C0258,Price Sensitive
+C0259,Price Sensitive
+C0260,High Value
+C0261,Price Sensitive
+C0262,Occasional
+C0263,High Value
+C0264,Price Sensitive
+C0265,Occasional
+C0266,Price Sensitive
+C0267,Price Sensitive
+C0268,Price Sensitive
+C0269,Frequent Shopper
+C0270,Frequent Shopper
+C0271,Occasional
+C0272,Occasional
+C0273,Occasional
+C0274,Occasional
+C0275,Price Sensitive
+C0276,Price Sensitive
+C0277,Price Sensitive
+C0278,Price Sensitive
+C0279,Price Sensitive
+C0280,Price Sensitive
+C0281,Occasional
+C0282,Frequent Shopper
+C0283,Frequent Shopper
+C0284,High Value
+C0285,Price Sensitive
+C0286,High Value
+C0287,Frequent Shopper
+C0288,Price Sensitive
+C0289,Frequent Shopper
+C0290,Price Sensitive
+C0291,High Value
+C0292,High Value
+C0293,Occasional
+C0294,Frequent Shopper
+C0295,High Value
+C0296,Price Sensitive
+C0297,Price Sensitive
+C0298,Frequent Shopper
+C0299,Price Sensitive
+C0300,High Value
+C0301,High Value
+C0302,Price Sensitive
+C0303,Price Sensitive
+C0304,Price Sensitive
+C0305,Price Sensitive
+C0306,Occasional
+C0307,Price Sensitive
+C0308,Frequent Shopper
+C0309,Price Sensitive
+C0310,Frequent Shopper
+C0311,Frequent Shopper
+C0312,High Value
+C0313,High Value
+C0314,Occasional
+C0315,Occasional
+C0316,Price Sensitive
+C0317,Frequent Shopper
+C0318,High Value
+C0319,High Value
+C0320,Frequent Shopper
+C0321,Price Sensitive
+C0322,Price Sensitive
+C0323,Price Sensitive
+C0324,Frequent Shopper
+C0325,Occasional
+C0326,Price Sensitive
+C0327,Price Sensitive
+C0328,Price Sensitive
+C0329,Frequent Shopper
+C0330,Frequent Shopper
+C0331,Frequent Shopper
+C0332,Price Sensitive
+C0333,High Value
+C0334,High Value
+C0335,High Value
+C0336,High Value
+C0337,Occasional
+C0338,Price Sensitive
+C0339,Frequent Shopper
+C0340,High Value
+C0341,Frequent Shopper
+C0342,Frequent Shopper
+C0343,High Value
+C0344,Frequent Shopper
+C0345,Frequent Shopper
+C0346,Price Sensitive
+C0347,Price Sensitive
+C0348,High Value
+C0349,Frequent Shopper
+C0350,Price Sensitive
+C0351,Price Sensitive
+C0352,Occasional
+C0353,Price Sensitive
+C0354,High Value
+C0355,High Value
+C0356,Price Sensitive
+C0357,High Value
+C0358,Price Sensitive
+C0359,Occasional
+C0360,Price Sensitive
+C0361,Frequent Shopper
+C0362,Price Sensitive
+C0363,Frequent Shopper
+C0364,Price Sensitive
+C0365,Occasional
+C0366,Frequent Shopper
+C0367,Occasional
+C0368,Occasional
+C0369,High Value
+C0370,High Value
+C0371,High Value
+C0372,High Value
+C0373,High Value
+C0374,Price Sensitive
+C0375,High Value
+C0376,Frequent Shopper
+C0377,Occasional
+C0378,High Value
+C0379,Occasional
+C0380,Frequent Shopper
+C0381,High Value
+C0382,Price Sensitive
+C0383,Price Sensitive
+C0384,Occasional
+C0385,Price Sensitive
+C0386,Occasional
+C0387,Frequent Shopper
+C0388,High Value
+C0389,Price Sensitive
+C0390,Occasional
+C0391,Occasional
+C0392,Frequent Shopper
+C0393,Frequent Shopper
+C0394,Price Sensitive
+C0395,Frequent Shopper
+C0396,Occasional
+C0397,Occasional
+C0398,Frequent Shopper
+C0399,Price Sensitive
+C0400,Price Sensitive
+C0401,High Value
+C0402,Occasional
+C0403,Price Sensitive
+C0404,Occasional
+C0405,Frequent Shopper
+C0406,Occasional
+C0407,Frequent Shopper
+C0408,High Value
+C0409,Occasional
+C0410,High Value
+C0411,Frequent Shopper
+C0412,Occasional
+C0413,Occasional
+C0414,Price Sensitive
+C0415,Price Sensitive
+C0416,Frequent Shopper
+C0417,Frequent Shopper
+C0418,Frequent Shopper
+C0419,Price Sensitive
+C0420,Price Sensitive
+C0421,Price Sensitive
+C0422,Price Sensitive
+C0423,High Value
+C0424,Frequent Shopper
+C0425,High Value
+C0426,Price Sensitive
+C0427,Frequent Shopper
+C0428,Occasional
+C0429,Frequent Shopper
+C0430,High Value
+C0431,High Value
+C0432,Price Sensitive
+C0433,Price Sensitive
+C0434,High Value
+C0435,High Value
+C0436,Price Sensitive
+C0437,High Value
+C0438,Occasional
+C0439,Price Sensitive
+C0440,High Value
+C0441,High Value
+C0442,Occasional
+C0443,Frequent Shopper
+C0444,Frequent Shopper
+C0445,Occasional
+C0446,Occasional
+C0447,Occasional
+C0448,Price Sensitive
+C0449,Frequent Shopper
+C0450,High Value
+C0451,Price Sensitive
+C0452,Price Sensitive
+C0453,Frequent Shopper
+C0454,Occasional
+C0455,High Value
+C0456,Frequent Shopper
+C0457,High Value
+C0458,Frequent Shopper
+C0459,High Value
+C0460,High Value
+C0461,High Value
+C0462,Price Sensitive
+C0463,Price Sensitive
+C0464,Price Sensitive
+C0465,Occasional
+C0466,Frequent Shopper
+C0467,Frequent Shopper
+C0468,Occasional
+C0469,Frequent Shopper
+C0470,Occasional
+C0471,High Value
+C0472,Occasional
+C0473,High Value
+C0474,Occasional
+C0475,Price Sensitive
+C0476,Occasional
+C0477,High Value
+C0478,Price Sensitive
+C0479,Occasional
+C0480,Price Sensitive
+C0481,Price Sensitive
+C0482,Price Sensitive
+C0483,Frequent Shopper
+C0484,Price Sensitive
+C0485,Price Sensitive
+C0486,Occasional
+C0487,High Value
+C0488,Frequent Shopper
+C0489,Occasional
+C0490,Occasional
+C0491,Frequent Shopper
+C0492,Price Sensitive
+C0493,Frequent Shopper
+C0494,High Value
+C0495,Frequent Shopper
+C0496,Frequent Shopper
+C0497,Price Sensitive
+C0498,High Value
+C0499,Occasional
+C0500,Occasional
+C0501,Price Sensitive
+C0502,Price Sensitive
+C0503,Frequent Shopper
+C0504,Occasional
+C0505,Price Sensitive
+C0506,High Value
+C0507,Occasional
+C0508,Occasional
+C0509,Occasional
+C0510,Price Sensitive
+C0511,Price Sensitive
+C0512,Frequent Shopper
+C0513,Occasional
+C0514,Occasional
+C0515,High Value
+C0516,High Value
+C0517,Frequent Shopper
+C0518,Occasional
+C0519,Occasional
+C0520,High Value
+C0521,Price Sensitive
+C0522,Frequent Shopper
+C0523,Occasional
+C0524,Occasional
+C0525,Occasional
+C0526,Frequent Shopper
+C0527,Frequent Shopper
+C0528,Frequent Shopper
+C0529,High Value
+C0530,Occasional
+C0531,Occasional
+C0532,Occasional
+C0533,Occasional
+C0534,Price Sensitive
+C0535,Price Sensitive
+C0536,Occasional
+C0537,Occasional
+C0538,Frequent Shopper
+C0539,Frequent Shopper
+C0540,High Value
+C0541,Occasional
+C0542,Price Sensitive
+C0543,Frequent Shopper
+C0544,Price Sensitive
+C0545,Price Sensitive
+C0546,Frequent Shopper
+C0547,High Value
+C0548,Price Sensitive
+C0549,Price Sensitive
+C0550,Price Sensitive
+C0551,Price Sensitive
+C0552,Occasional
+C0553,Price Sensitive
+C0554,Price Sensitive
+C0555,Occasional
+C0556,Frequent Shopper
+C0557,High Value
+C0558,High Value
+C0559,Price Sensitive
+C0560,Price Sensitive
+C0561,Price Sensitive
+C0562,Frequent Shopper
+C0563,High Value
+C0564,High Value
+C0565,Frequent Shopper
+C0566,Price Sensitive
+C0567,Frequent Shopper
+C0568,Frequent Shopper
+C0569,Occasional
+C0570,Frequent Shopper
+C0571,Price Sensitive
+C0572,Price Sensitive
+C0573,Frequent Shopper
+C0574,Price Sensitive
+C0575,Occasional
+C0576,Occasional
+C0577,High Value
+C0578,Occasional
+C0579,Frequent Shopper
+C0580,Frequent Shopper
+C0581,Frequent Shopper
+C0582,Occasional
+C0583,Frequent Shopper
+C0584,Frequent Shopper
+C0585,Price Sensitive
+C0586,Frequent Shopper
+C0587,High Value
+C0588,High Value
+C0589,High Value
+C0590,High Value
+C0591,High Value
+C0592,Price Sensitive
+C0593,High Value
+C0594,Frequent Shopper
+C0595,Occasional
+C0596,Frequent Shopper
+C0597,Price Sensitive
+C0598,High Value
+C0599,High Value
+C0600,High Value
+C0601,High Value
+C0602,Frequent Shopper
+C0603,High Value
+C0604,High Value
+C0605,High Value
+C0606,Frequent Shopper
+C0607,Frequent Shopper
+C0608,Frequent Shopper
+C0609,Price Sensitive
+C0610,Price Sensitive
+C0611,High Value
+C0612,Price Sensitive
+C0613,Price Sensitive
+C0614,High Value
+C0615,Occasional
+C0616,Occasional
+C0617,High Value
+C0618,Frequent Shopper
+C0619,Occasional
+C0620,Price Sensitive
+C0621,High Value
+C0622,Frequent Shopper
+C0623,Frequent Shopper
+C0624,Frequent Shopper
+C0625,Price Sensitive
+C0626,Frequent Shopper
+C0627,Frequent Shopper
+C0628,Price Sensitive
+C0629,High Value
+C0630,Frequent Shopper
+C0631,Price Sensitive
+C0632,Occasional
+C0633,Price Sensitive
+C0634,Price Sensitive
+C0635,High Value
+C0636,Frequent Shopper
+C0637,Price Sensitive
+C0638,Frequent Shopper
+C0639,Frequent Shopper
+C0640,Frequent Shopper
+C0641,High Value
+C0642,Frequent Shopper
+C0643,Frequent Shopper
+C0644,Frequent Shopper
+C0645,High Value
+C0646,Occasional
+C0647,Price Sensitive
+C0648,Price Sensitive
+C0649,Price Sensitive
+C0650,Frequent Shopper
+C0651,High Value
+C0652,Price Sensitive
+C0653,Price Sensitive
+C0654,Price Sensitive
+C0655,Frequent Shopper
+C0656,High Value
+C0657,Frequent Shopper
+C0658,Frequent Shopper
+C0659,Price Sensitive
+C0660,Price Sensitive
+C0661,Frequent Shopper
+C0662,Occasional
+C0663,Price Sensitive
+C0664,Frequent Shopper
+C0665,High Value
+C0666,High Value
+C0667,Frequent Shopper
+C0668,High Value
+C0669,High Value
+C0670,Frequent Shopper
+C0671,High Value
+C0672,Occasional
+C0673,High Value
+C0674,Price Sensitive
+C0675,Frequent Shopper
+C0676,Occasional
+C0677,High Value
+C0678,Frequent Shopper
+C0679,Occasional
+C0680,Occasional
+C0681,Occasional
+C0682,Frequent Shopper
+C0683,High Value
+C0684,Price Sensitive
+C0685,Occasional
+C0686,Price Sensitive
+C0687,Price Sensitive
+C0688,Frequent Shopper
+C0689,Price Sensitive
+C0690,High Value
+C0691,Frequent Shopper
+C0692,Frequent Shopper
+C0693,Price Sensitive
+C0694,Frequent Shopper
+C0695,High Value
+C0696,Price Sensitive
+C0697,Frequent Shopper
+C0698,Price Sensitive
+C0699,High Value
+C0700,Frequent Shopper
+C0701,Price Sensitive
+C0702,High Value
+C0703,Frequent Shopper
+C0704,High Value
+C0705,High Value
+C0706,Occasional
+C0707,Frequent Shopper
+C0708,Occasional
+C0709,Frequent Shopper
+C0710,Price Sensitive
+C0711,Price Sensitive
+C0712,Price Sensitive
+C0713,Frequent Shopper
+C0714,Frequent Shopper
+C0715,Frequent Shopper
+C0716,Occasional
+C0717,Occasional
+C0718,Occasional
+C0719,High Value
+C0720,Price Sensitive
+C0721,Occasional
+C0722,High Value
+C0723,High Value
+C0724,Price Sensitive
+C0725,Price Sensitive
+C0726,Occasional
+C0727,High Value
+C0728,Price Sensitive
+C0729,Frequent Shopper
+C0730,High Value
+C0731,High Value
+C0732,Occasional
+C0733,Price Sensitive
+C0734,Price Sensitive
+C0735,Frequent Shopper
+C0736,Occasional
+C0737,Frequent Shopper
+C0738,Occasional
+C0739,Frequent Shopper
+C0740,Frequent Shopper
+C0741,Frequent Shopper
+C0742,Frequent Shopper
+C0743,Price Sensitive
+C0744,Price Sensitive
+C0745,Frequent Shopper
+C0746,Occasional
+C0747,Frequent Shopper
+C0748,Price Sensitive
+C0749,Occasional
+C0750,Price Sensitive
+C0751,High Value
+C0752,Occasional
+C0753,Price Sensitive
+C0754,Frequent Shopper
+C0755,High Value
+C0756,Price Sensitive
+C0757,Price Sensitive
+C0758,Price Sensitive
+C0759,Occasional
+C0760,Price Sensitive
+C0761,High Value
+C0762,Frequent Shopper
+C0763,Frequent Shopper
+C0764,Price Sensitive
+C0765,High Value
+C0766,Price Sensitive
+C0767,Price Sensitive
+C0768,Occasional
+C0769,Frequent Shopper
+C0770,Occasional
+C0771,High Value
+C0772,Occasional
+C0773,High Value
+C0774,Frequent Shopper
+C0775,Price Sensitive
+C0776,High Value
+C0777,Frequent Shopper
+C0778,Price Sensitive
+C0779,Price Sensitive
+C0780,Price Sensitive
+C0781,Price Sensitive
+C0782,Price Sensitive
+C0783,Frequent Shopper
+C0784,Frequent Shopper
+C0785,High Value
+C0786,Occasional
+C0787,Price Sensitive
+C0788,Frequent Shopper
+C0789,Frequent Shopper
+C0790,Occasional
+C0791,High Value
+C0792,Price Sensitive
+C0793,Price Sensitive
+C0794,Price Sensitive
+C0795,High Value
+C0796,Occasional
+C0797,Occasional
+C0798,Price Sensitive
+C0799,Price Sensitive
+C0800,Occasional
+C0801,Price Sensitive
+C0802,High Value
+C0803,Price Sensitive
+C0804,Price Sensitive
+C0805,Frequent Shopper
+C0806,Price Sensitive
+C0807,Occasional
+C0808,Occasional
+C0809,Frequent Shopper
+C0810,High Value
+C0811,Occasional
+C0812,Occasional
+C0813,High Value
+C0814,Occasional
+C0815,Occasional
+C0816,Price Sensitive
+C0817,Price Sensitive
+C0818,Frequent Shopper
+C0819,High Value
+C0820,Frequent Shopper
+C0821,Occasional
+C0822,High Value
+C0823,Frequent Shopper
+C0824,Frequent Shopper
+C0825,Price Sensitive
+C0826,Occasional
+C0827,Frequent Shopper
+C0828,Frequent Shopper
+C0829,Price Sensitive
+C0830,Frequent Shopper
+C0831,Frequent Shopper
+C0832,Frequent Shopper
+C0833,High Value
+C0834,High Value
+C0835,Frequent Shopper
+C0836,Frequent Shopper
+C0837,Occasional
+C0838,Frequent Shopper
+C0839,Price Sensitive
+C0840,Price Sensitive
+C0841,High Value
+C0842,Price Sensitive
+C0843,High Value
+C0844,Occasional
+C0845,High Value
+C0846,Frequent Shopper
+C0847,High Value
+C0848,Occasional
+C0849,Price Sensitive
+C0850,Price Sensitive
+C0851,High Value
+C0852,Price Sensitive
+C0853,Frequent Shopper
+C0854,Occasional
+C0855,Frequent Shopper
+C0856,High Value
+C0857,High Value
+C0858,Frequent Shopper
+C0859,Price Sensitive
+C0860,High Value
+C0861,Price Sensitive
+C0862,Frequent Shopper
+C0863,Price Sensitive
+C0864,Frequent Shopper
+C0865,Frequent Shopper
+C0866,Price Sensitive
+C0867,High Value
+C0868,High Value
+C0869,Occasional
+C0870,Occasional
+C0871,Frequent Shopper
+C0872,Frequent Shopper
+C0873,Price Sensitive
+C0874,Frequent Shopper
+C0875,High Value
+C0876,High Value
+C0877,Price Sensitive
+C0878,Price Sensitive
+C0879,High Value
+C0880,Frequent Shopper
+C0881,Frequent Shopper
+C0882,Price Sensitive
+C0883,High Value
+C0884,High Value
+C0885,Price Sensitive
+C0886,High Value
+C0887,Price Sensitive
+C0888,Frequent Shopper
+C0889,High Value
+C0890,Frequent Shopper
+C0891,Price Sensitive
+C0892,Occasional
+C0893,Occasional
+C0894,Frequent Shopper
+C0895,Price Sensitive
+C0896,Frequent Shopper
+C0897,Frequent Shopper
+C0898,Occasional
+C0899,High Value
+C0900,High Value
+C0901,Frequent Shopper
+C0902,High Value
+C0903,High Value
+C0904,Price Sensitive
+C0905,Frequent Shopper
+C0906,Occasional
+C0907,Occasional
+C0908,Frequent Shopper
+C0909,Frequent Shopper
+C0910,Frequent Shopper
+C0911,Price Sensitive
+C0912,Frequent Shopper
+C0913,Price Sensitive
+C0914,Frequent Shopper
+C0915,Price Sensitive
+C0916,Frequent Shopper
+C0917,Frequent Shopper
+C0918,Occasional
+C0919,Price Sensitive
+C0920,High Value
+C0921,Occasional
+C0922,Frequent Shopper
+C0923,Occasional
+C0924,Price Sensitive
+C0925,Frequent Shopper
+C0926,High Value
+C0927,Frequent Shopper
+C0928,Price Sensitive
+C0929,Price Sensitive
+C0930,Frequent Shopper
+C0931,High Value
+C0932,Occasional
+C0933,Occasional
+C0934,Price Sensitive
+C0935,High Value
+C0936,Frequent Shopper
+C0937,High Value
+C0938,Occasional
+C0939,High Value
+C0940,Price Sensitive
+C0941,Frequent Shopper
+C0942,Price Sensitive
+C0943,Price Sensitive
+C0944,Occasional
+C0945,Frequent Shopper
+C0946,High Value
+C0947,High Value
+C0948,Occasional
+C0949,Occasional
+C0950,Price Sensitive
+C0951,Price Sensitive
+C0952,Price Sensitive
+C0953,High Value
+C0954,Occasional
+C0955,Frequent Shopper
+C0956,Frequent Shopper
+C0957,Price Sensitive
+C0958,High Value
+C0959,High Value
+C0960,Price Sensitive
+C0961,High Value
+C0962,Price Sensitive
+C0963,Frequent Shopper
+C0964,Frequent Shopper
+C0965,Frequent Shopper
+C0966,Frequent Shopper
+C0967,Price Sensitive
+C0968,Frequent Shopper
+C0969,Price Sensitive
+C0970,Frequent Shopper
+C0971,Price Sensitive
+C0972,Occasional
+C0973,Price Sensitive
+C0974,Frequent Shopper
+C0975,High Value
+C0976,Frequent Shopper
+C0977,Price Sensitive
+C0978,High Value
+C0979,Frequent Shopper
+C0980,Price Sensitive
+C0981,Frequent Shopper
+C0982,Price Sensitive
+C0983,High Value
+C0984,High Value
+C0985,Price Sensitive
+C0986,Frequent Shopper
+C0987,Price Sensitive
+C0988,Frequent Shopper
+C0989,Frequent Shopper
+C0990,Occasional
+C0991,Price Sensitive
+C0992,Price Sensitive
+C0993,Frequent Shopper
+C0994,Price Sensitive
+C0995,Frequent Shopper
+C0996,High Value
+C0997,Occasional
+C0998,High Value
+C0999,Occasional
+C1000,Frequent Shopper

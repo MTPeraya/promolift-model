@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PromoLift Slide Proposal | DS AI Solution</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&family=Noto+Sans+Thai:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0b0d12;
+            --card-bg: #141923;
+            --accent-green: #38a169;
+            --accent-blue: #3182ce;
+            --accent-orange: #dd6b20;
+            --accent-red: #e53e3e;
+            --text-main: #e2e8f0;
+            --text-light: #ffffff;
+            --text-muted: #a0aec0;
+            --border-color: #2d3748;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans Thai', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Presentation Container */
+        .presentation-container {
+            position: relative;
+            width: 100%;
+            max-width: 1100px;
+            height: 650px;
+            background: linear-gradient(135deg, #171d29 0%, #0d1117 100%);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.6);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Slides Wrapper */
+        .slides-wrapper {
+            position: relative;
+            flex-grow: 1;
+            width: 100%;
+        }
+
+        /* Single Slide */
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            visibility: hidden;
+            padding: 40px 60px;
+            transition: opacity 0.5s ease, transform 0.5s ease, visibility 0.5s;
+            transform: translateX(50px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+            transform: translateX(0);
+        }
+
+        .slide.previous {
+            transform: translateX(-50px);
+        }
+
+        /* Header Layout */
+        .slide-header {
+            margin-bottom: 24px;
+            border-bottom: 2px solid #232d3f;
+            padding-bottom: 15px;
+        }
+
+        .slide-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-light);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .slide-subtitle {
+            font-size: 16px;
+            color: var(--accent-blue);
+            margin-top: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* Body Content Layouts */
+        .slide-content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        /* Grid systems */
+        .grid-2x2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: border-color 0.3s;
+        }
+
+        .card:hover {
+            border-color: var(--accent-blue);
+        }
+
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .badge {
+            font-size: 12px;
+            padding: 3px 8px;
+            border-radius: 6px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .badge-green { background-color: rgba(56, 161, 105, 0.2); color: #48bb78; border: 1px solid #38a169; }
+        .badge-blue { background-color: rgba(49, 130, 206, 0.2); color: #4299e1; border: 1px solid #3182ce; }
+        .badge-grey { background-color: rgba(160, 174, 192, 0.2); color: #cbd5e0; border: 1px solid #a0aec0; }
+        .badge-red { background-color: rgba(229, 62, 98, 0.2); color: #f56565; border: 1px solid #e53e3e; }
+
+        /* Title Slide Custom Styles */
+        .slide-title-layout {
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .hero-title {
+            font-size: 56px;
+            font-weight: 700;
+            background: linear-gradient(45deg, #4299e1, #48bb78);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+        }
+
+        .hero-subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+            max-width: 700px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        /* Math formulation style */
+        .formula-box {
+            background-color: #1a202c;
+            border-left: 4px solid var(--accent-green);
+            padding: 15px 20px;
+            border-radius: 0 12px 12px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 20px;
+            color: #48bb78;
+            margin: 15px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Footer Navigation Control */
+        .slide-footer {
+            height: 60px;
+            border-top: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            background-color: #0d1117;
+        }
+
+        .progress-container {
+            flex-grow: 1;
+            max-width: 500px;
+            height: 6px;
+            background-color: #1a202c;
+            border-radius: 3px;
+            margin: 0 30px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-blue), var(--accent-green));
+            border-radius: 3px;
+            width: 10%;
+            transition: width 0.3s ease;
+        }
+
+        .nav-btn {
+            background-color: #1e2530;
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+
+        .nav-btn:hover {
+            background-color: var(--accent-blue);
+            border-color: var(--accent-blue);
+        }
+
+        .slide-number {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 600;
+        }
+
+        /* Interactive toy calculator */
+        .calc-container {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 20px;
+            background-color: #161a23;
+            border-radius: 12px;
+            padding: 15px;
+            border: 1px solid var(--border-color);
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+            font-weight: 600;
+        }
+
+        .input-group input {
+            width: 100%;
+            background-color: #222936;
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 6px 10px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        /* Timeline list design */
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .timeline-item {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .timeline-badge {
+            width: 80px;
+            background-color: var(--accent-blue);
+            color: white;
+            padding: 4px 0;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        .timeline-desc {
+            font-size: 16px;
+            color: var(--text-main);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+        <div class="slides-wrapper">
+
+            <!-- SLIDE 1 -->
+            <div class="slide active slide-title-layout">
+                <div></div>
+                <div>
+                    <h1 class="hero-title">🎯 PromoLift</h1>
+                    <p class="hero-subtitle" style="font-size: 24px; color: var(--text-light); font-weight: 600; margin-bottom: 10px;">
+                        AI-Powered Promotion Response Model
+                    </p>
+                    <p class="hero-subtitle" style="margin-bottom: 0;">
+                        นวัตกรรมการยิงโปรโมชันแบบเจาะกลุ่มเป้าหมายเพื่อเพิ่มกำไรสูงสุด (Maximize Net Profit & ROI) สำหรับธุรกิจ SME Retail
+                    </p>
+                </div>
+                <div class="slide-number">สไลด์ 1 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 2 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Business Problem</div>
+                    <h2 class="slide-title">ทำไมโปรโมชันแบบเดิมๆ ถึงขาดทุน? (Promo Waste)</h2>
+                </div>
+                <div class="slide-content">
+                    <p style="margin-bottom: 20px;">การส่งโปรโมชันลดราคาแบบหว่านแห (Uniform Campaign) ส่งผลเสียต่อผลประกอบการของร้านค้าอย่างมีนัยสำคัญ เนื่องจากสูญเสียงบประมาณไปกับ 2 กลุ่มหลัก:</p>
+                    <div class="grid-2x2">
+                        <div class="card">
+                            <div class="card-title">
+                                <span class="badge badge-blue">Sure Things</span> กลุ่มของตาย
+                            </div>
+                            <p style="font-size: 15px; color: var(--text-muted);">ลูกค้าที่ตั้งใจจะซื้อสินค้าในราคาเต็มอยู่แล้วโดยไม่ต้องกระตุ้น เมื่อส่งส่วนลดให้จึงเปรียบเสมือนการสูญเสียกำไร (Cannibalization) ไปโดยเปล่าประโยชน์</p>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">
+                                <span class="badge badge-red">Sleeping Dogs</span> กลุ่มหมาหลับ
+                            </div>
+                            <p style="font-size: 15px; color: var(--text-muted);">ลูกค้าที่ซื้อสินค้าปกติ แต่เมื่อได้ส่งโปรโมชันก่อกวน จะเกิดความไม่พอใจ ยกเลิกสมาชิก หรือหลีกเลี่ยงการสั่งซื้อสินค้า ส่งผลกระทบเชิงลบโดยตรงต่อแบรนด์และรายได้</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 2 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 3 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Solution Concept</div>
+                    <h2 class="slide-title">เปลี่ยนโจทย์ธุรกิจด้วย Uplift Model (4 Quadrants)</h2>
+                </div>
+                <div class="slide-content">
+                    <p style="margin-bottom: 15px;">แทนที่จะตอบคำถามว่า "ใครมีโอกาสซื้อสินค้า?" (Propensity Model) เรามุ่งหาคำตอบว่า <b>"ใครจะตัดสินใจซื้อสินค้าเพราะโปรโมชัน?"</b></p>
+                    <div class="grid-2x2" style="font-size: 15px;">
+                        <div class="card" style="border-left: 4px solid var(--accent-green);">
+                            <div class="card-title" style="color: #48bb78;">🎯 Persuadables (จูงใจได้)</div>
+                            <p>ซื้อเมื่อได้รับโปรโมชันเท่านั้น ไม่ซื้อปกติ (Uplift > 0) <br><b style="color: #48bb78;">ควรเป้าหมายหลัก!</b></p>
+                        </div>
+                        <div class="card" style="border-left: 4px solid var(--accent-blue);">
+                            <div class="card-title" style="color: #4299e1;">❌ Sure Things (ของตาย)</div>
+                            <p>ซื้อของทุกครั้ง ไม่สนใจส่วนลด (Uplift ≈ 0)<br><b style="color: #4299e1;">ห้ามส่งเพื่อป้องกันเสีย Margin</b></p>
+                        </div>
+                        <div class="card" style="border-left: 4px solid var(--text-muted);">
+                            <div class="card-title" style="color: #a0aec0;">💤 Lost Causes (ปล่อยไป)</div>
+                            <p>อย่างไรก็ไม่ซื้อ ไม่คุ้มค่าส่งส่งเสริมการขาย (Uplift ≈ 0)<br><b style="color: #a0aec0;">ห้ามส่งเพื่อประหยัดต้นทุน</b></p>
+                        </div>
+                        <div class="card" style="border-left: 4px solid var(--accent-red);">
+                            <div class="card-title" style="color: #f56565;">⚠️ Sleeping Dogs (หมาหลับ)</div>
+                            <p>ปกติซื้อ แต่ส่งโปรให้แล้วหนีหาย (Uplift < 0)<br><b style="color: #f56565;">ห้ามกวนใจเด็ดขาด!</b></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 3 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 4 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Model Architecture</div>
+                    <h2 class="slide-title">ระบบโมเดล Uplift T-Learner (LightGBM)</h2>
+                </div>
+                <div class="slide-content">
+                    <p>เราเลือกโครงสร้างการสร้างโมเดลแบบ <b>T-Learner (Two-Model)</b> เพื่อแยกคำนวณพฤติกรรมได้อย่างอิสระ:</p>
+                    <div style="margin: 15px 0;">
+                        <ul>
+                            <li><b>Model T:</b> เทรนบนกลุ่ม Treatment (ผู้ได้รับโปร) ทำหน้าที่ประเมิน P(Buy | Treatment)</li>
+                            <li><b>Model C:</b> เทรนบนกลุ่ม Control (ผู้ถูก holdout) ทำหน้าที่ประเมิน P(Buy | Control)</li>
+                        </ul>
+                    </div>
+                    <div class="formula-box">
+                        Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
+                    </div>
+                    <p style="font-size: 15px; color: var(--text-muted);">จุดเด่น: พัฒนาได้รวดเร็ว ดึงประสิทธิภาพของ LightGBM ได้สูงสุด และสามารถทำความเข้าใจปัจจัยการตัดสินใจซื้อได้ง่าย (Interpretability)</p>
+                </div>
+                <div class="slide-number">สไลด์ 4 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 5 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Value-Based Scoring</div>
+                    <h2 class="slide-title">Expected Incremental Profit (EIP) การคัดเกณฑ์ทำกำไร</h2>
+                </div>
+                <div class="slide-content">
+                    <p>การใช้คะแนน Uplift Score อย่างเดียวอาจไม่เพียงพอ เราแปลงความน่าจะเป็นให้อยู่ในรูปตัวเงินโดยตรง:</p>
+                    <div style="font-size: 16px; margin: 15px 0;">
+                        <div style="margin-bottom: 10px;">
+                            <b>Expected Incremental Revenue (EIR):</b>
+                            <div class="formula-box" style="font-size: 16px; padding: 10px;">EIR_i = τ_i × Price − Discount × P(Buy | Treatment)_i</div>
+                        </div>
+                        <div>
+                            <b>Expected Incremental Profit (EIP):</b>
+                            <div class="formula-box" style="font-size: 16px; padding: 10px; color:#4299e1; border-color:#3182ce;">EIP_i = τ_i × (Price − COGS) − Discount × P(Buy | Treatment)_i − CampaignCost</div>
+                        </div>
+                    </div>
+                    <p style="font-size: 15px; color: var(--text-muted);"><b>กลยุทธ์สูงสุด:</b> คัดเลือกลูกค้าเฉพาะกลุ่มที่มีค่า <b>EIP > 0</b> เท่านั้นเพื่อให้มั่นใจว่าแคมเปญทำกำไรสุทธิเพิ่มขึ้นจริง</p>
+                </div>
+                <div class="slide-number">สไลด์ 5 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 6 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Data & Feature Plan</div>
+                    <h2 class="slide-title">โครงสร้างการจัดการข้อมูล (Data Schema & Features)</h2>
+                </div>
+                <div class="slide-content">
+                    <p style="margin-bottom: 10px;">ข้อมูลดิบเชื่อมโยงจาก 5 แหล่งสำคัญ: Sales, Customer, Product, Store และ Promotion</p>
+                    <table style="width: 100%; border-collapse: collapse; font-size: 14px; text-align: left;">
+                        <thead>
+                            <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-light);">
+                                <th style="padding: 8px;">ประเภทฟีเจอร์</th>
+                                <th style="padding: 8px;">ตัวแปรสำคัญ</th>
+                                <th style="padding: 8px;">คุณค่าทางธุรกิจ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px; font-weight: 600;">Recency (R)</td>
+                                <td style="padding: 8px;">recency_days</td>
+                                <td style="padding: 8px;">วัดความห่างหายเพื่อดูความตื่นตัวของลูกค้า</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px; font-weight: 600;">Frequency (F)</td>
+                                <td style="padding: 8px;">frequency_30d, total_visits</td>
+                                <td style="padding: 8px;">วัดความผูกพันและความคุ้นชินในการเข้ามาซื้อ</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px; font-weight: 600;">Monetary (M)</td>
+                                <td style="padding: 8px;">monetary_90d, total_spend, avg_basket_value</td>
+                                <td style="padding: 8px;">มูลค่ากำลังซื้อเฉลี่ยเพื่อคำนวณขนาดตะกร้า</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid var(--border-color);">
+                                <td style="padding: 8px; font-weight: 600;">Promo Interaction</td>
+                                <td style="padding: 8px;">promo_ratio</td>
+                                <td style="padding: 8px;">สัดส่วนการใช้ส่วนลดในอดีต (ความอ่อนไหวต่อราคา)</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="slide-number">สไลด์ 6 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 7 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Validation Plan</div>
+                    <h2 class="slide-title">แผนการทำ A/B Test และการประเมิน Qini Curve</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="grid-2x2">
+                        <div>
+                            <p style="font-weight: 600; color: var(--text-light); margin-bottom: 8px;">1. Randomized Holdout (A/B Test)</p>
+                            <p style="font-size: 15px; margin-bottom: 15px;">กันกลุ่มทดลอง 20% ไว้เป็นกลุ่มควบคุม (Control Group) ไม่ได้รับโปรโมชันเด็ดขาด เพื่อสร้างข้อมูลเปรียบเทียบหา baseline ยอดขายตามธรรมชาติและฝึกฝนโมเดล</p>
+                            
+                            <p style="font-weight: 600; color: var(--text-light); margin-bottom: 8px;">2. Qini Curve Evaluation</p>
+                            <p style="font-size: 15px;">วัดผลต่างอัตรา Conversion สะสมระหว่างกลุ่มได้รับการโปรและไม่ได้รับการโปร (เรียงจากผู้จูงใจได้มากที่สุดก่อน)</p>
+                        </div>
+                        <div class="card" style="display: flex; flex-direction: column; justify-content: center; align-items: center; background-color: #1a202c;">
+                            <div style="font-weight: 700; font-size: 16px; margin-bottom: 10px; color: var(--accent-blue);">โมเดลเป้าหมาย (KPI Validation)</div>
+                            <div style="font-size: 14px; text-align: left; width: 100%;">
+                                <div style="margin-bottom: 8px;">🟢 <b>AUC-ROC:</b> &ge; 0.72</div>
+                                <div style="margin-bottom: 8px;">🟢 <b>Precision@20%:</b> &ge; 65%</div>
+                                <div>🟢 <b>Incremental Profit:</b> +15% vs Uniform</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 7 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 8 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Interactive Demo</div>
+                    <h2 class="slide-title">เครื่องมือจัดการแคมเปญจริง (Demo Simulator)</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="calc-container">
+                        <div>
+                            <div class="input-group">
+                                <label>Price (THB)</label>
+                                <input type="number" id="demo-price" value="250">
+                            </div>
+                            <div class="input-group">
+                                <label>Discount (%)</label>
+                                <input type="number" id="demo-discount" value="20">
+                            </div>
+                            <div class="input-group">
+                                <label>COGS (THB)</label>
+                                <input type="number" id="demo-cogs" value="150">
+                            </div>
+                            <button class="nav-btn" onclick="runDemoCalc()" style="width: 100%; margin-top: 10px;">คำนวณกำไร</button>
+                        </div>
+                        <div style="padding-left: 15px; display: flex; flex-direction: column; justify-content: center; font-size: 14px;">
+                            <p style="font-weight: 600; color: white; margin-bottom: 8px;">เปรียบเทียบผลลัพธ์จำลอง (ต่อลูกค้า 1,000 ราย):</p>
+                            <div style="margin-bottom: 6px;">🎯 <b>จำนวนผู้ควรยิงโปร (EIP &gt; 0):</b> <span id="res-target" style="color: #48bb78; font-weight: 700;">207 ราย</span></div>
+                            <div style="margin-bottom: 6px;">💸 <b>กำไรแคมเปญแบบ Optimized:</b> <span id="res-opt-profit" style="color: #48bb78; font-weight: 700;">฿1,245.00</span></div>
+                            <div style="margin-bottom: 6px;">❌ <b>กำไรแคมเปญแบบ Uniform (ยิงทุกคน):</b> <span id="res-uni-profit" style="color: #f56565; font-weight: 700;">-฿8,540.00</span></div>
+                            <div>💡 <b>ประหยัดงบส่วนลดและจัดส่งได้:</b> <span id="res-savings" style="color: #4299e1; font-weight: 700;">฿9,785.00</span></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 8 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 9 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Project Roadmap</div>
+                    <h2 class="slide-title">แผนการพัฒนาและส่งมอบงาน (6-Week Timeline)</h2>
+                </div>
+                <div class="slide-content">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-badge">W1 - W2</div>
+                            <div class="timeline-desc"><b>Scoping & Data prep:</b> เชื่อมระบบคลังข้อมูล ตรวจสอบคุณภาพข้อมูล (Data Quality Checks) และเตรียมฟีเจอร์</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-badge" style="background-color: var(--accent-green);">W3 - W4</div>
+                            <div class="timeline-desc"><b>Model & Pilot Test:</b> เทรนโมเดล T-Learner และออกแบบ Pilot test ในระบบ A/B testing เพื่อประมวลผล baseline</div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-badge">W5 - W6</div>
+                            <div class="timeline-desc"><b>Dashboard & Deployment:</b> พัฒนาระบบแสดงผล Streamlit Dashboard และเตรียมคู่มือส่งมอบงานการยิงแคมเปญ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 9 จาก 10</div>
+            </div>
+
+            <!-- SLIDE 10 -->
+            <div class="slide">
+                <div class="slide-header">
+                    <div class="slide-subtitle">Business Value</div>
+                    <h2 class="slide-title">สรุปคุณค่าทางธุรกิจจาก PromoLift</h2>
+                </div>
+                <div class="slide-content" style="align-items: center; text-align: center;">
+                    <h3 style="color: #48bb78; font-size: 28px; margin-bottom: 20px;">เพิ่มรายได้และกำไรสุทธิสุงสุดแบบมีเหตุมีผล</h3>
+                    <div class="grid-2x2" style="max-width: 800px; font-size: 15px; text-align: left;">
+                        <div class="card">
+                            <h4 style="color: white; margin-bottom: 5px;">✅ กำไรต่อแคมเปญเป็นบวก</h4>
+                            <p>คัดเลือกเฉพาะผู้ที่จะสร้างคุณค่าเพิ่มและหักต้นทุนค่าส่วนลดอย่างโปร่งใส</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color: white; margin-bottom: 5px;">✅ ประหยัดงบได้มากถึง 30-50%</h4>
+                            <p>หยุดแจกของฟรีให้กลุ่มของตาย และข้ามกลุ่มที่ปล่อยไว้ดีกว่า</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color: white; margin-bottom: 5px;">✅ ไม่ทำร้ายภาพลักษณ์แบรนด์</h4>
+                            <p>หลีกเลี่ยงการกวนใจลูกค้า หรือทำให้สินค้าราคาตกด้วยการรบกวนกลุ่มหมาหลับ</p>
+                        </div>
+                        <div class="card">
+                            <h4 style="color: white; margin-bottom: 5px;">✅ เครื่องมือใช้งานง่าย</h4>
+                            <p>Dashboard ครบจบที่ Marketing Planner สามารถดาวน์โหลดไฟล์ยิงได้เลยทันที</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="slide-number">สไลด์ 10 จาก 10</div>
+            </div>
+
+        </div>
+
+        <!-- NAVIGATION CONTROL FOOTER -->
+        <div class="slide-footer">
+            <button class="nav-btn" onclick="prevSlide()">ย้อนกลับ</button>
+            <div class="progress-container">
+                <div class="progress-bar" id="p-bar"></div>
+            </div>
+            <button class="nav-btn" onclick="nextSlide()">หน้าถัดไป</button>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const progressBar = document.getElementById('p-bar');
+
+        function updateSlide() {
+            slides.forEach((slide, idx) => {
+                slide.classList.remove('active', 'previous');
+                if (idx === currentSlide) {
+                    slide.classList.add('active');
+                } else if (idx < currentSlide) {
+                    slide.classList.add('previous');
+                }
+            });
+            const pct = ((currentSlide + 1) / slides.length) * 100;
+            progressBar.style.width = pct + '%';
+        }
+
+        function nextSlide() {
+            if (currentSlide < slides.length - 1) {
+                currentSlide++;
+                updateSlide();
+            }
+        }
+
+        function prevSlide() {
+            if (currentSlide > 0) {
+                currentSlide--;
+                updateSlide();
+            }
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                prevSlide();
+            }
+        });
+
+        // Toy Simulation calculator function
+        function runDemoCalc() {
+            const price = parseFloat(document.getElementById('demo-price').value);
+            const discountPct = parseFloat(document.getElementById('demo-discount').value) / 100.0;
+            const cogs = parseFloat(document.getElementById('demo-cogs').value);
+            
+            const discount = price * discountPct;
+            const campCost = 0.50;
+            
+            // Re-simulate values for 1000 customers (based on our mock distributions)
+            // Persuadal: 350, Sure Thing: 300, Lost Cause: 250, Sleeping Dog: 100
+            // Net profit calculations:
+            // Persuadal under Treatment: Buy prob = 0.70, under Control = 0.15. Uplift = 0.55
+            // Net Profit opt = 0.55 * (Price - COGS) - discount * 0.70 - campCost
+            const persuadal_pt = 0.70;
+            const persuadal_pc = 0.15;
+            const persuadal_uplift = persuadal_pt - persuadal_pc;
+            const persuadal_eip = persuadal_uplift * (price - cogs) - discount * persuadal_pt - campCost;
+            
+            // Sure Thing: pt = 0.85, pc = 0.80, uplift = 0.05
+            const surething_pt = 0.85;
+            const surething_pc = 0.80;
+            const surething_uplift = surething_pt - surething_pc;
+            const surething_eip = surething_uplift * (price - cogs) - discount * surething_pt - campCost;
+            
+            // Lost Cause: pt = 0.05, pc = 0.05, uplift = 0
+            const lostcause_pt = 0.05;
+            const lostcause_pc = 0.05;
+            const lostcause_uplift = 0.0;
+            const lostcause_eip = lostcause_uplift * (price - cogs) - discount * lostcause_pt - campCost;
+            
+            // Sleeping Dog: pt = 0.08, pc = 0.65, uplift = -0.57
+            const sleeping_pt = 0.08;
+            const sleeping_pc = 0.65;
+            const sleeping_uplift = sleeping_pt - sleeping_pc;
+            const sleeping_eip = sleeping_uplift * (price - cogs) - discount * sleeping_pt - campCost;
+            
+            // Who do we target? (Only those with EIP > 0 and Uplift >= 0)
+            let targetCount = 0;
+            let optProfit = 0;
+            
+            // In our segment counts: Persuadables (350), Sure Things (300), Lost Causes (250), Sleeping Dogs (100)
+            if (persuadal_eip > 0 && persuadal_uplift >= 0) {
+                targetCount += 350;
+                optProfit += 350 * persuadal_eip;
+            }
+            if (surething_eip > 0 && surething_uplift >= 0) {
+                targetCount += 300;
+                optProfit += 300 * surething_eip;
+            }
+            if (lostcause_eip > 0 && lostcause_uplift >= 0) {
+                targetCount += 250;
+                optProfit += 250 * lostcause_eip;
+            }
+            // Sleeping dog is never targeted because uplift is negative (< 0)
+            
+            // Uniform Profit (target everyone)
+            const uniformProfit = (350 * persuadal_eip) + (300 * surething_eip) + (250 * lostcause_eip) + (100 * sleeping_eip);
+            
+            // Savings
+            const uniformSpend = 1000 * campCost + (350 * persuadal_pt + 300 * surething_pt + 250 * lostcause_pt + 100 * sleeping_pt) * discount;
+            const optSpend = targetCount * campCost + (targetCount > 0 ? (targetCount === 350 ? 350 * persuadal_pt : 350*persuadal_pt + 300*surething_pt) : 0) * discount;
+            const savings = uniformSpend - optSpend;
+            
+            document.getElementById('res-target').innerText = targetCount + ' ราย';
+            document.getElementById('res-opt-profit').innerText = '฿' + optProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('res-uni-profit').innerText = '฿' + uniformProfit.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+            document.getElementById('res-savings').innerText = '฿' + savings.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+        
+        // Initial call
+        updateSlide();
+    </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# C extensions
+*.so
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+ENV/
+*.venv
+
+# Streamlit configurations (if any local configs are created)
+.streamlit/
+
+# Serialization files (model checkpoints)
+*.pkl
+*.joblib
+*.model
+
+# OS generated files (macOS specific)
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Project local caches
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/

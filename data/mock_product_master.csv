@@ -1,0 +1,51 @@
+product_id,price,cogs,product_taxonomies
+P001,163.37,89.89,Household
+P002,53.28,32.62,Beverages
+P003,273.65,143.11,Household
+P004,107.41,69.23,Dry Grocery
+P005,36.09,23.15,Dry Grocery
+P006,39.46,20.37,Fresh Food
+P007,249.57,148.98,Personal Care
+P008,141.34,97.4,Household
+P009,53.25,33.75,Fresh Food
+P010,251.05,146.2,Personal Care
+P011,320.86,195.43,Household
+P012,17.8,10.72,Beverages
+P013,378.37,223.94,Household
+P014,34.68,22.79,Dry Grocery
+P015,48.12,26.55,Dry Grocery
+P016,22.41,12.69,Beverages
+P017,49.05,29.62,Fresh Food
+P018,155.81,105.26,Personal Care
+P019,405.45,273.32,Household
+P020,51.49,30.39,Dry Grocery
+P021,59.32,38.82,Fresh Food
+P022,16.22,8.32,Beverages
+P023,71.75,48.92,Dry Grocery
+P024,39.24,23.53,Beverages
+P025,119.03,75.15,Household
+P026,384.18,221.32,Personal Care
+P027,99.81,69.16,Dry Grocery
+P028,48.34,29.23,Dry Grocery
+P029,186.24,122.65,Household
+P030,40.99,25.7,Fresh Food
+P031,375.23,217.33,Personal Care
+P032,112.36,68.16,Dry Grocery
+P033,138.44,88.49,Personal Care
+P034,101.39,57.12,Dry Grocery
+P035,397.16,270.56,Personal Care
+P036,27.46,19.13,Beverages
+P037,42.66,23.05,Dry Grocery
+P038,148.16,100.57,Personal Care
+P039,44.44,23.57,Fresh Food
+P040,34.81,21.69,Beverages
+P041,18.76,12.69,Beverages
+P042,51.16,30.75,Fresh Food
+P043,437.84,255.5,Personal Care
+P044,444.12,281.39,Household
+P045,43.56,23.23,Fresh Food
+P046,406.31,237.89,Personal Care
+P047,22.3,11.21,Fresh Food
+P048,40.19,24.33,Fresh Food
+P049,94.74,64.24,Dry Grocery
+P050,109.38,70.69,Personal Care

@@ -1,0 +1,1001 @@
+customer_id,customer_taxonomies,true_uplift_segment
+C0001,Frequent Shopper,Persuadal
+C0002,Occasional,Sure Thing
+C0003,Price Sensitive,Lost Cause
+C0004,Price Sensitive,Lost Cause
+C0005,High Value,Lost Cause
+C0006,High Value,Lost Cause
+C0007,High Value,Lost Cause
+C0008,Occasional,Lost Cause
+C0009,Price Sensitive,Persuadal
+C0010,Price Sensitive,Sure Thing
+C0011,High Value,Persuadal
+C0012,Occasional,Sleeping Dog
+C0013,Occasional,Sleeping Dog
+C0014,Frequent Shopper,Persuadal
+C0015,High Value,Lost Cause
+C0016,High Value,Sleeping Dog
+C0017,Frequent Shopper,Persuadal
+C0018,Price Sensitive,Sure Thing
+C0019,Frequent Shopper,Sleeping Dog
+C0020,Frequent Shopper,Persuadal
+C0021,Price Sensitive,Lost Cause
+C0022,High Value,Persuadal
+C0023,Frequent Shopper,Sleeping Dog
+C0024,Frequent Shopper,Sleeping Dog
+C0025,Frequent Shopper,Sleeping Dog
+C0026,Price Sensitive,Sure Thing
+C0027,High Value,Lost Cause
+C0028,Price Sensitive,Lost Cause
+C0029,Price Sensitive,Persuadal
+C0030,High Value,Lost Cause
+C0031,Price Sensitive,Persuadal
+C0032,High Value,Sure Thing
+C0033,High Value,Persuadal
+C0034,Occasional,Persuadal
+C0035,Occasional,Persuadal
+C0036,Occasional,Lost Cause
+C0037,Frequent Shopper,Persuadal
+C0038,High Value,Lost Cause
+C0039,Price Sensitive,Persuadal
+C0040,Frequent Shopper,Persuadal
+C0041,High Value,Sure Thing
+C0042,Frequent Shopper,Lost Cause
+C0043,High Value,Persuadal
+C0044,Occasional,Sure Thing
+C0045,Frequent Shopper,Lost Cause
+C0046,Price Sensitive,Sure Thing
+C0047,Frequent Shopper,Persuadal
+C0048,Price Sensitive,Persuadal
+C0049,Price Sensitive,Lost Cause
+C0050,High Value,Persuadal
+C0051,Occasional,Lost Cause
+C0052,Price Sensitive,Sure Thing
+C0053,Occasional,Sleeping Dog
+C0054,Occasional,Lost Cause
+C0055,Price Sensitive,Sleeping Dog
+C0056,Occasional,Sure Thing
+C0057,High Value,Lost Cause
+C0058,High Value,Sure Thing
+C0059,High Value,Sure Thing
+C0060,Frequent Shopper,Sure Thing
+C0061,Frequent Shopper,Lost Cause
+C0062,Frequent Shopper,Sleeping Dog
+C0063,Occasional,Lost Cause
+C0064,Frequent Shopper,Sure Thing
+C0065,Frequent Shopper,Sure Thing
+C0066,Price Sensitive,Lost Cause
+C0067,High Value,Persuadal
+C0068,Occasional,Persuadal
+C0069,High Value,Sure Thing
+C0070,Occasional,Persuadal
+C0071,Price Sensitive,Persuadal
+C0072,High Value,Persuadal
+C0073,High Value,Persuadal
+C0074,Occasional,Persuadal
+C0075,Price Sensitive,Sleeping Dog
+C0076,Price Sensitive,Sure Thing
+C0077,Price Sensitive,Sure Thing
+C0078,High Value,Lost Cause
+C0079,Frequent Shopper,Persuadal
+C0080,High Value,Sleeping Dog
+C0081,Occasional,Lost Cause
+C0082,Price Sensitive,Persuadal
+C0083,Frequent Shopper,Sure Thing
+C0084,High Value,Lost Cause
+C0085,Frequent Shopper,Sleeping Dog
+C0086,Frequent Shopper,Sure Thing
+C0087,Price Sensitive,Sure Thing
+C0088,Price Sensitive,Persuadal
+C0089,Occasional,Sleeping Dog
+C0090,Frequent Shopper,Persuadal
+C0091,High Value,Sleeping Dog
+C0092,Price Sensitive,Sure Thing
+C0093,Price Sensitive,Sure Thing
+C0094,Price Sensitive,Sure Thing
+C0095,Price Sensitive,Persuadal
+C0096,Frequent Shopper,Persuadal
+C0097,Price Sensitive,Persuadal
+C0098,Frequent Shopper,Persuadal
+C0099,High Value,Lost Cause
+C0100,High Value,Sure Thing
+C0101,High Value,Persuadal
+C0102,Price Sensitive,Sleeping Dog
+C0103,Frequent Shopper,Lost Cause
+C0104,Price Sensitive,Sleeping Dog
+C0105,Occasional,Sleeping Dog
+C0106,Frequent Shopper,Persuadal
+C0107,Frequent Shopper,Sure Thing
+C0108,Price Sensitive,Lost Cause
+C0109,Frequent Shopper,Lost Cause
+C0110,High Value,Persuadal
+C0111,Frequent Shopper,Lost Cause
+C0112,High Value,Persuadal
+C0113,Occasional,Persuadal
+C0114,Occasional,Sure Thing
+C0115,Price Sensitive,Sure Thing
+C0116,Occasional,Sure Thing
+C0117,Occasional,Persuadal
+C0118,High Value,Lost Cause
+C0119,Occasional,Persuadal
+C0120,Price Sensitive,Persuadal
+C0121,Occasional,Lost Cause
+C0122,Occasional,Sleeping Dog
+C0123,Frequent Shopper,Lost Cause
+C0124,High Value,Lost Cause
+C0125,Frequent Shopper,Lost Cause
+C0126,Frequent Shopper,Sure Thing
+C0127,Occasional,Persuadal
+C0128,Occasional,Sure Thing
+C0129,High Value,Sure Thing
+C0130,Price Sensitive,Persuadal
+C0131,Frequent Shopper,Lost Cause
+C0132,Frequent Shopper,Sure Thing
+C0133,High Value,Persuadal
+C0134,Frequent Shopper,Persuadal
+C0135,Occasional,Lost Cause
+C0136,Frequent Shopper,Persuadal
+C0137,Price Sensitive,Lost Cause
+C0138,Price Sensitive,Sure Thing
+C0139,Frequent Shopper,Sure Thing
+C0140,Occasional,Sure Thing
+C0141,Occasional,Lost Cause
+C0142,Frequent Shopper,Persuadal
+C0143,Frequent Shopper,Lost Cause
+C0144,Frequent Shopper,Sure Thing
+C0145,Frequent Shopper,Persuadal
+C0146,High Value,Lost Cause
+C0147,Price Sensitive,Lost Cause
+C0148,Price Sensitive,Lost Cause
+C0149,High Value,Lost Cause
+C0150,Frequent Shopper,Lost Cause
+C0151,Occasional,Lost Cause
+C0152,Frequent Shopper,Lost Cause
+C0153,High Value,Lost Cause
+C0154,Frequent Shopper,Lost Cause
+C0155,Occasional,Sure Thing
+C0156,Frequent Shopper,Lost Cause
+C0157,Price Sensitive,Persuadal
+C0158,Price Sensitive,Lost Cause
+C0159,Frequent Shopper,Lost Cause
+C0160,Price Sensitive,Persuadal
+C0161,Frequent Shopper,Lost Cause
+C0162,Price Sensitive,Persuadal
+C0163,Price Sensitive,Persuadal
+C0164,Price Sensitive,Lost Cause
+C0165,High Value,Persuadal
+C0166,Occasional,Lost Cause
+C0167,Frequent Shopper,Lost Cause
+C0168,High Value,Sure Thing
+C0169,High Value,Persuadal
+C0170,Price Sensitive,Persuadal
+C0171,Price Sensitive,Sure Thing
+C0172,High Value,Sleeping Dog
+C0173,Price Sensitive,Sure Thing
+C0174,Frequent Shopper,Persuadal
+C0175,Price Sensitive,Sure Thing
+C0176,High Value,Sure Thing
+C0177,Price Sensitive,Lost Cause
+C0178,Frequent Shopper,Persuadal
+C0179,Occasional,Lost Cause
+C0180,High Value,Sure Thing
+C0181,Frequent Shopper,Sleeping Dog
+C0182,High Value,Persuadal
+C0183,Occasional,Sure Thing
+C0184,Occasional,Sleeping Dog
+C0185,Frequent Shopper,Persuadal
+C0186,Price Sensitive,Sleeping Dog
+C0187,Occasional,Lost Cause
+C0188,Price Sensitive,Persuadal
+C0189,Price Sensitive,Persuadal
+C0190,Frequent Shopper,Lost Cause
+C0191,High Value,Persuadal
+C0192,Occasional,Sure Thing
+C0193,Occasional,Persuadal
+C0194,Price Sensitive,Sure Thing
+C0195,Frequent Shopper,Persuadal
+C0196,Frequent Shopper,Lost Cause
+C0197,Price Sensitive,Sleeping Dog
+C0198,Occasional,Sleeping Dog
+C0199,Occasional,Lost Cause
+C0200,Price Sensitive,Persuadal
+C0201,Price Sensitive,Lost Cause
+C0202,High Value,Persuadal
+C0203,High Value,Persuadal
+C0204,Occasional,Persuadal
+C0205,Price Sensitive,Sure Thing
+C0206,High Value,Lost Cause
+C0207,High Value,Lost Cause
+C0208,Price Sensitive,Sure Thing
+C0209,High Value,Persuadal
+C0210,High Value,Sleeping Dog
+C0211,Price Sensitive,Sure Thing
+C0212,Price Sensitive,Sure Thing
+C0213,Price Sensitive,Persuadal
+C0214,Frequent Shopper,Lost Cause
+C0215,Price Sensitive,Lost Cause
+C0216,Frequent Shopper,Persuadal
+C0217,Frequent Shopper,Persuadal
+C0218,Price Sensitive,Lost Cause
+C0219,Price Sensitive,Lost Cause
+C0220,Occasional,Persuadal
+C0221,Price Sensitive,Sleeping Dog
+C0222,Price Sensitive,Persuadal
+C0223,High Value,Sure Thing
+C0224,Frequent Shopper,Sleeping Dog
+C0225,Frequent Shopper,Sure Thing
+C0226,Frequent Shopper,Sure Thing
+C0227,Occasional,Sure Thing
+C0228,Frequent Shopper,Persuadal
+C0229,Occasional,Sleeping Dog
+C0230,Price Sensitive,Sure Thing
+C0231,Price Sensitive,Lost Cause
+C0232,Price Sensitive,Persuadal
+C0233,Price Sensitive,Persuadal
+C0234,Frequent Shopper,Persuadal
+C0235,High Value,Lost Cause
+C0236,Price Sensitive,Sure Thing
+C0237,Frequent Shopper,Lost Cause
+C0238,High Value,Sure Thing
+C0239,Price Sensitive,Sleeping Dog
+C0240,High Value,Persuadal
+C0241,Occasional,Lost Cause
+C0242,Occasional,Lost Cause
+C0243,Occasional,Lost Cause
+C0244,Frequent Shopper,Lost Cause
+C0245,High Value,Lost Cause
+C0246,Occasional,Sure Thing
+C0247,Frequent Shopper,Persuadal
+C0248,Occasional,Persuadal
+C0249,Occasional,Sleeping Dog
+C0250,Occasional,Sure Thing
+C0251,Frequent Shopper,Lost Cause
+C0252,Frequent Shopper,Sure Thing
+C0253,Occasional,Persuadal
+C0254,Frequent Shopper,Persuadal
+C0255,High Value,Lost Cause
+C0256,Price Sensitive,Sure Thing
+C0257,Occasional,Persuadal
+C0258,Price Sensitive,Sure Thing
+C0259,Price Sensitive,Persuadal
+C0260,High Value,Sure Thing
+C0261,Price Sensitive,Persuadal
+C0262,Occasional,Lost Cause
+C0263,High Value,Persuadal
+C0264,Price Sensitive,Sure Thing
+C0265,Occasional,Persuadal
+C0266,Price Sensitive,Persuadal
+C0267,Price Sensitive,Sure Thing
+C0268,Price Sensitive,Sure Thing
+C0269,Frequent Shopper,Sure Thing
+C0270,Frequent Shopper,Persuadal
+C0271,Occasional,Lost Cause
+C0272,Occasional,Lost Cause
+C0273,Occasional,Lost Cause
+C0274,Occasional,Persuadal
+C0275,Price Sensitive,Sure Thing
+C0276,Price Sensitive,Persuadal
+C0277,Price Sensitive,Persuadal
+C0278,Price Sensitive,Sleeping Dog
+C0279,Price Sensitive,Persuadal
+C0280,Price Sensitive,Sure Thing
+C0281,Occasional,Sure Thing
+C0282,Frequent Shopper,Lost Cause
+C0283,Frequent Shopper,Sure Thing
+C0284,High Value,Persuadal
+C0285,Price Sensitive,Persuadal
+C0286,High Value,Sure Thing
+C0287,Frequent Shopper,Persuadal
+C0288,Price Sensitive,Sure Thing
+C0289,Frequent Shopper,Persuadal
+C0290,Price Sensitive,Persuadal
+C0291,High Value,Sure Thing
+C0292,High Value,Persuadal
+C0293,Occasional,Sure Thing
+C0294,Frequent Shopper,Lost Cause
+C0295,High Value,Lost Cause
+C0296,Price Sensitive,Persuadal
+C0297,Price Sensitive,Persuadal
+C0298,Frequent Shopper,Persuadal
+C0299,Price Sensitive,Sure Thing
+C0300,High Value,Lost Cause
+C0301,High Value,Persuadal
+C0302,Price Sensitive,Sleeping Dog
+C0303,Price Sensitive,Persuadal
+C0304,Price Sensitive,Sure Thing
+C0305,Price Sensitive,Lost Cause
+C0306,Occasional,Lost Cause
+C0307,Price Sensitive,Lost Cause
+C0308,Frequent Shopper,Lost Cause
+C0309,Price Sensitive,Persuadal
+C0310,Frequent Shopper,Lost Cause
+C0311,Frequent Shopper,Persuadal
+C0312,High Value,Lost Cause
+C0313,High Value,Sure Thing
+C0314,Occasional,Lost Cause
+C0315,Occasional,Sure Thing
+C0316,Price Sensitive,Sure Thing
+C0317,Frequent Shopper,Sure Thing
+C0318,High Value,Lost Cause
+C0319,High Value,Persuadal
+C0320,Frequent Shopper,Persuadal
+C0321,Price Sensitive,Persuadal
+C0322,Price Sensitive,Persuadal
+C0323,Price Sensitive,Lost Cause
+C0324,Frequent Shopper,Persuadal
+C0325,Occasional,Sleeping Dog
+C0326,Price Sensitive,Persuadal
+C0327,Price Sensitive,Persuadal
+C0328,Price Sensitive,Lost Cause
+C0329,Frequent Shopper,Lost Cause
+C0330,Frequent Shopper,Sure Thing
+C0331,Frequent Shopper,Sure Thing
+C0332,Price Sensitive,Lost Cause
+C0333,High Value,Persuadal
+C0334,High Value,Sleeping Dog
+C0335,High Value,Sleeping Dog
+C0336,High Value,Lost Cause
+C0337,Occasional,Persuadal
+C0338,Price Sensitive,Lost Cause
+C0339,Frequent Shopper,Persuadal
+C0340,High Value,Persuadal
+C0341,Frequent Shopper,Persuadal
+C0342,Frequent Shopper,Sure Thing
+C0343,High Value,Lost Cause
+C0344,Frequent Shopper,Lost Cause
+C0345,Frequent Shopper,Lost Cause
+C0346,Price Sensitive,Sure Thing
+C0347,Price Sensitive,Persuadal
+C0348,High Value,Sure Thing
+C0349,Frequent Shopper,Sleeping Dog
+C0350,Price Sensitive,Persuadal
+C0351,Price Sensitive,Lost Cause
+C0352,Occasional,Sure Thing
+C0353,Price Sensitive,Sure Thing
+C0354,High Value,Lost Cause
+C0355,High Value,Sure Thing
+C0356,Price Sensitive,Lost Cause
+C0357,High Value,Sleeping Dog
+C0358,Price Sensitive,Sure Thing
+C0359,Occasional,Persuadal
+C0360,Price Sensitive,Sure Thing
+C0361,Frequent Shopper,Sleeping Dog
+C0362,Price Sensitive,Persuadal
+C0363,Frequent Shopper,Sure Thing
+C0364,Price Sensitive,Sure Thing
+C0365,Occasional,Lost Cause
+C0366,Frequent Shopper,Persuadal
+C0367,Occasional,Lost Cause
+C0368,Occasional,Sleeping Dog
+C0369,High Value,Persuadal
+C0370,High Value,Persuadal
+C0371,High Value,Sleeping Dog
+C0372,High Value,Persuadal
+C0373,High Value,Lost Cause
+C0374,Price Sensitive,Sure Thing
+C0375,High Value,Persuadal
+C0376,Frequent Shopper,Lost Cause
+C0377,Occasional,Sure Thing
+C0378,High Value,Sure Thing
+C0379,Occasional,Sure Thing
+C0380,Frequent Shopper,Sure Thing
+C0381,High Value,Persuadal
+C0382,Price Sensitive,Sure Thing
+C0383,Price Sensitive,Sleeping Dog
+C0384,Occasional,Persuadal
+C0385,Price Sensitive,Lost Cause
+C0386,Occasional,Persuadal
+C0387,Frequent Shopper,Lost Cause
+C0388,High Value,Persuadal
+C0389,Price Sensitive,Sleeping Dog
+C0390,Occasional,Sure Thing
+C0391,Occasional,Persuadal
+C0392,Frequent Shopper,Persuadal
+C0393,Frequent Shopper,Persuadal
+C0394,Price Sensitive,Sure Thing
+C0395,Frequent Shopper,Persuadal
+C0396,Occasional,Lost Cause
+C0397,Occasional,Sure Thing
+C0398,Frequent Shopper,Persuadal
+C0399,Price Sensitive,Sure Thing
+C0400,Price Sensitive,Lost Cause
+C0401,High Value,Persuadal
+C0402,Occasional,Persuadal
+C0403,Price Sensitive,Persuadal
+C0404,Occasional,Lost Cause
+C0405,Frequent Shopper,Lost Cause
+C0406,Occasional,Sure Thing
+C0407,Frequent Shopper,Lost Cause
+C0408,High Value,Lost Cause
+C0409,Occasional,Sure Thing
+C0410,High Value,Lost Cause
+C0411,Frequent Shopper,Persuadal
+C0412,Occasional,Persuadal
+C0413,Occasional,Persuadal
+C0414,Price Sensitive,Persuadal
+C0415,Price Sensitive,Sure Thing
+C0416,Frequent Shopper,Sleeping Dog
+C0417,Frequent Shopper,Persuadal
+C0418,Frequent Shopper,Persuadal
+C0419,Price Sensitive,Sure Thing
+C0420,Price Sensitive,Sleeping Dog
+C0421,Price Sensitive,Persuadal
+C0422,Price Sensitive,Sure Thing
+C0423,High Value,Persuadal
+C0424,Frequent Shopper,Persuadal
+C0425,High Value,Sleeping Dog
+C0426,Price Sensitive,Sleeping Dog
+C0427,Frequent Shopper,Persuadal
+C0428,Occasional,Sleeping Dog
+C0429,Frequent Shopper,Sure Thing
+C0430,High Value,Lost Cause
+C0431,High Value,Sure Thing
+C0432,Price Sensitive,Sure Thing
+C0433,Price Sensitive,Sure Thing
+C0434,High Value,Lost Cause
+C0435,High Value,Persuadal
+C0436,Price Sensitive,Persuadal
+C0437,High Value,Persuadal
+C0438,Occasional,Lost Cause
+C0439,Price Sensitive,Persuadal
+C0440,High Value,Lost Cause
+C0441,High Value,Sleeping Dog
+C0442,Occasional,Persuadal
+C0443,Frequent Shopper,Lost Cause
+C0444,Frequent Shopper,Sure Thing
+C0445,Occasional,Lost Cause
+C0446,Occasional,Persuadal
+C0447,Occasional,Lost Cause
+C0448,Price Sensitive,Lost Cause
+C0449,Frequent Shopper,Sleeping Dog
+C0450,High Value,Lost Cause
+C0451,Price Sensitive,Sure Thing
+C0452,Price Sensitive,Sure Thing
+C0453,Frequent Shopper,Lost Cause
+C0454,Occasional,Sure Thing
+C0455,High Value,Persuadal
+C0456,Frequent Shopper,Sleeping Dog
+C0457,High Value,Lost Cause
+C0458,Frequent Shopper,Lost Cause
+C0459,High Value,Persuadal
+C0460,High Value,Lost Cause
+C0461,High Value,Sure Thing
+C0462,Price Sensitive,Lost Cause
+C0463,Price Sensitive,Persuadal
+C0464,Price Sensitive,Lost Cause
+C0465,Occasional,Sleeping Dog
+C0466,Frequent Shopper,Persuadal
+C0467,Frequent Shopper,Sleeping Dog
+C0468,Occasional,Sure Thing
+C0469,Frequent Shopper,Lost Cause
+C0470,Occasional,Lost Cause
+C0471,High Value,Sure Thing
+C0472,Occasional,Lost Cause
+C0473,High Value,Lost Cause
+C0474,Occasional,Sure Thing
+C0475,Price Sensitive,Persuadal
+C0476,Occasional,Lost Cause
+C0477,High Value,Lost Cause
+C0478,Price Sensitive,Lost Cause
+C0479,Occasional,Lost Cause
+C0480,Price Sensitive,Sure Thing
+C0481,Price Sensitive,Lost Cause
+C0482,Price Sensitive,Persuadal
+C0483,Frequent Shopper,Sure Thing
+C0484,Price Sensitive,Persuadal
+C0485,Price Sensitive,Persuadal
+C0486,Occasional,Sure Thing
+C0487,High Value,Sure Thing
+C0488,Frequent Shopper,Lost Cause
+C0489,Occasional,Sure Thing
+C0490,Occasional,Sure Thing
+C0491,Frequent Shopper,Persuadal
+C0492,Price Sensitive,Sure Thing
+C0493,Frequent Shopper,Persuadal
+C0494,High Value,Persuadal
+C0495,Frequent Shopper,Sure Thing
+C0496,Frequent Shopper,Lost Cause
+C0497,Price Sensitive,Sure Thing
+C0498,High Value,Sure Thing
+C0499,Occasional,Sure Thing
+C0500,Occasional,Lost Cause
+C0501,Price Sensitive,Sure Thing
+C0502,Price Sensitive,Sure Thing
+C0503,Frequent Shopper,Persuadal
+C0504,Occasional,Persuadal
+C0505,Price Sensitive,Sure Thing
+C0506,High Value,Sure Thing
+C0507,Occasional,Sure Thing
+C0508,Occasional,Sure Thing
+C0509,Occasional,Sure Thing
+C0510,Price Sensitive,Lost Cause
+C0511,Price Sensitive,Lost Cause
+C0512,Frequent Shopper,Lost Cause
+C0513,Occasional,Sleeping Dog
+C0514,Occasional,Persuadal
+C0515,High Value,Persuadal
+C0516,High Value,Persuadal
+C0517,Frequent Shopper,Sure Thing
+C0518,Occasional,Lost Cause
+C0519,Occasional,Persuadal
+C0520,High Value,Sleeping Dog
+C0521,Price Sensitive,Persuadal
+C0522,Frequent Shopper,Sleeping Dog
+C0523,Occasional,Sure Thing
+C0524,Occasional,Persuadal
+C0525,Occasional,Sure Thing
+C0526,Frequent Shopper,Persuadal
+C0527,Frequent Shopper,Persuadal
+C0528,Frequent Shopper,Persuadal
+C0529,High Value,Lost Cause
+C0530,Occasional,Sure Thing
+C0531,Occasional,Persuadal
+C0532,Occasional,Sure Thing
+C0533,Occasional,Lost Cause
+C0534,Price Sensitive,Persuadal
+C0535,Price Sensitive,Sure Thing
+C0536,Occasional,Persuadal
+C0537,Occasional,Persuadal
+C0538,Frequent Shopper,Lost Cause
+C0539,Frequent Shopper,Persuadal
+C0540,High Value,Sure Thing
+C0541,Occasional,Lost Cause
+C0542,Price Sensitive,Persuadal
+C0543,Frequent Shopper,Sure Thing
+C0544,Price Sensitive,Persuadal
+C0545,Price Sensitive,Sleeping Dog
+C0546,Frequent Shopper,Sure Thing
+C0547,High Value,Lost Cause
+C0548,Price Sensitive,Sure Thing
+C0549,Price Sensitive,Persuadal
+C0550,Price Sensitive,Sure Thing
+C0551,Price Sensitive,Sleeping Dog
+C0552,Occasional,Sure Thing
+C0553,Price Sensitive,Lost Cause
+C0554,Price Sensitive,Lost Cause
+C0555,Occasional,Persuadal
+C0556,Frequent Shopper,Persuadal
+C0557,High Value,Sure Thing
+C0558,High Value,Sure Thing
+C0559,Price Sensitive,Lost Cause
+C0560,Price Sensitive,Sleeping Dog
+C0561,Price Sensitive,Sure Thing
+C0562,Frequent Shopper,Persuadal
+C0563,High Value,Lost Cause
+C0564,High Value,Persuadal
+C0565,Frequent Shopper,Lost Cause
+C0566,Price Sensitive,Sure Thing
+C0567,Frequent Shopper,Lost Cause
+C0568,Frequent Shopper,Persuadal
+C0569,Occasional,Sure Thing
+C0570,Frequent Shopper,Sure Thing
+C0571,Price Sensitive,Sure Thing
+C0572,Price Sensitive,Persuadal
+C0573,Frequent Shopper,Lost Cause
+C0574,Price Sensitive,Lost Cause
+C0575,Occasional,Persuadal
+C0576,Occasional,Persuadal
+C0577,High Value,Persuadal
+C0578,Occasional,Sure Thing
+C0579,Frequent Shopper,Sure Thing
+C0580,Frequent Shopper,Sure Thing
+C0581,Frequent Shopper,Persuadal
+C0582,Occasional,Sure Thing
+C0583,Frequent Shopper,Sure Thing
+C0584,Frequent Shopper,Sure Thing
+C0585,Price Sensitive,Sleeping Dog
+C0586,Frequent Shopper,Persuadal
+C0587,High Value,Lost Cause
+C0588,High Value,Sure Thing
+C0589,High Value,Sure Thing
+C0590,High Value,Lost Cause
+C0591,High Value,Lost Cause
+C0592,Price Sensitive,Sleeping Dog
+C0593,High Value,Persuadal
+C0594,Frequent Shopper,Persuadal
+C0595,Occasional,Lost Cause
+C0596,Frequent Shopper,Sure Thing
+C0597,Price Sensitive,Persuadal
+C0598,High Value,Persuadal
+C0599,High Value,Persuadal
+C0600,High Value,Lost Cause
+C0601,High Value,Persuadal
+C0602,Frequent Shopper,Persuadal
+C0603,High Value,Persuadal
+C0604,High Value,Sure Thing
+C0605,High Value,Persuadal
+C0606,Frequent Shopper,Sure Thing
+C0607,Frequent Shopper,Persuadal
+C0608,Frequent Shopper,Lost Cause
+C0609,Price Sensitive,Persuadal
+C0610,Price Sensitive,Sure Thing
+C0611,High Value,Lost Cause
+C0612,Price Sensitive,Lost Cause
+C0613,Price Sensitive,Sure Thing
+C0614,High Value,Persuadal
+C0615,Occasional,Persuadal
+C0616,Occasional,Lost Cause
+C0617,High Value,Sleeping Dog
+C0618,Frequent Shopper,Lost Cause
+C0619,Occasional,Sure Thing
+C0620,Price Sensitive,Lost Cause
+C0621,High Value,Sure Thing
+C0622,Frequent Shopper,Persuadal
+C0623,Frequent Shopper,Sure Thing
+C0624,Frequent Shopper,Sleeping Dog
+C0625,Price Sensitive,Persuadal
+C0626,Frequent Shopper,Lost Cause
+C0627,Frequent Shopper,Persuadal
+C0628,Price Sensitive,Sure Thing
+C0629,High Value,Persuadal
+C0630,Frequent Shopper,Sure Thing
+C0631,Price Sensitive,Lost Cause
+C0632,Occasional,Persuadal
+C0633,Price Sensitive,Lost Cause
+C0634,Price Sensitive,Lost Cause
+C0635,High Value,Sleeping Dog
+C0636,Frequent Shopper,Persuadal
+C0637,Price Sensitive,Sure Thing
+C0638,Frequent Shopper,Persuadal
+C0639,Frequent Shopper,Sleeping Dog
+C0640,Frequent Shopper,Sleeping Dog
+C0641,High Value,Sure Thing
+C0642,Frequent Shopper,Lost Cause
+C0643,Frequent Shopper,Sure Thing
+C0644,Frequent Shopper,Sure Thing
+C0645,High Value,Persuadal
+C0646,Occasional,Lost Cause
+C0647,Price Sensitive,Persuadal
+C0648,Price Sensitive,Lost Cause
+C0649,Price Sensitive,Lost Cause
+C0650,Frequent Shopper,Lost Cause
+C0651,High Value,Persuadal
+C0652,Price Sensitive,Persuadal
+C0653,Price Sensitive,Persuadal
+C0654,Price Sensitive,Sure Thing
+C0655,Frequent Shopper,Persuadal
+C0656,High Value,Sleeping Dog
+C0657,Frequent Shopper,Sure Thing
+C0658,Frequent Shopper,Persuadal
+C0659,Price Sensitive,Sure Thing
+C0660,Price Sensitive,Sure Thing
+C0661,Frequent Shopper,Sure Thing
+C0662,Occasional,Sure Thing
+C0663,Price Sensitive,Sleeping Dog
+C0664,Frequent Shopper,Sure Thing
+C0665,High Value,Sleeping Dog
+C0666,High Value,Lost Cause
+C0667,Frequent Shopper,Persuadal
+C0668,High Value,Sleeping Dog
+C0669,High Value,Persuadal
+C0670,Frequent Shopper,Lost Cause
+C0671,High Value,Sure Thing
+C0672,Occasional,Lost Cause
+C0673,High Value,Lost Cause
+C0674,Price Sensitive,Lost Cause
+C0675,Frequent Shopper,Lost Cause
+C0676,Occasional,Persuadal
+C0677,High Value,Persuadal
+C0678,Frequent Shopper,Sure Thing
+C0679,Occasional,Persuadal
+C0680,Occasional,Lost Cause
+C0681,Occasional,Persuadal
+C0682,Frequent Shopper,Sleeping Dog
+C0683,High Value,Sure Thing
+C0684,Price Sensitive,Lost Cause
+C0685,Occasional,Persuadal
+C0686,Price Sensitive,Lost Cause
+C0687,Price Sensitive,Sleeping Dog
+C0688,Frequent Shopper,Sure Thing
+C0689,Price Sensitive,Sure Thing
+C0690,High Value,Lost Cause
+C0691,Frequent Shopper,Persuadal
+C0692,Frequent Shopper,Sure Thing
+C0693,Price Sensitive,Sure Thing
+C0694,Frequent Shopper,Persuadal
+C0695,High Value,Sure Thing
+C0696,Price Sensitive,Persuadal
+C0697,Frequent Shopper,Persuadal
+C0698,Price Sensitive,Persuadal
+C0699,High Value,Sleeping Dog
+C0700,Frequent Shopper,Sure Thing
+C0701,Price Sensitive,Sleeping Dog
+C0702,High Value,Sure Thing
+C0703,Frequent Shopper,Persuadal
+C0704,High Value,Sure Thing
+C0705,High Value,Sure Thing
+C0706,Occasional,Persuadal
+C0707,Frequent Shopper,Sure Thing
+C0708,Occasional,Persuadal
+C0709,Frequent Shopper,Sure Thing
+C0710,Price Sensitive,Lost Cause
+C0711,Price Sensitive,Persuadal
+C0712,Price Sensitive,Persuadal
+C0713,Frequent Shopper,Lost Cause
+C0714,Frequent Shopper,Sure Thing
+C0715,Frequent Shopper,Persuadal
+C0716,Occasional,Sleeping Dog
+C0717,Occasional,Persuadal
+C0718,Occasional,Lost Cause
+C0719,High Value,Sleeping Dog
+C0720,Price Sensitive,Persuadal
+C0721,Occasional,Persuadal
+C0722,High Value,Persuadal
+C0723,High Value,Persuadal
+C0724,Price Sensitive,Persuadal
+C0725,Price Sensitive,Lost Cause
+C0726,Occasional,Persuadal
+C0727,High Value,Sure Thing
+C0728,Price Sensitive,Sleeping Dog
+C0729,Frequent Shopper,Lost Cause
+C0730,High Value,Sure Thing
+C0731,High Value,Persuadal
+C0732,Occasional,Sure Thing
+C0733,Price Sensitive,Sure Thing
+C0734,Price Sensitive,Sure Thing
+C0735,Frequent Shopper,Persuadal
+C0736,Occasional,Lost Cause
+C0737,Frequent Shopper,Sure Thing
+C0738,Occasional,Persuadal
+C0739,Frequent Shopper,Sure Thing
+C0740,Frequent Shopper,Sure Thing
+C0741,Frequent Shopper,Lost Cause
+C0742,Frequent Shopper,Lost Cause
+C0743,Price Sensitive,Lost Cause
+C0744,Price Sensitive,Persuadal
+C0745,Frequent Shopper,Sure Thing
+C0746,Occasional,Sure Thing
+C0747,Frequent Shopper,Persuadal
+C0748,Price Sensitive,Persuadal
+C0749,Occasional,Lost Cause
+C0750,Price Sensitive,Persuadal
+C0751,High Value,Sure Thing
+C0752,Occasional,Persuadal
+C0753,Price Sensitive,Persuadal
+C0754,Frequent Shopper,Persuadal
+C0755,High Value,Sleeping Dog
+C0756,Price Sensitive,Lost Cause
+C0757,Price Sensitive,Sleeping Dog
+C0758,Price Sensitive,Sure Thing
+C0759,Occasional,Persuadal
+C0760,Price Sensitive,Sure Thing
+C0761,High Value,Sure Thing
+C0762,Frequent Shopper,Lost Cause
+C0763,Frequent Shopper,Persuadal
+C0764,Price Sensitive,Sure Thing
+C0765,High Value,Persuadal
+C0766,Price Sensitive,Persuadal
+C0767,Price Sensitive,Lost Cause
+C0768,Occasional,Sure Thing
+C0769,Frequent Shopper,Sure Thing
+C0770,Occasional,Sure Thing
+C0771,High Value,Sure Thing
+C0772,Occasional,Lost Cause
+C0773,High Value,Lost Cause
+C0774,Frequent Shopper,Sleeping Dog
+C0775,Price Sensitive,Lost Cause
+C0776,High Value,Persuadal
+C0777,Frequent Shopper,Lost Cause
+C0778,Price Sensitive,Sure Thing
+C0779,Price Sensitive,Persuadal
+C0780,Price Sensitive,Lost Cause
+C0781,Price Sensitive,Persuadal
+C0782,Price Sensitive,Sleeping Dog
+C0783,Frequent Shopper,Sure Thing
+C0784,Frequent Shopper,Sure Thing
+C0785,High Value,Lost Cause
+C0786,Occasional,Lost Cause
+C0787,Price Sensitive,Sure Thing
+C0788,Frequent Shopper,Sure Thing
+C0789,Frequent Shopper,Persuadal
+C0790,Occasional,Sure Thing
+C0791,High Value,Persuadal
+C0792,Price Sensitive,Lost Cause
+C0793,Price Sensitive,Sure Thing
+C0794,Price Sensitive,Lost Cause
+C0795,High Value,Persuadal
+C0796,Occasional,Persuadal
+C0797,Occasional,Lost Cause
+C0798,Price Sensitive,Persuadal
+C0799,Price Sensitive,Persuadal
+C0800,Occasional,Persuadal
+C0801,Price Sensitive,Sleeping Dog
+C0802,High Value,Lost Cause
+C0803,Price Sensitive,Sure Thing
+C0804,Price Sensitive,Persuadal
+C0805,Frequent Shopper,Persuadal
+C0806,Price Sensitive,Lost Cause
+C0807,Occasional,Lost Cause
+C0808,Occasional,Persuadal
+C0809,Frequent Shopper,Persuadal
+C0810,High Value,Persuadal
+C0811,Occasional,Lost Cause
+C0812,Occasional,Lost Cause
+C0813,High Value,Persuadal
+C0814,Occasional,Persuadal
+C0815,Occasional,Persuadal
+C0816,Price Sensitive,Sleeping Dog
+C0817,Price Sensitive,Persuadal
+C0818,Frequent Shopper,Lost Cause
+C0819,High Value,Sure Thing
+C0820,Frequent Shopper,Sure Thing
+C0821,Occasional,Persuadal
+C0822,High Value,Persuadal
+C0823,Frequent Shopper,Sure Thing
+C0824,Frequent Shopper,Lost Cause
+C0825,Price Sensitive,Sure Thing
+C0826,Occasional,Sure Thing
+C0827,Frequent Shopper,Persuadal
+C0828,Frequent Shopper,Sleeping Dog
+C0829,Price Sensitive,Lost Cause
+C0830,Frequent Shopper,Persuadal
+C0831,Frequent Shopper,Sleeping Dog
+C0832,Frequent Shopper,Sure Thing
+C0833,High Value,Sure Thing
+C0834,High Value,Lost Cause
+C0835,Frequent Shopper,Lost Cause
+C0836,Frequent Shopper,Lost Cause
+C0837,Occasional,Persuadal
+C0838,Frequent Shopper,Persuadal
+C0839,Price Sensitive,Sleeping Dog
+C0840,Price Sensitive,Persuadal
+C0841,High Value,Sure Thing
+C0842,Price Sensitive,Sure Thing
+C0843,High Value,Sure Thing
+C0844,Occasional,Sure Thing
+C0845,High Value,Sleeping Dog
+C0846,Frequent Shopper,Persuadal
+C0847,High Value,Persuadal
+C0848,Occasional,Persuadal
+C0849,Price Sensitive,Lost Cause
+C0850,Price Sensitive,Sure Thing
+C0851,High Value,Persuadal
+C0852,Price Sensitive,Lost Cause
+C0853,Frequent Shopper,Lost Cause
+C0854,Occasional,Lost Cause
+C0855,Frequent Shopper,Sleeping Dog
+C0856,High Value,Persuadal
+C0857,High Value,Lost Cause
+C0858,Frequent Shopper,Sure Thing
+C0859,Price Sensitive,Lost Cause
+C0860,High Value,Lost Cause
+C0861,Price Sensitive,Lost Cause
+C0862,Frequent Shopper,Lost Cause
+C0863,Price Sensitive,Persuadal
+C0864,Frequent Shopper,Sure Thing
+C0865,Frequent Shopper,Sleeping Dog
+C0866,Price Sensitive,Sleeping Dog
+C0867,High Value,Persuadal
+C0868,High Value,Persuadal
+C0869,Occasional,Persuadal
+C0870,Occasional,Lost Cause
+C0871,Frequent Shopper,Lost Cause
+C0872,Frequent Shopper,Persuadal
+C0873,Price Sensitive,Sure Thing
+C0874,Frequent Shopper,Lost Cause
+C0875,High Value,Lost Cause
+C0876,High Value,Sure Thing
+C0877,Price Sensitive,Sure Thing
+C0878,Price Sensitive,Sure Thing
+C0879,High Value,Persuadal
+C0880,Frequent Shopper,Sure Thing
+C0881,Frequent Shopper,Lost Cause
+C0882,Price Sensitive,Lost Cause
+C0883,High Value,Sure Thing
+C0884,High Value,Lost Cause
+C0885,Price Sensitive,Persuadal
+C0886,High Value,Sure Thing
+C0887,Price Sensitive,Persuadal
+C0888,Frequent Shopper,Persuadal
+C0889,High Value,Lost Cause
+C0890,Frequent Shopper,Sleeping Dog
+C0891,Price Sensitive,Persuadal
+C0892,Occasional,Sure Thing
+C0893,Occasional,Lost Cause
+C0894,Frequent Shopper,Persuadal
+C0895,Price Sensitive,Sure Thing
+C0896,Frequent Shopper,Lost Cause
+C0897,Frequent Shopper,Sure Thing
+C0898,Occasional,Persuadal
+C0899,High Value,Sure Thing
+C0900,High Value,Lost Cause
+C0901,Frequent Shopper,Sure Thing
+C0902,High Value,Persuadal
+C0903,High Value,Lost Cause
+C0904,Price Sensitive,Persuadal
+C0905,Frequent Shopper,Lost Cause
+C0906,Occasional,Persuadal
+C0907,Occasional,Sleeping Dog
+C0908,Frequent Shopper,Sure Thing
+C0909,Frequent Shopper,Persuadal
+C0910,Frequent Shopper,Persuadal
+C0911,Price Sensitive,Persuadal
+C0912,Frequent Shopper,Lost Cause
+C0913,Price Sensitive,Sleeping Dog
+C0914,Frequent Shopper,Sure Thing
+C0915,Price Sensitive,Sure Thing
+C0916,Frequent Shopper,Lost Cause
+C0917,Frequent Shopper,Lost Cause
+C0918,Occasional,Sure Thing
+C0919,Price Sensitive,Sure Thing
+C0920,High Value,Sure Thing
+C0921,Occasional,Lost Cause
+C0922,Frequent Shopper,Persuadal
+C0923,Occasional,Sure Thing
+C0924,Price Sensitive,Sure Thing
+C0925,Frequent Shopper,Lost Cause
+C0926,High Value,Persuadal
+C0927,Frequent Shopper,Sure Thing
+C0928,Price Sensitive,Sure Thing
+C0929,Price Sensitive,Sure Thing
+C0930,Frequent Shopper,Persuadal
+C0931,High Value,Sure Thing
+C0932,Occasional,Sure Thing
+C0933,Occasional,Sure Thing
+C0934,Price Sensitive,Sure Thing
+C0935,High Value,Lost Cause
+C0936,Frequent Shopper,Lost Cause
+C0937,High Value,Persuadal
+C0938,Occasional,Lost Cause
+C0939,High Value,Sure Thing
+C0940,Price Sensitive,Persuadal
+C0941,Frequent Shopper,Persuadal
+C0942,Price Sensitive,Persuadal
+C0943,Price Sensitive,Lost Cause
+C0944,Occasional,Lost Cause
+C0945,Frequent Shopper,Lost Cause
+C0946,High Value,Sure Thing
+C0947,High Value,Sure Thing
+C0948,Occasional,Persuadal
+C0949,Occasional,Persuadal
+C0950,Price Sensitive,Sure Thing
+C0951,Price Sensitive,Persuadal
+C0952,Price Sensitive,Persuadal
+C0953,High Value,Sure Thing
+C0954,Occasional,Lost Cause
+C0955,Frequent Shopper,Sleeping Dog
+C0956,Frequent Shopper,Sleeping Dog
+C0957,Price Sensitive,Sure Thing
+C0958,High Value,Sure Thing
+C0959,High Value,Sure Thing
+C0960,Price Sensitive,Lost Cause
+C0961,High Value,Persuadal
+C0962,Price Sensitive,Sure Thing
+C0963,Frequent Shopper,Lost Cause
+C0964,Frequent Shopper,Sure Thing
+C0965,Frequent Shopper,Sure Thing
+C0966,Frequent Shopper,Sure Thing
+C0967,Price Sensitive,Persuadal
+C0968,Frequent Shopper,Sure Thing
+C0969,Price Sensitive,Persuadal
+C0970,Frequent Shopper,Persuadal
+C0971,Price Sensitive,Persuadal
+C0972,Occasional,Lost Cause
+C0973,Price Sensitive,Persuadal
+C0974,Frequent Shopper,Sure Thing
+C0975,High Value,Persuadal
+C0976,Frequent Shopper,Sleeping Dog
+C0977,Price Sensitive,Persuadal
+C0978,High Value,Sure Thing
+C0979,Frequent Shopper,Lost Cause
+C0980,Price Sensitive,Lost Cause
+C0981,Frequent Shopper,Persuadal
+C0982,Price Sensitive,Lost Cause
+C0983,High Value,Sure Thing
+C0984,High Value,Sure Thing
+C0985,Price Sensitive,Persuadal
+C0986,Frequent Shopper,Persuadal
+C0987,Price Sensitive,Lost Cause
+C0988,Frequent Shopper,Sure Thing
+C0989,Frequent Shopper,Sure Thing
+C0990,Occasional,Lost Cause
+C0991,Price Sensitive,Lost Cause
+C0992,Price Sensitive,Persuadal
+C0993,Frequent Shopper,Sure Thing
+C0994,Price Sensitive,Persuadal
+C0995,Frequent Shopper,Lost Cause
+C0996,High Value,Lost Cause
+C0997,Occasional,Sleeping Dog
+C0998,High Value,Persuadal
+C0999,Occasional,Persuadal
+C1000,Frequent Shopper,Persuadal
