@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PromoLift — Interactive Demo</title>
-  <meta name="description" content="Interactive demo of the PromoLift T-Learner Uplift Model for SME Retail promotion targeting. Explore uplift segments, EIP curves, and customer scoring." />
+  <meta name="description" content="Interactive demo of the PromoLift T-Learner Uplift Model for SME Retail promotion targeting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
@@ -21,18 +21,13 @@
       --purple:    #a371f7;
       --red:       #f85149;
       --gold:      #d29922;
-      --teal:      #39d353;
-      --r:         12px;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: 'Inter', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
+      --radius:    12px;
     }
 
-    /* ── Header ─────────────────────────────── */
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    /* ────────────── HEADER ────────────── */
     header {
       background: linear-gradient(135deg, #161b22 0%, #0d1117 100%);
       border-bottom: 1px solid var(--border);
@@ -59,47 +54,26 @@
     }
     header .subtitle { font-size: 13px; color: var(--muted); margin-left: auto; }
 
-    /* ── Layout ──────────────────────────────── */
+    /* ────────────── LAYOUT ────────────── */
     .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-    .hero {
-      text-align: center;
-      padding: 48px 0 40px;
-    }
+    .hero { text-align: center; padding: 48px 0 40px; }
     .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
     .hero h1 span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .hero p { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto 24px; line-height: 1.7; }
 
-    /* ── Controls Panel ──────────────────────── */
+    /* ────────────── CONTROLS ────────────── */
     .controls-panel {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: var(--radius);
       padding: 24px;
       margin-bottom: 28px;
     }
     .controls-panel h2 { font-size: 15px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
-    .controls-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 20px;
-      align-items: end;
-    }
+    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; align-items: end; }
+    
     .ctrl label { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
-    .ctrl input[type=range] {
-      width: 100%;
-      accent-color: var(--blue);
-      cursor: pointer;
-    }
-    .ctrl .val-badge {
-      display: inline-block;
-      background: rgba(88,166,255,.15);
-      color: var(--blue);
-      font-size: 13px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 8px;
-      margin-top: 6px;
-    }
+    .ctrl input[type=range] { width: 100%; accent-color: var(--blue); cursor: pointer; }
     .ctrl select {
       width: 100%;
       background: var(--surface2);
@@ -112,14 +86,26 @@
       cursor: pointer;
     }
     .ctrl select:focus { outline: 2px solid var(--blue); }
+    
+    .val-badge {
+      display: inline-block;
+      background: rgba(88,166,255,.15);
+      color: var(--blue);
+      font-size: 13px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 8px;
+      margin-top: 6px;
+    }
 
-    /* ── KPI Cards ───────────────────────────── */
+    /* ────────────── KPI CARDS ────────────── */
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-    @media(max-width: 768px) { .kpi-row { grid-template-columns: repeat(2,1fr); } }
+    @media(max-width: 768px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
+    
     .kpi {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: var(--radius);
       padding: 20px;
       transition: border-color .2s, transform .2s;
       position: relative;
@@ -130,44 +116,82 @@
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 3px;
-      border-radius: var(--r) var(--r) 0 0;
+      border-radius: var(--radius) var(--radius) 0 0;
     }
     .kpi.green::after { background: var(--green); }
-    .kpi.blue::after  { background: var(--blue); }
-    .kpi.purple::after{ background: var(--purple); }
-    .kpi.gold::after  { background: var(--gold); }
+    .kpi.blue::after { background: var(--blue); }
+    .kpi.purple::after { background: var(--purple); }
+    .kpi.gold::after { background: var(--gold); }
     .kpi:hover { transform: translateY(-3px); border-color: #444c56; }
+    
     .kpi .label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
     .kpi .value { font-size: 26px; font-weight: 700; line-height: 1.1; }
     .kpi.green .value { color: var(--green); }
-    .kpi.blue .value  { color: var(--blue); }
-    .kpi.purple .value{ color: var(--purple); }
-    .kpi.gold .value  { color: var(--gold); }
+    .kpi.blue .value { color: var(--blue); }
+    .kpi.purple .value { color: var(--purple); }
+    .kpi.gold .value { color: var(--gold); }
     .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
 
-    /* ── Chart Grid ──────────────────────────── */
+    /* ────────────── FORMULAS ────────────── */
+    .formula-box {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+    .formula-box h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: var(--blue); }
+    .formula-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media(max-width: 640px) { .formula-row { grid-template-columns: 1fr; } }
+    
+    .formula-item .flabel { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing:.5px; }
+    .formula-item pre {
+      background: rgba(13,17,23,.7);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-size: 13px;
+      color: var(--purple);
+      overflow-x: auto;
+      white-space: pre-wrap;
+    }
+
+    /* ────────────── ALERTS ────────────── */
+    .alert {
+      padding: 14px 18px;
+      border-radius: 8px;
+      font-size: 13px;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      line-height: 1.6;
+    }
+    .alert.warn { background: rgba(210,153,34,.1); border: 1px solid rgba(210,153,34,.35); color: var(--gold); }
+    .alert.info { background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.3); color: var(--blue); }
+    .alert .ico { flex-shrink: 0; font-size: 16px; }
+
+    /* ────────────── CHARTS ────────────── */
     .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
     @media(max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
+    
     .chart-full { margin-bottom: 20px; }
+    
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--r);
+      border-radius: var(--radius);
       padding: 22px;
     }
     .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
     .card .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
     .chart-wrap { position: relative; height: 280px; }
 
-    /* ── Quadrant Legend ─────────────────────── */
     .quad-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .quad-tag {
-      display: flex; align-items: center; gap: 6px;
-      font-size: 12px; color: var(--muted);
-    }
+    .quad-tag { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
     .quad-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
 
-    /* ── Top Customers Table ─────────────────── */
+    /* ────────────── TABLE ────────────── */
     .table-wrap { overflow-x: auto; }
     table { width: 100%; border-collapse: collapse; font-size: 13px; }
     thead th {
@@ -183,6 +207,7 @@
     tbody tr { border-bottom: 1px solid rgba(48,54,61,.5); transition: background .15s; }
     tbody tr:hover { background: rgba(88,166,255,.04); }
     tbody td { padding: 10px 12px; }
+    
     .chip {
       display: inline-block;
       padding: 3px 10px;
@@ -190,52 +215,13 @@
       font-size: 11px;
       font-weight: 600;
     }
-    .chip.green  { background: rgba(63,185,80,.15);  color: var(--green);  }
-    .chip.blue   { background: rgba(88,166,255,.15); color: var(--blue);   }
-    .chip.muted  { background: rgba(139,148,158,.1); color: var(--muted);  }
-    .chip.red    { background: rgba(248,81,73,.15);  color: var(--red);    }
-    .chip.gold   { background: rgba(210,153,34,.15); color: var(--gold);   }
+    .chip.green { background: rgba(63,185,80,.15); color: var(--green); }
+    .chip.blue { background: rgba(88,166,255,.15); color: var(--blue); }
+    .chip.muted { background: rgba(139,148,158,.1); color: var(--muted); }
+    .chip.red { background: rgba(248,81,73,.15); color: var(--red); }
+    .chip.gold { background: rgba(210,153,34,.15); color: var(--gold); }
 
-    /* ── Formula Card ────────────────────────── */
-    .formula-box {
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--r);
-      padding: 20px;
-      margin-bottom: 20px;
-    }
-    .formula-box h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: var(--blue); }
-    .formula-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media(max-width: 640px) { .formula-row { grid-template-columns: 1fr; } }
-    .formula-item { }
-    .formula-item .flabel { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing:.5px; }
-    .formula-item pre {
-      background: rgba(13,17,23,.7);
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 13px;
-      color: var(--purple);
-      overflow-x: auto;
-      white-space: pre-wrap;
-    }
-
-    /* ── Alert Box ───────────────────────────── */
-    .alert {
-      padding: 14px 18px;
-      border-radius: 8px;
-      font-size: 13px;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: flex-start;
-      gap: 10px;
-      line-height: 1.6;
-    }
-    .alert.warn { background: rgba(210,153,34,.1); border: 1px solid rgba(210,153,34,.35); color: var(--gold); }
-    .alert.info { background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.3); color: var(--blue); }
-    .alert .ico { flex-shrink: 0; font-size: 16px; }
-
-    /* ── Footer ──────────────────────────────── */
+    /* ────────────── FOOTER ────────────── */
     footer { text-align: center; padding: 32px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; margin-top: 20px; }
     footer a { color: var(--blue); text-decoration: none; }
     footer a:hover { text-decoration: underline; }
@@ -244,59 +230,50 @@
 <body>
 
 <header>
-  <div class="logo">🎯 PromoLift</div>
+  <div class="logo">PromoLift</div>
   <div class="badge">Interactive Demo</div>
   <div class="subtitle">T-Learner Uplift Model · 1,000 Customers · P001 Household</div>
 </header>
 
 <div class="container">
-
-  <!-- Hero -->
   <div class="hero">
     <h1>Smarter Promotions with <span>Uplift Modeling</span></h1>
     <p>Stop wasting promo budget on customers who would buy anyway — or never will.
        Tune the sliders below to see how the model re-ranks every customer in real time.</p>
   </div>
 
-  <!-- Alert about mock data -->
   <div class="alert warn">
     <span class="ico">⚠️</span>
     <span><strong>Mock Data Notice:</strong> All scores are from the pre-trained T-Learner pipeline on simulated data.
-    Uplift scores are fixed; only the EIP / recommended action reacts to slider changes.
-    The model is trained on an 80/20 treatment-control split — see Known Limitations in the README.</span>
+    Uplift scores are fixed; only the EIP / recommended action reacts to slider changes.</span>
   </div>
 
-  <!-- Controls -->
   <div class="controls-panel">
     <h2>⚙️ Campaign Parameters</h2>
     <div class="controls-grid">
       <div class="ctrl">
         <label>Retail Price (THB)</label>
-        <input type="range" id="slPrice" min="50" max="400" value="163" step="1"
-               oninput="update()"/>
+        <input type="range" id="slPrice" min="50" max="400" value="163" step="1" oninput="appState.update()"/>
         <div class="val-badge" id="vPrice">฿163</div>
       </div>
       <div class="ctrl">
         <label>Discount Depth (%)</label>
-        <input type="range" id="slDiscount" min="0" max="50" value="20"
-               oninput="update()"/>
+        <input type="range" id="slDiscount" min="0" max="50" value="20" oninput="appState.update()"/>
         <div class="val-badge" id="vDiscount">20%</div>
       </div>
       <div class="ctrl">
         <label>COGS (THB)</label>
-        <input type="range" id="slCogs" min="10" max="350" value="90" step="1"
-               oninput="update()"/>
+        <input type="range" id="slCogs" min="10" max="350" value="90" step="1" oninput="appState.update()"/>
         <div class="val-badge" id="vCogs">฿90</div>
       </div>
       <div class="ctrl">
         <label>Campaign Cost / User (THB)</label>
-        <input type="range" id="slCampaign" min="0" max="5" value="0.5" step="0.1"
-               oninput="update()"/>
+        <input type="range" id="slCampaign" min="0" max="5" value="0.5" step="0.1" oninput="appState.update()"/>
         <div class="val-badge" id="vCampaign">฿0.50</div>
       </div>
       <div class="ctrl">
         <label>Filter Uplift Segment</label>
-        <select id="selSegment" onchange="update()">
+        <select id="selSegment" onchange="appState.update()">
           <option value="all">All Segments</option>
           <option value="Persuadal">Persuadables Only</option>
           <option value="Sure Thing">Sure Things Only</option>
@@ -307,31 +284,13 @@
     </div>
   </div>
 
-  <!-- KPI Row -->
   <div class="kpi-row">
-    <div class="kpi green">
-      <div class="label">Optimized Net Profit</div>
-      <div class="value" id="kpiProfit">—</div>
-      <div class="sub" id="kpiProfitSub">—</div>
-    </div>
-    <div class="kpi blue">
-      <div class="label">Customers Targeted</div>
-      <div class="value" id="kpiTargeted">—</div>
-      <div class="sub" id="kpiTargetedSub">—</div>
-    </div>
-    <div class="kpi purple">
-      <div class="label">Budget Saved vs Uniform</div>
-      <div class="value" id="kpiSaved">—</div>
-      <div class="sub" id="kpiSavedSub">—</div>
-    </div>
-    <div class="kpi gold">
-      <div class="label">Sleeping Dogs Avoided</div>
-      <div class="value" id="kpiSleeping">—</div>
-      <div class="sub">Do Not Disturb</div>
-    </div>
+    <div class="kpi green"><div class="label">Optimized Net Profit</div><div class="value" id="kpiProfit">—</div><div class="sub" id="kpiProfitSub">—</div></div>
+    <div class="kpi blue"><div class="label">Customers Targeted</div><div class="value" id="kpiTargeted">—</div><div class="sub" id="kpiTargetedSub">—</div></div>
+    <div class="kpi purple"><div class="label">Budget Saved vs Uniform</div><div class="value" id="kpiSaved">—</div><div class="sub" id="kpiSavedSub">—</div></div>
+    <div class="kpi gold"><div class="label">Sleeping Dogs Avoided</div><div class="value" id="kpiSleeping">—</div><div class="sub">Do Not Disturb</div></div>
   </div>
 
-  <!-- Formula box -->
   <div class="formula-box">
     <h3>📐 Value Scoring Formulas (live)</h3>
     <div class="formula-row">
@@ -346,14 +305,11 @@
     </div>
   </div>
 
-  <!-- Charts Row 1 -->
   <div class="chart-row">
     <div class="card">
       <h3>Uplift Segment Distribution</h3>
       <div class="card-sub">4-Quadrant breakdown of all 1,000 customers</div>
-      <div class="chart-wrap">
-        <canvas id="chartDonut"></canvas>
-      </div>
+      <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
       <div class="quad-legend">
         <div class="quad-tag"><div class="quad-dot" style="background:#3fb950"></div>Persuadables (Target!)</div>
         <div class="quad-tag"><div class="quad-dot" style="background:#58a6ff"></div>Sure Things (Skip)</div>
@@ -364,31 +320,23 @@
     <div class="card">
       <h3>Uplift Score Distribution</h3>
       <div class="card-sub">Histogram of model-predicted uplift τ = P(Buy|T) − P(Buy|C)</div>
-      <div class="chart-wrap">
-        <canvas id="chartHist"></canvas>
-      </div>
+      <div class="chart-wrap"><canvas id="chartHist"></canvas></div>
     </div>
   </div>
 
-  <!-- Charts Row 2 -->
   <div class="chart-row">
     <div class="card">
       <h3>EIP Scatter (Uplift vs. Profit)</h3>
       <div class="card-sub">300 random customers — colored by uplift segment</div>
-      <div class="chart-wrap">
-        <canvas id="chartScatter"></canvas>
-      </div>
+      <div class="chart-wrap"><canvas id="chartScatter"></canvas></div>
     </div>
     <div class="card">
       <h3>Cumulative Profit Curve</h3>
       <div class="card-sub">Expected profit when targeting top-N% of customers ranked by EIP</div>
-      <div class="chart-wrap">
-        <canvas id="chartProfit"></canvas>
-      </div>
+      <div class="chart-wrap"><canvas id="chartProfit"></canvas></div>
     </div>
   </div>
 
-  <!-- Top Customers -->
   <div class="card chart-full">
     <h3>🏆 Top TARGET Customers</h3>
     <div class="card-sub">Highest EIP customers recommended for this campaign (live-filtered by parameters)</div>
@@ -414,73 +362,107 @@
 
   <div class="alert info">
     <span class="ico">ℹ️</span>
-    <span><strong>How it works:</strong> The T-Learner trains <strong>Model T</strong> on the treatment group and <strong>Model C</strong> on the control group (LightGBM, depth=3).
-    Uplift τ = P_T(Buy) − P_C(Buy). Customers with EIP &gt; 0 and τ ≥ 0 are recommended for targeting.
-    Sleeping Dogs (τ &lt; 0) are explicitly excluded to prevent revenue loss from negative promo effects.</span>
+    <span><strong>How it works:</strong> The T-Learner trains <strong>Model T</strong> on the treatment group and <strong>Model C</strong> on the control group.
+    Uplift τ = P_T(Buy) − P_C(Buy). Customers with EIP &gt; 0 and τ ≥ 0 are recommended for targeting.</span>
   </div>
-
 </div>
 
 <footer>
-  PromoLift · T-Learner Uplift Model Demo · Built with real scored output from <code>outputs/targeting_list_sample.csv</code><br/>
-  <a href="README.md">README</a> · <a href="data/data_dictionary.md">Data Dictionary</a> · Mock data only — not for production use
+  PromoLift · T-Learner Uplift Model Demo · Built with real scored output<br/>
+  <a href="README.md">README</a> · <a href="data/data_dictionary.md">Data Dictionary</a> · Mock data only
 </footer>
 
 <script>
-// ── Embedded real data from scoring pipeline ──────────────────────────────────
-const HIST_DATA = [{"x": -0.575, "y": 0}, {"x": -0.525, "y": 0}, {"x": -0.475, "y": 0}, {"x": -0.425, "y": 0}, {"x": -0.375, "y": 0}, {"x": -0.325, "y": 2}, {"x": -0.275, "y": 7}, {"x": -0.225, "y": 17}, {"x": -0.175, "y": 39}, {"x": -0.125, "y": 50}, {"x": -0.075, "y": 85}, {"x": -0.025, "y": 84}, {"x": 0.025, "y": 127}, {"x": 0.075, "y": 123}, {"x": 0.125, "y": 118}, {"x": 0.175, "y": 68}, {"x": 0.225, "y": 75}, {"x": 0.275, "y": 63}, {"x": 0.325, "y": 55}, {"x": 0.375, "y": 46}, {"x": 0.425, "y": 29}, {"x": 0.475, "y": 26}, {"x": 0.525, "y": 20}, {"x": 0.575, "y": 21}, {"x": 0.625, "y": 15}, {"x": 0.675, "y": 12}, {"x": 0.725, "y": 9}, {"x": 0.775, "y": 8}];
+// DATA LAYER
 
-const SEG_COUNTS = {"Persuadal": 589, "Sure Thing": 122, "Lost Cause": 89, "Sleeping Dog": 200};
-
-const PROFIT_CURVE = [{"pct": 0.1, "profit": 17.04}, {"pct": 1.1, "profit": 142.96}, {"pct": 2.1, "profit": 264.82}, {"pct": 3.1, "profit": 383.59}, {"pct": 4.1, "profit": 497.83}, {"pct": 5.1, "profit": 606.35}, {"pct": 6.1, "profit": 711.57}, {"pct": 7.1, "profit": 812.03}, {"pct": 8.1, "profit": 905.65}, {"pct": 9.1, "profit": 990.5}, {"pct": 10.1, "profit": 1072.35}, {"pct": 11.1, "profit": 1149.09}, {"pct": 12.1, "profit": 1221.3}, {"pct": 13.1, "profit": 1287.94}, {"pct": 14.1, "profit": 1349.7}, {"pct": 15.1, "profit": 1406.25}, {"pct": 16.1, "profit": 1459.08}, {"pct": 17.1, "profit": 1507.04}, {"pct": 18.1, "profit": 1549.81}, {"pct": 19.1, "profit": 1588.2}, {"pct": 20.1, "profit": 1619.96}, {"pct": 21.1, "profit": 1647.88}, {"pct": 22.1, "profit": 1672.94}, {"pct": 23.1, "profit": 1691.74}, {"pct": 24.1, "profit": 1708.44}, {"pct": 25.1, "profit": 1724.13}, {"pct": 26.1, "profit": 1737.69}, {"pct": 27.1, "profit": 1747.47}, {"pct": 28.1, "profit": 1754.26}, {"pct": 29.1, "profit": 1756.41}, {"pct": 30.1, "profit": 1757.7}, {"pct": 31.1, "profit": 1758.34}, {"pct": 32.1, "profit": 1756.63}, {"pct": 33.1, "profit": 1753.69}, {"pct": 34.1, "profit": 1749.34}, {"pct": 35.1, "profit": 1742.97}, {"pct": 36.1, "profit": 1735.36}, {"pct": 37.1, "profit": 1727.45}, {"pct": 38.1, "profit": 1718.55}, {"pct": 39.1, "profit": 1708.05}, {"pct": 40.1, "profit": 1695.88}, {"pct": 41.1, "profit": 1683.09}, {"pct": 42.1, "profit": 1669.56}, {"pct": 43.1, "profit": 1655.66}, {"pct": 44.1, "profit": 1639.45}, {"pct": 45.1, "profit": 1623.5}, {"pct": 46.1, "profit": 1605.26}, {"pct": 47.1, "profit": 1586.64}, {"pct": 48.1, "profit": 1567.09}, {"pct": 49.1, "profit": 1547.27}, {"pct": 50.1, "profit": 1525.97}, {"pct": 51.1, "profit": 1503.44}, {"pct": 52.1, "profit": 1480.6}, {"pct": 53.1, "profit": 1455.95}, {"pct": 54.1, "profit": 1430.46}, {"pct": 55.1, "profit": 1403.74}, {"pct": 56.1, "profit": 1375.37}, {"pct": 57.1, "profit": 1344.95}, {"pct": 58.1, "profit": 1313.85}, {"pct": 59.1, "profit": 1282.17}, {"pct": 60.1, "profit": 1248.92}, {"pct": 61.1, "profit": 1213.75}, {"pct": 62.1, "profit": 1177.63}, {"pct": 63.1, "profit": 1139.6}, {"pct": 64.1, "profit": 1099.96}, {"pct": 65.1, "profit": 1059.04}, {"pct": 66.1, "profit": 1017.69}, {"pct": 67.1, "profit": 974.14}, {"pct": 68.1, "profit": 929.06}, {"pct": 69.1, "profit": 882.76}, {"pct": 70.1, "profit": 835.69}, {"pct": 71.1, "profit": 786.07}, {"pct": 72.1, "profit": 735.82}, {"pct": 73.1, "profit": 684.42}, {"pct": 74.1, "profit": 631.55}, {"pct": 75.1, "profit": 578.04}, {"pct": 76.1, "profit": 523.91}, {"pct": 77.1, "profit": 469.39}, {"pct": 78.1, "profit": 412.88}, {"pct": 79.1, "profit": 355.65}, {"pct": 80.1, "profit": 296.58}, {"pct": 81.1, "profit": 237.31}, {"pct": 82.1, "profit": 177.54}, {"pct": 83.1, "profit": 116.25}, {"pct": 84.1, "profit": 53.86}, {"pct": 85.1, "profit": -9.08}, {"pct": 86.1, "profit": -73.17}, {"pct": 87.1, "profit": -138.41}, {"pct": 88.1, "profit": -204.41}, {"pct": 89.1, "profit": -271.66}, {"pct": 90.1, "profit": -340.42}, {"pct": 91.1, "profit": -411.53}, {"pct": 92.1, "profit": -483.43}, {"pct": 93.1, "profit": -556.39}, {"pct": 94.1, "profit": -630.6}, {"pct": 95.1, "profit": -705.93}, {"pct": 96.1, "profit": -783.35}, {"pct": 97.1, "profit": -863.17}, {"pct": 98.1, "profit": -944.2}, {"pct": 99.1, "profit": -1026.8}, {"pct": 100.0, "profit": -1113.55}];
-
-// 300-point scatter sample — all segments included (colored by uplift quadrant)
-const SCATTER_RAW = [{"uplift_score":0.0444,"expected_incremental_profit":-12.6,"uplift_segment":"Lost Cause","customer_id":"C0565","p_buy_treatment":0.4701,"p_buy_control":0.4258},{"uplift_score":-0.0402,"expected_incremental_profit":-18.28,"uplift_segment":"Lost Cause","customer_id":"C0305","p_buy_treatment":0.4537,"p_buy_control":0.4939},{"uplift_score":-0.0357,"expected_incremental_profit":-18.32,"uplift_segment":"Sure Thing","customer_id":"C0431","p_buy_treatment":0.465,"p_buy_control":0.5008},{"uplift_score":0.0381,"expected_incremental_profit":-16.01,"uplift_segment":"Sure Thing","customer_id":"C0407","p_buy_treatment":0.5603,"p_buy_control":0.5222},{"uplift_score":0.1395,"expected_incremental_profit":-9.26,"uplift_segment":"Persuadal","customer_id":"C0120","p_buy_treatment":0.5818,"p_buy_control":0.4423},{"uplift_score":0.0247,"expected_incremental_profit":-16.58,"uplift_segment":"Sure Thing","customer_id":"C0141","p_buy_treatment":0.5478,"p_buy_control":0.5231},{"uplift_score":0.0285,"expected_incremental_profit":-15.31,"uplift_segment":"Lost Cause","customer_id":"C0339","p_buy_treatment":0.5171,"p_buy_control":0.4887},{"uplift_score":0.1172,"expected_incremental_profit":-12.37,"uplift_segment":"Persuadal","customer_id":"C0991","p_buy_treatment":0.6268,"p_buy_control":0.5096},{"uplift_score":-0.0824,"expected_incremental_profit":-22.76,"uplift_segment":"Sleeping Dog","customer_id":"C0360","p_buy_treatment":0.4958,"p_buy_control":0.5782},{"uplift_score":0.2586,"expected_incremental_profit":3.83,"uplift_segment":"Persuadal","customer_id":"C0807","p_buy_treatment":0.4489,"p_buy_control":0.1903},{"uplift_score":-0.0308,"expected_incremental_profit":-20.81,"uplift_segment":"Sure Thing","customer_id":"C0568","p_buy_treatment":0.5524,"p_buy_control":0.5832},{"uplift_score":0.3394,"expected_incremental_profit":7.04,"uplift_segment":"Persuadal","customer_id":"C0625","p_buy_treatment":0.5324,"p_buy_control":0.193},{"uplift_score":0.0442,"expected_incremental_profit":-15.57,"uplift_segment":"Sure Thing","customer_id":"C0858","p_buy_treatment":0.5607,"p_buy_control":0.5164},{"uplift_score":-0.2104,"expected_incremental_profit":-29.92,"uplift_segment":"Sleeping Dog","customer_id":"C0117","p_buy_treatment":0.4274,"p_buy_control":0.6378},{"uplift_score":-0.1869,"expected_incremental_profit":-26.88,"uplift_segment":"Sleeping Dog","customer_id":"C0075","p_buy_treatment":0.3872,"p_buy_control":0.5741},{"uplift_score":-0.0751,"expected_incremental_profit":-24.82,"uplift_segment":"Sleeping Dog","customer_id":"C0125","p_buy_treatment":0.5754,"p_buy_control":0.6504},{"uplift_score":0.1756,"expected_incremental_profit":-4.02,"uplift_segment":"Persuadal","customer_id":"C0123","p_buy_treatment":0.5026,"p_buy_control":0.327},{"uplift_score":-0.0554,"expected_incremental_profit":-24.04,"uplift_segment":"Sleeping Dog","customer_id":"C0403","p_buy_treatment":0.5957,"p_buy_control":0.6512},{"uplift_score":-0.0519,"expected_incremental_profit":-18.84,"uplift_segment":"Sleeping Dog","customer_id":"C0868","p_buy_treatment":0.4445,"p_buy_control":0.4964},{"uplift_score":0.1768,"expected_incremental_profit":-5.66,"uplift_segment":"Persuadal","customer_id":"C0207","p_buy_treatment":0.5556,"p_buy_control":0.3788},{"uplift_score":0.0877,"expected_incremental_profit":-13.56,"uplift_segment":"Persuadal","customer_id":"C0391","p_buy_treatment":0.5971,"p_buy_control":0.5094},{"uplift_score":0.213,"expected_incremental_profit":1.75,"uplift_segment":"Persuadal","customer_id":"C0166","p_buy_treatment":0.41,"p_buy_control":0.197},{"uplift_score":0.1471,"expected_incremental_profit":-7.76,"uplift_segment":"Persuadal","customer_id":"C0064","p_buy_treatment":0.5531,"p_buy_control":0.406},{"uplift_score":0.0562,"expected_incremental_profit":-12.95,"uplift_segment":"Persuadal","customer_id":"C0165","p_buy_treatment":0.5073,"p_buy_control":0.4512},{"uplift_score":0.2559,"expected_incremental_profit":-0.44,"uplift_segment":"Persuadal","customer_id":"C0522","p_buy_treatment":0.5738,"p_buy_control":0.3179},{"uplift_score":0.2115,"expected_incremental_profit":-1.86,"uplift_segment":"Persuadal","customer_id":"C0029","p_buy_treatment":0.5172,"p_buy_control":0.3057},{"uplift_score":0.3564,"expected_incremental_profit":5.56,"uplift_segment":"Persuadal","customer_id":"C0927","p_buy_treatment":0.616,"p_buy_control":0.2596},{"uplift_score":-0.2439,"expected_incremental_profit":-32.01,"uplift_segment":"Sleeping Dog","customer_id":"C0668","p_buy_treatment":0.4159,"p_buy_control":0.6598},{"uplift_score":-0.0966,"expected_incremental_profit":-24.86,"uplift_segment":"Sleeping Dog","customer_id":"C0301","p_buy_treatment":0.5282,"p_buy_control":0.6248},{"uplift_score":-0.1766,"expected_incremental_profit":-27.56,"uplift_segment":"Sleeping Dog","customer_id":"C0835","p_buy_treatment":0.4311,"p_buy_control":0.6077},{"uplift_score":0.1446,"expected_incremental_profit":-6.92,"uplift_segment":"Persuadal","customer_id":"C0159","p_buy_treatment":0.5215,"p_buy_control":0.3769},{"uplift_score":0.3178,"expected_incremental_profit":3.67,"uplift_segment":"Persuadal","customer_id":"C0417","p_buy_treatment":0.587,"p_buy_control":0.2692},{"uplift_score":0.0158,"expected_incremental_profit":-15.23,"uplift_segment":"Lost Cause","customer_id":"C0349","p_buy_treatment":0.4863,"p_buy_control":0.4706},{"uplift_score":0.1865,"expected_incremental_profit":-11.73,"uplift_segment":"Persuadal","customer_id":"C0939","p_buy_treatment":0.7631,"p_buy_control":0.5766},{"uplift_score":0.1131,"expected_incremental_profit":-7.75,"uplift_segment":"Persuadal","customer_id":"C0638","p_buy_treatment":0.4764,"p_buy_control":0.3633},{"uplift_score":0.2748,"expected_incremental_profit":0.43,"uplift_segment":"Persuadal","customer_id":"C0246","p_buy_treatment":0.5897,"p_buy_control":0.3149},{"uplift_score":0.0514,"expected_incremental_profit":-16.74,"uplift_segment":"Persuadal","customer_id":"C0442","p_buy_treatment":0.6128,"p_buy_control":0.5613},{"uplift_score":0.0391,"expected_incremental_profit":-14.55,"uplift_segment":"Lost Cause","customer_id":"C0091","p_buy_treatment":0.5179,"p_buy_control":0.4788},{"uplift_score":-0.1026,"expected_incremental_profit":-24.86,"uplift_segment":"Sleeping Dog","customer_id":"C0901","p_buy_treatment":0.5147,"p_buy_control":0.6174},{"uplift_score":0.3888,"expected_incremental_profit":8.19,"uplift_segment":"Persuadal","customer_id":"C0698","p_buy_treatment":0.6084,"p_buy_control":0.2196},{"uplift_score":0.1849,"expected_incremental_profit":-6.0,"uplift_segment":"Persuadal","customer_id":"C0232","p_buy_treatment":0.5844,"p_buy_control":0.3994},{"uplift_score":0.3856,"expected_incremental_profit":5.74,"uplift_segment":"Persuadal","customer_id":"C0721","p_buy_treatment":0.6764,"p_buy_control":0.2908},{"uplift_score":0.1468,"expected_incremental_profit":-5.33,"uplift_segment":"Persuadal","customer_id":"C0794","p_buy_treatment":0.478,"p_buy_control":0.3312},{"uplift_score":-0.231,"expected_incremental_profit":-29.97,"uplift_segment":"Sleeping Dog","customer_id":"C0011","p_buy_treatment":0.3824,"p_buy_control":0.6134},{"uplift_score":0.0839,"expected_incremental_profit":-4.83,"uplift_segment":"Persuadal","customer_id":"C0938","p_buy_treatment":0.3211,"p_buy_control":0.2372},{"uplift_score":0.1515,"expected_incremental_profit":-3.8,"uplift_segment":"Persuadal","customer_id":"C0245","p_buy_treatment":0.4417,"p_buy_control":0.2902},{"uplift_score":-0.1173,"expected_incremental_profit":-25.78,"uplift_segment":"Sleeping Dog","customer_id":"C0410","p_buy_treatment":0.5099,"p_buy_control":0.6272},{"uplift_score":0.056,"expected_incremental_profit":-14.89,"uplift_segment":"Persuadal","customer_id":"C0415","p_buy_treatment":0.5663,"p_buy_control":0.5103},{"uplift_score":0.1264,"expected_incremental_profit":-10.14,"uplift_segment":"Persuadal","customer_id":"C0393","p_buy_treatment":0.5793,"p_buy_control":0.4529},{"uplift_score":-0.0744,"expected_incremental_profit":-21.92,"uplift_segment":"Sleeping Dog","customer_id":"C0577","p_buy_treatment":0.4884,"p_buy_control":0.5628},{"uplift_score":0.1079,"expected_incremental_profit":-14.12,"uplift_segment":"Persuadal","customer_id":"C0706","p_buy_treatment":0.6593,"p_buy_control":0.5514},{"uplift_score":-0.128,"expected_incremental_profit":-23.85,"uplift_segment":"Sleeping Dog","customer_id":"C0608","p_buy_treatment":0.4269,"p_buy_control":0.5549},{"uplift_score":0.2301,"expected_incremental_profit":-3.12,"uplift_segment":"Persuadal","customer_id":"C0705","p_buy_treatment":0.5975,"p_buy_control":0.3674},{"uplift_score":0.0276,"expected_incremental_profit":-14.34,"uplift_segment":"Lost Cause","customer_id":"C0684","p_buy_treatment":0.4854,"p_buy_control":0.4579},{"uplift_score":0.3909,"expected_incremental_profit":10.66,"uplift_segment":"Persuadal","customer_id":"C0127","p_buy_treatment":0.5375,"p_buy_control":0.1466},{"uplift_score":0.4126,"expected_incremental_profit":10.1,"uplift_segment":"Persuadal","customer_id":"C0233","p_buy_treatment":0.6034,"p_buy_control":0.1908},{"uplift_score":0.0131,"expected_incremental_profit":-15.17,"uplift_segment":"Lost Cause","customer_id":"C0816","p_buy_treatment":0.4786,"p_buy_control":0.4654},{"uplift_score":0.4683,"expected_incremental_profit":13.32,"uplift_segment":"Persuadal","customer_id":"C0962","p_buy_treatment":0.6302,"p_buy_control":0.1619},{"uplift_score":0.2426,"expected_incremental_profit":-1.33,"uplift_segment":"Persuadal","customer_id":"C0414","p_buy_treatment":0.5708,"p_buy_control":0.3282},{"uplift_score":-0.0582,"expected_incremental_profit":-21.1,"uplift_segment":"Sleeping Dog","customer_id":"C0153","p_buy_treatment":0.4994,"p_buy_control":0.5576},{"uplift_score":0.2305,"expected_incremental_profit":-4.75,"uplift_segment":"Persuadal","customer_id":"C0694","p_buy_treatment":0.6487,"p_buy_control":0.4181},{"uplift_score":0.3554,"expected_incremental_profit":8.49,"uplift_segment":"Persuadal","customer_id":"C0114","p_buy_treatment":0.5243,"p_buy_control":0.1688},{"uplift_score":0.0315,"expected_incremental_profit":-13.39,"uplift_segment":"Lost Cause","customer_id":"C0714","p_buy_treatment":0.4653,"p_buy_control":0.4338},{"uplift_score":0.2558,"expected_incremental_profit":-0.42,"uplift_segment":"Persuadal","customer_id":"C0078","p_buy_treatment":0.5728,"p_buy_control":0.317},{"uplift_score":0.0102,"expected_incremental_profit":-14.96,"uplift_segment":"Lost Cause","customer_id":"C0663","p_buy_treatment":0.4653,"p_buy_control":0.4551},{"uplift_score":-0.0176,"expected_incremental_profit":-16.95,"uplift_segment":"Lost Cause","customer_id":"C0980","p_buy_treatment":0.4637,"p_buy_control":0.4814},{"uplift_score":0.019,"expected_incremental_profit":-16.03,"uplift_segment":"Lost Cause","customer_id":"C0498","p_buy_treatment":0.518,"p_buy_control":0.499},{"uplift_score":-0.0636,"expected_incremental_profit":-23.14,"uplift_segment":"Sleeping Dog","customer_id":"C0312","p_buy_treatment":0.5498,"p_buy_control":0.6134},{"uplift_score":0.3421,"expected_incremental_profit":7.34,"uplift_segment":"Persuadal","customer_id":"C0972","p_buy_treatment":0.5294,"p_buy_control":0.1873},{"uplift_score":0.0609,"expected_incremental_profit":-13.39,"uplift_segment":"Persuadal","customer_id":"C0731","p_buy_treatment":0.5315,"p_buy_control":0.4706},{"uplift_score":0.3412,"expected_incremental_profit":5.24,"uplift_segment":"Persuadal","customer_id":"C0113","p_buy_treatment":0.5918,"p_buy_control":0.2506},{"uplift_score":0.067,"expected_incremental_profit":-11.54,"uplift_segment":"Persuadal","customer_id":"C0935","p_buy_treatment":0.4887,"p_buy_control":0.4217},{"uplift_score":0.0381,"expected_incremental_profit":-14.66,"uplift_segment":"Lost Cause","customer_id":"C0989","p_buy_treatment":0.519,"p_buy_control":0.481},{"uplift_score":0.0028,"expected_incremental_profit":-18.33,"uplift_segment":"Sure Thing","customer_id":"C0626","p_buy_treatment":0.5519,"p_buy_control":0.5491},{"uplift_score":0.1952,"expected_incremental_profit":-4.62,"uplift_segment":"Persuadal","customer_id":"C0331","p_buy_treatment":0.5651,"p_buy_control":0.3699},{"uplift_score":0.1684,"expected_incremental_profit":-4.53,"uplift_segment":"Persuadal","customer_id":"C0397","p_buy_treatment":0.5021,"p_buy_control":0.3337},{"uplift_score":0.0245,"expected_incremental_profit":-15.9,"uplift_segment":"Sure Thing","customer_id":"C0046","p_buy_treatment":0.5263,"p_buy_control":0.5018},{"uplift_score":0.3571,"expected_incremental_profit":9.31,"uplift_segment":"Persuadal","customer_id":"C0359","p_buy_treatment":0.5028,"p_buy_control":0.1457},{"uplift_score":0.0389,"expected_incremental_profit":-14.64,"uplift_segment":"Lost Cause","customer_id":"C0385","p_buy_treatment":0.5204,"p_buy_control":0.4815},{"uplift_score":0.2137,"expected_incremental_profit":-5.07,"uplift_segment":"Persuadal","customer_id":"C0898","p_buy_treatment":0.6202,"p_buy_control":0.4066},{"uplift_score":0.0301,"expected_incremental_profit":-16.6,"uplift_segment":"Sure Thing","customer_id":"C0236","p_buy_treatment":0.5603,"p_buy_control":0.5302},{"uplift_score":0.3367,"expected_incremental_profit":7.68,"uplift_segment":"Persuadal","customer_id":"C0532","p_buy_treatment":0.507,"p_buy_control":0.1703},{"uplift_score":0.1865,"expected_incremental_profit":-3.8,"uplift_segment":"Persuadal","customer_id":"C0089","p_buy_treatment":0.5203,"p_buy_control":0.3339},{"uplift_score":0.3668,"expected_incremental_profit":7.63,"uplift_segment":"Persuadal","customer_id":"C0121","p_buy_treatment":0.576,"p_buy_control":0.2092},{"uplift_score":0.2341,"expected_incremental_profit":-5.64,"uplift_segment":"Persuadal","customer_id":"C0822","p_buy_treatment":0.6838,"p_buy_control":0.4497},{"uplift_score":0.0614,"expected_incremental_profit":-13.5,"uplift_segment":"Persuadal","customer_id":"C0604","p_buy_treatment":0.5362,"p_buy_control":0.4747},{"uplift_score":-0.2553,"expected_incremental_profit":-34.16,"uplift_segment":"Sleeping Dog","customer_id":"C0137","p_buy_treatment":0.456,"p_buy_control":0.7113},{"uplift_score":0.0087,"expected_incremental_profit":-17.59,"uplift_segment":"Sure Thing","customer_id":"C0170","p_buy_treatment":0.5425,"p_buy_control":0.5339},{"uplift_score":-0.0088,"expected_incremental_profit":-18.59,"uplift_segment":"Sure Thing","customer_id":"C0955","p_buy_treatment":0.5341,"p_buy_control":0.5428},{"uplift_score":0.134,"expected_incremental_profit":-6.0,"uplift_segment":"Persuadal","customer_id":"C0323","p_buy_treatment":0.4696,"p_buy_control":0.3357},{"uplift_score":0.1333,"expected_incremental_profit":-8.09,"uplift_segment":"Persuadal","customer_id":"C0150","p_buy_treatment":0.532,"p_buy_control":0.3987},{"uplift_score":0.1107,"expected_incremental_profit":-10.39,"uplift_segment":"Persuadal","customer_id":"C0439","p_buy_treatment":0.5514,"p_buy_control":0.4408},{"uplift_score":0.0881,"expected_incremental_profit":-12.65,"uplift_segment":"Persuadal","customer_id":"C0084","p_buy_treatment":0.57,"p_buy_control":0.4819},{"uplift_score":0.2336,"expected_incremental_profit":-1.18,"uplift_segment":"Persuadal","customer_id":"C0254","p_buy_treatment":0.5461,"p_buy_control":0.3126},{"uplift_score":0.0113,"expected_incremental_profit":-19.76,"uplift_segment":"Sure Thing","customer_id":"C0058","p_buy_treatment":0.615,"p_buy_control":0.6037},{"uplift_score":0.1146,"expected_incremental_profit":-10.09,"uplift_segment":"Persuadal","customer_id":"C0316","p_buy_treatment":0.5511,"p_buy_control":0.4366},{"uplift_score":-0.03,"expected_incremental_profit":-18.91,"uplift_segment":"Sure Thing","customer_id":"C0527","p_buy_treatment":0.4961,"p_buy_control":0.5261},{"uplift_score":0.3409,"expected_incremental_profit":6.27,"uplift_segment":"Persuadal","customer_id":"C0582","p_buy_treatment":0.5594,"p_buy_control":0.2185},{"uplift_score":0.3379,"expected_incremental_profit":7.87,"uplift_segment":"Persuadal","customer_id":"C0268","p_buy_treatment":0.5036,"p_buy_control":0.1657},{"uplift_score":-0.0044,"expected_incremental_profit":-21.32,"uplift_segment":"Sure Thing","customer_id":"C0727","p_buy_treatment":0.6273,"p_buy_control":0.6317},{"uplift_score":0.0102,"expected_incremental_profit":-17.65,"uplift_segment":"Sure Thing","customer_id":"C0613","p_buy_treatment":0.5478,"p_buy_control":0.5376},{"uplift_score":0.0898,"expected_incremental_profit":-7.19,"uplift_segment":"Persuadal","customer_id":"C0343","p_buy_treatment":0.4067,"p_buy_control":0.317},{"uplift_score":-0.1566,"expected_incremental_profit":-26.7,"uplift_segment":"Sleeping Dog","customer_id":"C0143","p_buy_treatment":0.4495,"p_buy_control":0.6061},{"uplift_score":0.1965,"expected_incremental_profit":-2.8,"uplift_segment":"Persuadal","customer_id":"C0332","p_buy_treatment":0.5124,"p_buy_control":0.3159},{"uplift_score":0.0164,"expected_incremental_profit":-15.54,"uplift_segment":"Lost Cause","customer_id":"C0376","p_buy_treatment":0.4971,"p_buy_control":0.4807},{"uplift_score":0.0073,"expected_incremental_profit":-15.72,"uplift_segment":"Lost Cause","customer_id":"C0941","p_buy_treatment":0.4822,"p_buy_control":0.4749},{"uplift_score":0.0619,"expected_incremental_profit":-13.68,"uplift_segment":"Persuadal","customer_id":"C0826","p_buy_treatment":0.5424,"p_buy_control":0.4805},{"uplift_score":-0.193,"expected_incremental_profit":-28.74,"uplift_segment":"Sleeping Dog","customer_id":"C0066","p_buy_treatment":0.4301,"p_buy_control":0.6231},{"uplift_score":0.2992,"expected_incremental_profit":1.97,"uplift_segment":"Persuadal","customer_id":"C0586","p_buy_treatment":0.5975,"p_buy_control":0.2982},{"uplift_score":-0.175,"expected_incremental_profit":-25.52,"uplift_segment":"Sleeping Dog","customer_id":"C0585","p_buy_treatment":0.372,"p_buy_control":0.547},{"uplift_score":0.0763,"expected_incremental_profit":-12.99,"uplift_segment":"Persuadal","customer_id":"C0623","p_buy_treatment":0.5539,"p_buy_control":0.4776},{"uplift_score":-0.0359,"expected_incremental_profit":-21.21,"uplift_segment":"Sure Thing","customer_id":"C0375","p_buy_treatment":0.5532,"p_buy_control":0.5891},{"uplift_score":-0.1952,"expected_incremental_profit":-31.59,"uplift_segment":"Sleeping Dog","customer_id":"C0256","p_buy_treatment":0.5125,"p_buy_control":0.7077},{"uplift_score":-0.0631,"expected_incremental_profit":-20.95,"uplift_segment":"Sleeping Dog","customer_id":"C0578","p_buy_treatment":0.484,"p_buy_control":0.5472},{"uplift_score":0.396,"expected_incremental_profit":6.35,"uplift_segment":"Persuadal","customer_id":"C0619","p_buy_treatment":0.6808,"p_buy_control":0.2848},{"uplift_score":0.1283,"expected_incremental_profit":-9.85,"uplift_segment":"Persuadal","customer_id":"C0198","p_buy_treatment":0.5747,"p_buy_control":0.4464},{"uplift_score":0.2684,"expected_incremental_profit":1.08,"uplift_segment":"Persuadal","customer_id":"C0885","p_buy_treatment":0.5554,"p_buy_control":0.287},{"uplift_score":-0.1597,"expected_incremental_profit":-30.46,"uplift_segment":"Sleeping Dog","customer_id":"C0766","p_buy_treatment":0.5578,"p_buy_control":0.7175},{"uplift_score":0.0472,"expected_incremental_profit":-13.23,"uplift_segment":"Lost Cause","customer_id":"C0917","p_buy_treatment":0.4957,"p_buy_control":0.4485},{"uplift_score":0.0815,"expected_incremental_profit":-4.62,"uplift_segment":"Persuadal","customer_id":"C0468","p_buy_treatment":0.3094,"p_buy_control":0.2279},{"uplift_score":-0.0822,"expected_incremental_profit":-24.35,"uplift_segment":"Sleeping Dog","customer_id":"C0978","p_buy_treatment":0.5451,"p_buy_control":0.6272},{"uplift_score":0.1353,"expected_incremental_profit":-9.65,"uplift_segment":"Persuadal","customer_id":"C0883","p_buy_treatment":0.5842,"p_buy_control":0.4489},{"uplift_score":0.0148,"expected_incremental_profit":-17.55,"uplift_segment":"Sure Thing","customer_id":"C0900","p_buy_treatment":0.555,"p_buy_control":0.5402},{"uplift_score":0.2261,"expected_incremental_profit":-3.11,"uplift_segment":"Persuadal","customer_id":"C0964","p_buy_treatment":0.5883,"p_buy_control":0.3622},{"uplift_score":0.2349,"expected_incremental_profit":-1.97,"uplift_segment":"Persuadal","customer_id":"C0647","p_buy_treatment":0.5731,"p_buy_control":0.3382},{"uplift_score":0.0351,"expected_incremental_profit":-13.82,"uplift_segment":"Lost Cause","customer_id":"C0992","p_buy_treatment":0.4866,"p_buy_control":0.4515},{"uplift_score":0.0625,"expected_incremental_profit":-14.51,"uplift_segment":"Persuadal","customer_id":"C0846","p_buy_treatment":0.5695,"p_buy_control":0.5069},{"uplift_score":0.0855,"expected_incremental_profit":-10.24,"uplift_segment":"Persuadal","customer_id":"C0045","p_buy_treatment":0.4903,"p_buy_control":0.4047},{"uplift_score":-0.0346,"expected_incremental_profit":-23.17,"uplift_segment":"Sure Thing","customer_id":"C0291","p_buy_treatment":0.6159,"p_buy_control":0.6505},{"uplift_score":-0.0414,"expected_incremental_profit":-20.36,"uplift_segment":"Sure Thing","customer_id":"C0257","p_buy_treatment":0.5147,"p_buy_control":0.5562},{"uplift_score":0.0199,"expected_incremental_profit":-14.83,"uplift_segment":"Lost Cause","customer_id":"C0573","p_buy_treatment":0.4832,"p_buy_control":0.4634},{"uplift_score":-0.0551,"expected_incremental_profit":-22.39,"uplift_segment":"Sleeping Dog","customer_id":"C0010","p_buy_treatment":0.546,"p_buy_control":0.6011},{"uplift_score":0.2083,"expected_incremental_profit":-3.3,"uplift_segment":"Persuadal","customer_id":"C0887","p_buy_treatment":0.5543,"p_buy_control":0.346},{"uplift_score":-0.3002,"expected_incremental_profit":-33.68,"uplift_segment":"Sleeping Dog","customer_id":"C0454","p_buy_treatment":0.3406,"p_buy_control":0.6408},{"uplift_score":0.0713,"expected_incremental_profit":-13.0,"uplift_segment":"Persuadal","customer_id":"C0648","p_buy_treatment":0.5428,"p_buy_control":0.4715},{"uplift_score":0.369,"expected_incremental_profit":8.48,"uplift_segment":"Persuadal","customer_id":"C0943","p_buy_treatment":0.555,"p_buy_control":0.186},{"uplift_score":0.3207,"expected_incremental_profit":4.56,"uplift_segment":"Persuadal","customer_id":"C0837","p_buy_treatment":0.5663,"p_buy_control":0.2456},{"uplift_score":0.2722,"expected_incremental_profit":-0.82,"uplift_segment":"Persuadal","customer_id":"C0740","p_buy_treatment":0.6219,"p_buy_control":0.3497},{"uplift_score":0.3699,"expected_incremental_profit":10.63,"uplift_segment":"Persuadal","customer_id":"C0400","p_buy_treatment":0.4913,"p_buy_control":0.1214},{"uplift_score":0.3291,"expected_incremental_profit":7.19,"uplift_segment":"Persuadal","customer_id":"C0242","p_buy_treatment":0.5048,"p_buy_control":0.1757},{"uplift_score":0.404,"expected_incremental_profit":9.08,"uplift_segment":"Persuadal","customer_id":"C0224","p_buy_treatment":0.6154,"p_buy_control":0.2114},{"uplift_score":0.2198,"expected_incremental_profit":-2.27,"uplift_segment":"Persuadal","customer_id":"C0952","p_buy_treatment":0.5484,"p_buy_control":0.3287},{"uplift_score":-0.0129,"expected_incremental_profit":-17.83,"uplift_segment":"Sure Thing","customer_id":"C0913","p_buy_treatment":0.5012,"p_buy_control":0.5141},{"uplift_score":0.201,"expected_incremental_profit":-4.2,"uplift_segment":"Persuadal","customer_id":"C0317","p_buy_treatment":0.5653,"p_buy_control":0.3643},{"uplift_score":-0.1306,"expected_incremental_profit":-24.44,"uplift_segment":"Sleeping Dog","customer_id":"C0861","p_buy_treatment":0.439,"p_buy_control":0.5696},{"uplift_score":-0.0959,"expected_incremental_profit":-25.28,"uplift_segment":"Sleeping Dog","customer_id":"C0673","p_buy_treatment":0.543,"p_buy_control":0.6388},{"uplift_score":-0.0567,"expected_incremental_profit":-20.79,"uplift_segment":"Sleeping Dog","customer_id":"C0914","p_buy_treatment":0.4935,"p_buy_control":0.5502},{"uplift_score":0.2299,"expected_incremental_profit":-2.22,"uplift_segment":"Persuadal","customer_id":"C0884","p_buy_treatment":0.5696,"p_buy_control":0.3397},{"uplift_score":-0.0777,"expected_incremental_profit":-21.13,"uplift_segment":"Sleeping Dog","customer_id":"C0515","p_buy_treatment":0.4567,"p_buy_control":0.5344},{"uplift_score":0.1513,"expected_incremental_profit":-5.8,"uplift_segment":"Persuadal","customer_id":"C0266","p_buy_treatment":0.5024,"p_buy_control":0.3511},{"uplift_score":-0.0859,"expected_incremental_profit":-15.71,"uplift_segment":"Sleeping Dog","customer_id":"C0870","p_buy_treatment":0.2725,"p_buy_control":0.3584},{"uplift_score":0.3741,"expected_incremental_profit":2.68,"uplift_segment":"Persuadal","customer_id":"C0588","p_buy_treatment":0.7439,"p_buy_control":0.3698},{"uplift_score":-0.2245,"expected_incremental_profit":-30.15,"uplift_segment":"Sleeping Dog","customer_id":"C0263","p_buy_treatment":0.4027,"p_buy_control":0.6272},{"uplift_score":0.1095,"expected_incremental_profit":-9.74,"uplift_segment":"Persuadal","customer_id":"C0134","p_buy_treatment":0.5291,"p_buy_control":0.4196},{"uplift_score":-0.1185,"expected_incremental_profit":-27.1,"uplift_segment":"Sleeping Dog","customer_id":"C0405","p_buy_treatment":0.5477,"p_buy_control":0.6662},{"uplift_score":0.0912,"expected_incremental_profit":-10.77,"uplift_segment":"Persuadal","customer_id":"C0969","p_buy_treatment":0.5193,"p_buy_control":0.4281},{"uplift_score":0.1189,"expected_incremental_profit":-5.17,"uplift_segment":"Persuadal","customer_id":"C0371","p_buy_treatment":0.4103,"p_buy_control":0.2914},{"uplift_score":0.0344,"expected_incremental_profit":-17.12,"uplift_segment":"Sure Thing","customer_id":"C0330","p_buy_treatment":0.5861,"p_buy_control":0.5517},{"uplift_score":0.3817,"expected_incremental_profit":8.0,"uplift_segment":"Persuadal","customer_id":"C0874","p_buy_treatment":0.5982,"p_buy_control":0.2165},{"uplift_score":-0.0933,"expected_incremental_profit":-24.07,"uplift_segment":"Sleeping Dog","customer_id":"C0275","p_buy_treatment":0.5116,"p_buy_control":0.6049},{"uplift_score":0.0602,"expected_incremental_profit":-14.74,"uplift_segment":"Persuadal","customer_id":"C0189","p_buy_treatment":0.5711,"p_buy_control":0.511},{"uplift_score":-0.014,"expected_incremental_profit":-18.94,"uplift_segment":"Sure Thing","customer_id":"C0293","p_buy_treatment":0.533,"p_buy_control":0.547},{"uplift_score":0.0513,"expected_incremental_profit":-15.84,"uplift_segment":"Persuadal","customer_id":"C0488","p_buy_treatment":0.5849,"p_buy_control":0.5336},{"uplift_score":0.0372,"expected_incremental_profit":-15.85,"uplift_segment":"Sure Thing","customer_id":"C0977","p_buy_treatment":0.5533,"p_buy_control":0.5161},{"uplift_score":-0.0913,"expected_incremental_profit":-23.09,"uplift_segment":"Sleeping Dog","customer_id":"C0778","p_buy_treatment":0.4862,"p_buy_control":0.5774},{"uplift_score":0.0129,"expected_incremental_profit":-16.28,"uplift_segment":"Lost Cause","customer_id":"C0443","p_buy_treatment":0.5122,"p_buy_control":0.4992},{"uplift_score":0.1847,"expected_incremental_profit":-4.82,"uplift_segment":"Persuadal","customer_id":"C0093","p_buy_treatment":0.5475,"p_buy_control":0.3628},{"uplift_score":-0.0671,"expected_incremental_profit":-16.81,"uplift_segment":"Sleeping Dog","customer_id":"C0494","p_buy_treatment":0.3482,"p_buy_control":0.4153},{"uplift_score":0.104,"expected_incremental_profit":-5.5,"uplift_segment":"Persuadal","customer_id":"C0104","p_buy_treatment":0.387,"p_buy_control":0.283},{"uplift_score":0.2234,"expected_incremental_profit":-5.28,"uplift_segment":"Persuadal","customer_id":"C0218","p_buy_treatment":0.6487,"p_buy_control":0.4253},{"uplift_score":0.0629,"expected_incremental_profit":-7.45,"uplift_segment":"Persuadal","customer_id":"C0576","p_buy_treatment":0.3543,"p_buy_control":0.2914},{"uplift_score":-0.0316,"expected_incremental_profit":-11.19,"uplift_segment":"Lost Cause","customer_id":"C0811","p_buy_treatment":0.256,"p_buy_control":0.2876},{"uplift_score":0.3997,"expected_incremental_profit":5.21,"uplift_segment":"Persuadal","customer_id":"C0110","p_buy_treatment":0.724,"p_buy_control":0.3243},{"uplift_score":-0.2506,"expected_incremental_profit":-32.29,"uplift_segment":"Sleeping Dog","customer_id":"C0641","p_buy_treatment":0.4092,"p_buy_control":0.6598},{"uplift_score":0.0699,"expected_incremental_profit":-11.34,"uplift_segment":"Persuadal","customer_id":"C0243","p_buy_treatment":0.4891,"p_buy_control":0.4192},{"uplift_score":0.1426,"expected_incremental_profit":-7.5,"uplift_segment":"Persuadal","customer_id":"C0264","p_buy_treatment":0.5348,"p_buy_control":0.3923},{"uplift_score":0.2456,"expected_incremental_profit":-2.68,"uplift_segment":"Persuadal","customer_id":"C0209","p_buy_treatment":0.6191,"p_buy_control":0.3735},{"uplift_score":0.1254,"expected_incremental_profit":-3.08,"uplift_segment":"Persuadal","customer_id":"C0873","p_buy_treatment":0.3609,"p_buy_control":0.2355},{"uplift_score":-0.0182,"expected_incremental_profit":-20.42,"uplift_segment":"Sure Thing","customer_id":"C0286","p_buy_treatment":0.5686,"p_buy_control":0.5868},{"uplift_score":0.0461,"expected_incremental_profit":-16.55,"uplift_segment":"Sure Thing","customer_id":"C0759","p_buy_treatment":0.595,"p_buy_control":0.5489},{"uplift_score":0.0803,"expected_incremental_profit":-11.58,"uplift_segment":"Persuadal","customer_id":"C0174","p_buy_treatment":0.5197,"p_buy_control":0.4395},{"uplift_score":0.0543,"expected_incremental_profit":-16.35,"uplift_segment":"Persuadal","customer_id":"C0629","p_buy_treatment":0.6071,"p_buy_control":0.5528},{"uplift_score":0.1121,"expected_incremental_profit":-7.88,"uplift_segment":"Persuadal","customer_id":"C0383","p_buy_treatment":0.4781,"p_buy_control":0.366},{"uplift_score":0.0546,"expected_incremental_profit":-12.88,"uplift_segment":"Persuadal","customer_id":"C0185","p_buy_treatment":0.5015,"p_buy_control":0.4469},{"uplift_score":-0.1355,"expected_incremental_profit":-22.19,"uplift_segment":"Sleeping Dog","customer_id":"C0656","p_buy_treatment":0.3592,"p_buy_control":0.4947},{"uplift_score":0.3044,"expected_incremental_profit":3.83,"uplift_segment":"Persuadal","customer_id":"C0756","p_buy_treatment":0.5521,"p_buy_control":0.2477},{"uplift_score":0.1719,"expected_incremental_profit":-7.37,"uplift_segment":"Persuadal","customer_id":"C0358","p_buy_treatment":0.597,"p_buy_control":0.425},{"uplift_score":0.1618,"expected_incremental_profit":-7.54,"uplift_segment":"Persuadal","customer_id":"C0653","p_buy_treatment":0.5794,"p_buy_control":0.4176},{"uplift_score":-0.1148,"expected_incremental_profit":-27.11,"uplift_segment":"Sleeping Dog","customer_id":"C0023","p_buy_treatment":0.5562,"p_buy_control":0.671},{"uplift_score":-0.0214,"expected_incremental_profit":-18.51,"uplift_segment":"Sure Thing","customer_id":"C0278","p_buy_treatment":0.5032,"p_buy_control":0.5246},{"uplift_score":-0.179,"expected_incremental_profit":-27.84,"uplift_segment":"Sleeping Dog","customer_id":"C0191","p_buy_treatment":0.4344,"p_buy_control":0.6134},{"uplift_score":-0.0605,"expected_incremental_profit":-21.41,"uplift_segment":"Sleeping Dog","customer_id":"C0226","p_buy_treatment":0.5038,"p_buy_control":0.5643},{"uplift_score":0.0243,"expected_incremental_profit":-15.92,"uplift_segment":"Sure Thing","customer_id":"C0197","p_buy_treatment":0.5265,"p_buy_control":0.5022},{"uplift_score":0.2228,"expected_incremental_profit":0.43,"uplift_segment":"Persuadal","customer_id":"C0842","p_buy_treatment":0.4727,"p_buy_control":0.2499},{"uplift_score":0.2138,"expected_incremental_profit":-0.76,"uplift_segment":"Persuadal","customer_id":"C0456","p_buy_treatment":0.489,"p_buy_control":0.2751},{"uplift_score":0.0672,"expected_incremental_profit":-9.18,"uplift_segment":"Persuadal","customer_id":"C0507","p_buy_treatment":0.4166,"p_buy_control":0.3494},{"uplift_score":0.1521,"expected_incremental_profit":-6.19,"uplift_segment":"Persuadal","customer_id":"C0062","p_buy_treatment":0.5162,"p_buy_control":0.3641},{"uplift_score":0.1788,"expected_incremental_profit":-0.27,"uplift_segment":"Persuadal","customer_id":"C0806","p_buy_treatment":0.395,"p_buy_control":0.2162},{"uplift_score":0.133,"expected_incremental_profit":-15.11,"uplift_segment":"Persuadal","customer_id":"C0856","p_buy_treatment":0.7464,"p_buy_control":0.6134},{"uplift_score":0.3474,"expected_incremental_profit":6.97,"uplift_segment":"Persuadal","customer_id":"C0652","p_buy_treatment":0.5525,"p_buy_control":0.2051},{"uplift_score":0.4023,"expected_incremental_profit":10.54,"uplift_segment":"Persuadal","customer_id":"C0510","p_buy_treatment":0.5671,"p_buy_control":0.1647},{"uplift_score":0.0995,"expected_incremental_profit":-13.29,"uplift_segment":"Persuadal","customer_id":"C0290","p_buy_treatment":0.615,"p_buy_control":0.5155},{"uplift_score":-0.0048,"expected_incremental_profit":-17.0,"uplift_segment":"Lost Cause","customer_id":"C0610","p_buy_treatment":0.4942,"p_buy_control":0.499},{"uplift_score":0.0495,"expected_incremental_profit":-13.76,"uplift_segment":"Lost Cause","customer_id":"C0747","p_buy_treatment":0.5173,"p_buy_control":0.4678},{"uplift_score":-0.0789,"expected_incremental_profit":-21.89,"uplift_segment":"Sleeping Dog","customer_id":"C0556","p_buy_treatment":0.4773,"p_buy_control":0.5562},{"uplift_score":0.0568,"expected_incremental_profit":-14.77,"uplift_segment":"Persuadal","customer_id":"C0789","p_buy_treatment":0.5644,"p_buy_control":0.5077},{"uplift_score":0.3013,"expected_incremental_profit":2.14,"uplift_segment":"Persuadal","customer_id":"C0974","p_buy_treatment":0.5969,"p_buy_control":0.2956},{"uplift_score":-0.1178,"expected_incremental_profit":-25.52,"uplift_segment":"Sleeping Dog","customer_id":"C0212","p_buy_treatment":0.5008,"p_buy_control":0.6187},{"uplift_score":0.0709,"expected_incremental_profit":-11.65,"uplift_segment":"Persuadal","customer_id":"C0659","p_buy_treatment":0.5007,"p_buy_control":0.4298},{"uplift_score":-0.0885,"expected_incremental_profit":-21.22,"uplift_segment":"Sleeping Dog","customer_id":"C0661","p_buy_treatment":0.4352,"p_buy_control":0.5236},{"uplift_score":0.3607,"expected_incremental_profit":7.78,"uplift_segment":"Persuadal","customer_id":"C0188","p_buy_treatment":0.5579,"p_buy_control":0.1972},{"uplift_score":0.2942,"expected_incremental_profit":3.56,"uplift_segment":"Persuadal","customer_id":"C0354","p_buy_treatment":0.5372,"p_buy_control":0.243},{"uplift_score":-0.1275,"expected_incremental_profit":-25.84,"uplift_segment":"Sleeping Dog","customer_id":"C0584","p_buy_treatment":0.4889,"p_buy_control":0.6163},{"uplift_score":-0.0486,"expected_incremental_profit":-21.36,"uplift_segment":"Sure Thing","customer_id":"C0202","p_buy_treatment":0.5291,"p_buy_control":0.5777},{"uplift_score":0.0169,"expected_incremental_profit":-15.91,"uplift_segment":"Lost Cause","customer_id":"C0817","p_buy_treatment":0.5098,"p_buy_control":0.4929},{"uplift_score":0.1647,"expected_incremental_profit":-6.18,"uplift_segment":"Persuadal","customer_id":"C0627","p_buy_treatment":0.5444,"p_buy_control":0.3797},{"uplift_score":0.0151,"expected_incremental_profit":-16.15,"uplift_segment":"Lost Cause","customer_id":"C0680","p_buy_treatment":0.5129,"p_buy_control":0.4979},{"uplift_score":0.2111,"expected_incremental_profit":-2.39,"uplift_segment":"Persuadal","customer_id":"C0907","p_buy_treatment":0.5328,"p_buy_control":0.3216},{"uplift_score":-0.1298,"expected_incremental_profit":-25.05,"uplift_segment":"Sleeping Dog","customer_id":"C0289","p_buy_treatment":0.4596,"p_buy_control":0.5894},{"uplift_score":0.0366,"expected_incremental_profit":-17.41,"uplift_segment":"Sure Thing","customer_id":"C0758","p_buy_treatment":0.5999,"p_buy_control":0.5633},{"uplift_score":0.1976,"expected_incremental_profit":-4.98,"uplift_segment":"Persuadal","customer_id":"C0628","p_buy_treatment":0.5815,"p_buy_control":0.384},{"uplift_score":0.0557,"expected_incremental_profit":-18.17,"uplift_segment":"Persuadal","customer_id":"C0022","p_buy_treatment":0.666,"p_buy_control":0.6103},{"uplift_score":-0.1931,"expected_incremental_profit":-30.12,"uplift_segment":"Sleeping Dog","customer_id":"C0262","p_buy_treatment":0.4723,"p_buy_control":0.6654},{"uplift_score":0.3659,"expected_incremental_profit":8.74,"uplift_segment":"Persuadal","customer_id":"C0513","p_buy_treatment":0.54,"p_buy_control":0.1741},{"uplift_score":-0.1484,"expected_incremental_profit":-24.63,"uplift_segment":"Sleeping Dog","customer_id":"C0018","p_buy_treatment":0.4047,"p_buy_control":0.5531},{"uplift_score":0.5175,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal","customer_id":"C0298","p_buy_treatment":0.6551,"p_buy_control":0.1377},{"uplift_score":0.0543,"expected_incremental_profit":-13.45,"uplift_segment":"Persuadal","customer_id":"C0788","p_buy_treatment":0.5184,"p_buy_control":0.4641},{"uplift_score":0.1715,"expected_incremental_profit":-7.12,"uplift_segment":"Persuadal","customer_id":"C0934","p_buy_treatment":0.5882,"p_buy_control":0.4168},{"uplift_score":-0.1227,"expected_incremental_profit":-24.97,"uplift_segment":"Sleeping Dog","customer_id":"C0111","p_buy_treatment":0.473,"p_buy_control":0.5957},{"uplift_score":0.0625,"expected_incremental_profit":-13.3,"uplift_segment":"Persuadal","customer_id":"C0593","p_buy_treatment":0.5321,"p_buy_control":0.4696},{"uplift_score":0.1785,"expected_incremental_profit":-6.84,"uplift_segment":"Persuadal","customer_id":"C0103","p_buy_treatment":0.5953,"p_buy_control":0.4168},{"uplift_score":-0.2625,"expected_incremental_profit":-33.45,"uplift_segment":"Sleeping Dog","customer_id":"C0787","p_buy_treatment":0.4179,"p_buy_control":0.6805},{"uplift_score":0.119,"expected_incremental_profit":-11.24,"uplift_segment":"Persuadal","customer_id":"C0681","p_buy_treatment":0.5962,"p_buy_control":0.4772},{"uplift_score":0.0317,"expected_incremental_profit":-14.29,"uplift_segment":"Lost Cause","customer_id":"C0737","p_buy_treatment":0.4934,"p_buy_control":0.4617},{"uplift_score":0.4213,"expected_incremental_profit":9.49,"uplift_segment":"Persuadal","customer_id":"C0499","p_buy_treatment":0.6419,"p_buy_control":0.2206},{"uplift_score":0.3861,"expected_incremental_profit":9.95,"uplift_segment":"Persuadal","customer_id":"C0716","p_buy_treatment":0.5485,"p_buy_control":0.1624},{"uplift_score":0.1995,"expected_incremental_profit":-1.72,"uplift_segment":"Persuadal","customer_id":"C0068","p_buy_treatment":0.486,"p_buy_control":0.2865},{"uplift_score":-0.2105,"expected_incremental_profit":-29.3,"uplift_segment":"Sleeping Dog","customer_id":"C0607","p_buy_treatment":0.4079,"p_buy_control":0.6184},{"uplift_score":0.2605,"expected_incremental_profit":0.7,"uplift_segment":"Persuadal","customer_id":"C0179","p_buy_treatment":0.5491,"p_buy_control":0.2886},{"uplift_score":0.1243,"expected_incremental_profit":-6.3,"uplift_segment":"Persuadal","customer_id":"C0772","p_buy_treatment":0.4571,"p_buy_control":0.3328},{"uplift_score":0.4915,"expected_incremental_profit":15.78,"uplift_segment":"Persuadal","customer_id":"C0524","p_buy_treatment":0.6071,"p_buy_control":0.1156},{"uplift_score":0.2224,"expected_incremental_profit":0.2,"uplift_segment":"Persuadal","customer_id":"C0287","p_buy_treatment":0.4788,"p_buy_control":0.2564},{"uplift_score":0.0916,"expected_incremental_profit":-12.4,"uplift_segment":"Persuadal","customer_id":"C0497","p_buy_treatment":0.5703,"p_buy_control":0.4787},{"uplift_score":0.0051,"expected_incremental_profit":-20.33,"uplift_segment":"Sure Thing","customer_id":"C0370","p_buy_treatment":0.6185,"p_buy_control":0.6134},{"uplift_score":0.1759,"expected_incremental_profit":-5.03,"uplift_segment":"Persuadal","customer_id":"C0940","p_buy_treatment":0.534,"p_buy_control":0.3582},{"uplift_score":0.3017,"expected_incremental_profit":5.22,"uplift_segment":"Persuadal","customer_id":"C0672","p_buy_treatment":0.5036,"p_buy_control":0.2018},{"uplift_score":0.0863,"expected_incremental_profit":-9.77,"uplift_segment":"Persuadal","customer_id":"C0271","p_buy_treatment":0.4776,"p_buy_control":0.3913},{"uplift_score":0.3579,"expected_incremental_profit":7.03,"uplift_segment":"Persuadal","customer_id":"C0390","p_buy_treatment":0.5744,"p_buy_control":0.2165},{"uplift_score":0.3407,"expected_incremental_profit":6.48,"uplift_segment":"Persuadal","customer_id":"C0464","p_buy_treatment":0.5525,"p_buy_control":0.2118},{"uplift_score":0.1615,"expected_incremental_profit":-4.42,"uplift_segment":"Persuadal","customer_id":"C0470","p_buy_treatment":0.4831,"p_buy_control":0.3216},{"uplift_score":0.3156,"expected_incremental_profit":6.64,"uplift_segment":"Persuadal","customer_id":"C0472","p_buy_treatment":0.4912,"p_buy_control":0.1757},{"uplift_score":-0.2614,"expected_incremental_profit":-32.57,"uplift_segment":"Sleeping Dog","customer_id":"C0551","p_buy_treatment":0.3936,"p_buy_control":0.655},{"uplift_score":-0.0668,"expected_incremental_profit":-19.92,"uplift_segment":"Sleeping Dog","customer_id":"C0006","p_buy_treatment":0.4442,"p_buy_control":0.511},{"uplift_score":-0.0477,"expected_incremental_profit":-24.48,"uplift_segment":"Sure Thing","customer_id":"C0190","p_buy_treatment":0.6267,"p_buy_control":0.6744},{"uplift_score":0.1329,"expected_incremental_profit":-8.68,"uplift_segment":"Persuadal","customer_id":"C0484","p_buy_treatment":0.549,"p_buy_control":0.4162},{"uplift_score":0.1493,"expected_incremental_profit":-5.85,"uplift_segment":"Persuadal","customer_id":"C0908","p_buy_treatment":0.4995,"p_buy_control":0.3502},{"uplift_score":0.0363,"expected_incremental_profit":-12.51,"uplift_segment":"Lost Cause","customer_id":"C0184","p_buy_treatment":0.4491,"p_buy_control":0.4128},{"uplift_score":-0.1615,"expected_incremental_profit":-25.38,"uplift_segment":"Sleeping Dog","customer_id":"C0560","p_buy_treatment":0.3983,"p_buy_control":0.5598},{"uplift_score":-0.0967,"expected_incremental_profit":-25.73,"uplift_segment":"Sleeping Dog","customer_id":"C0217","p_buy_treatment":0.5547,"p_buy_control":0.6514},{"uplift_score":0.5241,"expected_incremental_profit":15.22,"uplift_segment":"Persuadal","customer_id":"C0215","p_buy_treatment":0.6977,"p_buy_control":0.1735},{"uplift_score":-0.061,"expected_incremental_profit":-18.04,"uplift_segment":"Sleeping Dog","customer_id":"C0865","p_buy_treatment":0.3996,"p_buy_control":0.4606},{"uplift_score":0.0954,"expected_incremental_profit":-10.83,"uplift_segment":"Persuadal","customer_id":"C0446","p_buy_treatment":0.5307,"p_buy_control":0.4353},{"uplift_score":0.3242,"expected_incremental_profit":5.73,"uplift_segment":"Persuadal","customer_id":"C0741","p_buy_treatment":0.5384,"p_buy_control":0.2142},{"uplift_score":0.1617,"expected_incremental_profit":-3.31,"uplift_segment":"Persuadal","customer_id":"C0272","p_buy_treatment":0.4497,"p_buy_control":0.288},{"uplift_score":0.1268,"expected_incremental_profit":-7.39,"uplift_segment":"Persuadal","customer_id":"C0478","p_buy_treatment":0.4962,"p_buy_control":0.3693},{"uplift_score":-0.0974,"expected_incremental_profit":-23.24,"uplift_segment":"Sleeping Dog","customer_id":"C0654","p_buy_treatment":0.4769,"p_buy_control":0.5743},{"uplift_score":-0.1139,"expected_incremental_profit":-20.26,"uplift_segment":"Sleeping Dog","customer_id":"C0881","p_buy_treatment":0.3484,"p_buy_control":0.4624},{"uplift_score":0.0506,"expected_incremental_profit":-7.96,"uplift_segment":"Persuadal","customer_id":"C0555","p_buy_treatment":0.3419,"p_buy_control":0.2914},{"uplift_score":0.0608,"expected_incremental_profit":-15.44,"uplift_segment":"Persuadal","customer_id":"C0999","p_buy_treatment":0.5938,"p_buy_control":0.533},{"uplift_score":0.1271,"expected_incremental_profit":-8.08,"uplift_segment":"Persuadal","customer_id":"C0157","p_buy_treatment":0.5181,"p_buy_control":0.3909},{"uplift_score":0.0818,"expected_incremental_profit":-11.5,"uplift_segment":"Persuadal","customer_id":"C0993","p_buy_treatment":0.5205,"p_buy_control":0.4387},{"uplift_score":0.356,"expected_incremental_profit":4.62,"uplift_segment":"Persuadal","customer_id":"C0553","p_buy_treatment":0.644,"p_buy_control":0.288},{"uplift_score":-0.118,"expected_incremental_profit":-24.83,"uplift_segment":"Sleeping Dog","customer_id":"C0230","p_buy_treatment":0.4792,"p_buy_control":0.5972},{"uplift_score":0.2151,"expected_incremental_profit":-2.4,"uplift_segment":"Persuadal","customer_id":"C0421","p_buy_treatment":0.5419,"p_buy_control":0.3268},{"uplift_score":0.0662,"expected_incremental_profit":-12.7,"uplift_segment":"Persuadal","customer_id":"C0138","p_buy_treatment":0.5221,"p_buy_control":0.4559},{"uplift_score":0.4394,"expected_incremental_profit":13.89,"uplift_segment":"Persuadal","customer_id":"C0509","p_buy_treatment":0.5478,"p_buy_control":0.1084},{"uplift_score":0.2579,"expected_incremental_profit":0.54,"uplift_segment":"Persuadal","customer_id":"C0863","p_buy_treatment":0.5481,"p_buy_control":0.2902},{"uplift_score":0.0257,"expected_incremental_profit":-14.94,"uplift_segment":"Lost Cause","customer_id":"C0596","p_buy_treatment":0.4996,"p_buy_control":0.4739},{"uplift_score":0.3794,"expected_incremental_profit":6.73,"uplift_segment":"Persuadal","customer_id":"C0910","p_buy_treatment":0.6319,"p_buy_control":0.2526},{"uplift_score":-0.0639,"expected_incremental_profit":-19.63,"uplift_segment":"Sleeping Dog","customer_id":"C0587","p_buy_treatment":0.4418,"p_buy_control":0.5057},{"uplift_score":0.0462,"expected_incremental_profit":-14.6,"uplift_segment":"Lost Cause","customer_id":"C0324","p_buy_treatment":0.5354,"p_buy_control":0.4892},{"uplift_score":-0.0346,"expected_incremental_profit":-20.24,"uplift_segment":"Sure Thing","customer_id":"C0878","p_buy_treatment":0.5265,"p_buy_control":0.5611},{"uplift_score":0.2184,"expected_incremental_profit":-2.09,"uplift_segment":"Persuadal","customer_id":"C0294","p_buy_treatment":0.5399,"p_buy_control":0.3214},{"uplift_score":0.2596,"expected_incremental_profit":-4.57,"uplift_segment":"Persuadal","customer_id":"C0005","p_buy_treatment":0.7085,"p_buy_control":0.4489},{"uplift_score":0.2495,"expected_incremental_profit":-0.5,"uplift_segment":"Persuadal","customer_id":"C0820","p_buy_treatment":0.5611,"p_buy_control":0.3116},{"uplift_score":-0.0365,"expected_incremental_profit":-17.68,"uplift_segment":"Lost Cause","customer_id":"C0696","p_buy_treatment":0.4438,"p_buy_control":0.4802},{"uplift_score":0.1375,"expected_incremental_profit":-7.41,"uplift_segment":"Persuadal","customer_id":"C0444","p_buy_treatment":0.5208,"p_buy_control":0.3833},{"uplift_score":0.0712,"expected_incremental_profit":-10.35,"uplift_segment":"Persuadal","customer_id":"C0326","p_buy_treatment":0.4617,"p_buy_control":0.3905},{"uplift_score":0.221,"expected_incremental_profit":-1.57,"uplift_segment":"Persuadal","customer_id":"C0728","p_buy_treatment":0.5296,"p_buy_control":0.3086},{"uplift_score":-0.1885,"expected_incremental_profit":-27.92,"uplift_segment":"Sleeping Dog","customer_id":"C0635","p_buy_treatment":0.4152,"p_buy_control":0.6037},{"uplift_score":-0.1699,"expected_incremental_profit":-27.48,"uplift_segment":"Sleeping Dog","customer_id":"C0487","p_buy_treatment":0.4434,"p_buy_control":0.6134},{"uplift_score":-0.0269,"expected_incremental_profit":-20.21,"uplift_segment":"Sure Thing","customer_id":"C0996","p_buy_treatment":0.5429,"p_buy_control":0.5697},{"uplift_score":0.0862,"expected_incremental_profit":-11.77,"uplift_segment":"Persuadal","customer_id":"C0620","p_buy_treatment":0.5387,"p_buy_control":0.4525},{"uplift_score":0.1123,"expected_incremental_profit":-10.82,"uplift_segment":"Persuadal","customer_id":"C0963","p_buy_treatment":0.5684,"p_buy_control":0.456},{"uplift_score":0.1457,"expected_incremental_profit":-7.5,"uplift_segment":"Persuadal","customer_id":"C0258","p_buy_treatment":0.542,"p_buy_control":0.3963},{"uplift_score":0.1213,"expected_incremental_profit":-10.92,"uplift_segment":"Persuadal","customer_id":"C0412","p_buy_treatment":0.5917,"p_buy_control":0.4704},{"uplift_score":-0.1237,"expected_incremental_profit":-26.64,"uplift_segment":"Sleeping Dog","customer_id":"C0503","p_buy_treatment":0.5218,"p_buy_control":0.6455},{"uplift_score":0.1167,"expected_incremental_profit":-9.73,"uplift_segment":"Persuadal","customer_id":"C0282","p_buy_treatment":0.5448,"p_buy_control":0.4281},{"uplift_score":0.4691,"expected_incremental_profit":14.21,"uplift_segment":"Persuadal","customer_id":"C0504","p_buy_treatment":0.6046,"p_buy_control":0.1355},{"uplift_score":0.293,"expected_incremental_profit":2.95,"uplift_segment":"Persuadal","customer_id":"C0985","p_buy_treatment":0.5533,"p_buy_control":0.2603}];
-
-// Full scoring data (top 20 TARGET customers from output)
-const TOP20 = [{"customer_id":"C0508","customer_taxonomies":"Occasional","uplift_score":0.5335,"p_buy_treatment":0.6628,"p_buy_control":0.1293,"expected_incremental_profit":17.04,"uplift_segment":"Persuadal"},{"customer_id":"C0781","customer_taxonomies":"Price Sensitive","uplift_score":0.5235,"p_buy_treatment":0.665,"p_buy_control":0.1415,"expected_incremental_profit":16.24,"uplift_segment":"Persuadal"},{"customer_id":"C0134","customer_taxonomies":"Frequent Shopper","uplift_score":0.5195,"p_buy_treatment":0.6608,"p_buy_control":0.1413,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0722","customer_taxonomies":"Occasional","uplift_score":0.5238,"p_buy_treatment":0.662,"p_buy_control":0.1382,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0397","customer_taxonomies":"Price Sensitive","uplift_score":0.5218,"p_buy_treatment":0.6617,"p_buy_control":0.1399,"expected_incremental_profit":16.1,"uplift_segment":"Persuadal"},{"customer_id":"C0249","customer_taxonomies":"Occasional","uplift_score":0.5134,"p_buy_treatment":0.6543,"p_buy_control":0.1409,"expected_incremental_profit":15.78,"uplift_segment":"Persuadal"},{"customer_id":"C0831","customer_taxonomies":"Price Sensitive","uplift_score":0.5091,"p_buy_treatment":0.6532,"p_buy_control":0.1441,"expected_incremental_profit":15.61,"uplift_segment":"Persuadal"},{"customer_id":"C0173","customer_taxonomies":"Frequent Shopper","uplift_score":0.5057,"p_buy_treatment":0.6494,"p_buy_control":0.1437,"expected_incremental_profit":15.49,"uplift_segment":"Persuadal"},{"customer_id":"C0619","customer_taxonomies":"Occasional","uplift_score":0.5026,"p_buy_treatment":0.6462,"p_buy_control":0.1436,"expected_incremental_profit":15.37,"uplift_segment":"Persuadal"},{"customer_id":"C0055","customer_taxonomies":"Price Sensitive","uplift_score":0.5001,"p_buy_treatment":0.6437,"p_buy_control":0.1436,"expected_incremental_profit":15.28,"uplift_segment":"Persuadal"},{"customer_id":"C0387","customer_taxonomies":"Occasional","uplift_score":0.4993,"p_buy_treatment":0.6425,"p_buy_control":0.1432,"expected_incremental_profit":15.24,"uplift_segment":"Persuadal"},{"customer_id":"C0912","customer_taxonomies":"Price Sensitive","uplift_score":0.4985,"p_buy_treatment":0.6427,"p_buy_control":0.1442,"expected_incremental_profit":15.22,"uplift_segment":"Persuadal"},{"customer_id":"C0648","customer_taxonomies":"Frequent Shopper","uplift_score":0.496,"p_buy_treatment":0.6413,"p_buy_control":0.1453,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0476","customer_taxonomies":"High Value","uplift_score":0.4959,"p_buy_treatment":0.6411,"p_buy_control":0.1452,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0034","customer_taxonomies":"Occasional","uplift_score":0.4955,"p_buy_treatment":0.641,"p_buy_control":0.1455,"expected_incremental_profit":15.11,"uplift_segment":"Persuadal"},{"customer_id":"C0763","customer_taxonomies":"Occasional","uplift_score":0.4952,"p_buy_treatment":0.6408,"p_buy_control":0.1456,"expected_incremental_profit":15.1,"uplift_segment":"Persuadal"},{"customer_id":"C0218","customer_taxonomies":"Price Sensitive","uplift_score":0.4951,"p_buy_treatment":0.6407,"p_buy_control":0.1456,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0591","customer_taxonomies":"Frequent Shopper","uplift_score":0.495,"p_buy_treatment":0.6405,"p_buy_control":0.1455,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0802","customer_taxonomies":"High Value","uplift_score":0.4945,"p_buy_treatment":0.6403,"p_buy_control":0.1458,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"},{"customer_id":"C0167","customer_taxonomies":"Occasional","uplift_score":0.4942,"p_buy_treatment":0.6401,"p_buy_control":0.1459,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"}];
-
-// ── Chart instances ────────────────────────────────────────────────────────────
-let chartDonut, chartHist, chartScatter, chartProfit;
-const CHART_DEFAULTS = {
-  color: '#8b949e',
-  borderColor: '#30363d',
-  plugins: { legend: { labels: { color: '#8b949e', font: { family: 'Inter' } } } }
+const DATA = {
+  histogram: [{"x": -0.575, "y": 0}, {"x": -0.525, "y": 0}, {"x": -0.475, "y": 0}, {"x": -0.425, "y": 0}, {"x": -0.375, "y": 0}, {"x": -0.325, "y": 2}, {"x": -0.275, "y": 7}, {"x": -0.225, "y": 17}, {"x": -0.175, "y": 39}, {"x": -0.125, "y": 50}, {"x": -0.075, "y": 85}, {"x": -0.025, "y": 84}, {"x": 0.025, "y": 127}, {"x": 0.075, "y": 123}, {"x": 0.125, "y": 118}, {"x": 0.175, "y": 68}, {"x": 0.225, "y": 75}, {"x": 0.275, "y": 63}, {"x": 0.325, "y": 55}, {"x": 0.375, "y": 46}, {"x": 0.425, "y": 29}, {"x": 0.475, "y": 26}, {"x": 0.525, "y": 20}, {"x": 0.575, "y": 21}, {"x": 0.625, "y": 15}, {"x": 0.675, "y": 12}, {"x": 0.725, "y": 9}, {"x": 0.775, "y": 8}],
+  
+  segmentCounts: { "Persuadal": 589, "Sure Thing": 122, "Lost Cause": 89, "Sleeping Dog": 200 },
+  
+  profitCurve: [{"pct": 0.1, "profit": 17.04}, {"pct": 1.1, "profit": 142.96}, {"pct": 2.1, "profit": 264.82}, {"pct": 3.1, "profit": 383.59}, {"pct": 4.1, "profit": 497.83}, {"pct": 5.1, "profit": 606.35}, {"pct": 6.1, "profit": 711.57}, {"pct": 7.1, "profit": 812.03}, {"pct": 8.1, "profit": 905.65}, {"pct": 9.1, "profit": 990.5}, {"pct": 10.1, "profit": 1072.35}, {"pct": 11.1, "profit": 1149.09}, {"pct": 12.1, "profit": 1221.3}, {"pct": 13.1, "profit": 1287.94}, {"pct": 14.1, "profit": 1349.7}, {"pct": 15.1, "profit": 1406.25}, {"pct": 16.1, "profit": 1459.08}, {"pct": 17.1, "profit": 1507.04}, {"pct": 18.1, "profit": 1549.81}, {"pct": 19.1, "profit": 1588.2}, {"pct": 20.1, "profit": 1619.96}, {"pct": 21.1, "profit": 1647.88}, {"pct": 22.1, "profit": 1672.94}, {"pct": 23.1, "profit": 1691.74}, {"pct": 24.1, "profit": 1708.44}, {"pct": 25.1, "profit": 1724.13}, {"pct": 26.1, "profit": 1737.69}, {"pct": 27.1, "profit": 1747.47}, {"pct": 28.1, "profit": 1754.26}, {"pct": 29.1, "profit": 1756.41}, {"pct": 30.1, "profit": 1757.7}, {"pct": 31.1, "profit": 1758.34}, {"pct": 32.1, "profit": 1756.63}, {"pct": 33.1, "profit": 1753.69}, {"pct": 34.1, "profit": 1749.34}, {"pct": 35.1, "profit": 1742.97}, {"pct": 36.1, "profit": 1735.36}, {"pct": 37.1, "profit": 1727.45}, {"pct": 38.1, "profit": 1718.55}, {"pct": 39.1, "profit": 1708.05}, {"pct": 40.1, "profit": 1695.88}, {"pct": 41.1, "profit": 1683.09}, {"pct": 42.1, "profit": 1669.56}, {"pct": 43.1, "profit": 1655.66}, {"pct": 44.1, "profit": 1639.45}, {"pct": 45.1, "profit": 1623.5}, {"pct": 46.1, "profit": 1605.26}, {"pct": 47.1, "profit": 1586.64}, {"pct": 48.1, "profit": 1567.09}, {"pct": 49.1, "profit": 1547.27}, {"pct": 50.1, "profit": 1525.97}, {"pct": 51.1, "profit": 1503.44}, {"pct": 52.1, "profit": 1480.6}, {"pct": 53.1, "profit": 1455.95}, {"pct": 54.1, "profit": 1430.46}, {"pct": 55.1, "profit": 1403.74}, {"pct": 56.1, "profit": 1375.37}, {"pct": 57.1, "profit": 1344.95}, {"pct": 58.1, "profit": 1313.85}, {"pct": 59.1, "profit": 1282.17}, {"pct": 60.1, "profit": 1248.92}, {"pct": 61.1, "profit": 1213.75}, {"pct": 62.1, "profit": 1177.63}, {"pct": 63.1, "profit": 1139.6}, {"pct": 64.1, "profit": 1099.96}, {"pct": 65.1, "profit": 1059.04}, {"pct": 66.1, "profit": 1017.69}, {"pct": 67.1, "profit": 974.14}, {"pct": 68.1, "profit": 929.06}, {"pct": 69.1, "profit": 882.76}, {"pct": 70.1, "profit": 835.69}, {"pct": 71.1, "profit": 786.07}, {"pct": 72.1, "profit": 735.82}, {"pct": 73.1, "profit": 684.42}, {"pct": 74.1, "profit": 631.55}, {"pct": 75.1, "profit": 578.04}, {"pct": 76.1, "profit": 523.91}, {"pct": 77.1, "profit": 469.39}, {"pct": 78.1, "profit": 412.88}, {"pct": 79.1, "profit": 355.65}, {"pct": 80.1, "profit": 296.58}, {"pct": 81.1, "profit": 237.31}, {"pct": 82.1, "profit": 177.54}, {"pct": 83.1, "profit": 116.25}, {"pct": 84.1, "profit": 53.86}, {"pct": 85.1, "profit": -9.08}, {"pct": 86.1, "profit": -73.17}, {"pct": 87.1, "profit": -138.41}, {"pct": 88.1, "profit": -204.41}, {"pct": 89.1, "profit": -271.66}, {"pct": 90.1, "profit": -340.42}, {"pct": 91.1, "profit": -411.53}, {"pct": 92.1, "profit": -483.43}, {"pct": 93.1, "profit": -556.39}, {"pct": 94.1, "profit": -630.6}, {"pct": 95.1, "profit": -705.93}, {"pct": 96.1, "profit": -783.35}, {"pct": 97.1, "profit": -863.17}, {"pct": 98.1, "profit": -944.2}, {"pct": 99.1, "profit": -1026.8}, {"pct": 100.0, "profit": -1113.55}],
+  
+  scatter: [{"uplift_score":0.0444,"expected_incremental_profit":-12.6,"uplift_segment":"Lost Cause","customer_id":"C0565","p_buy_treatment":0.4701,"p_buy_control":0.4258},{"uplift_score":-0.0402,"expected_incremental_profit":-18.28,"uplift_segment":"Lost Cause","customer_id":"C0305","p_buy_treatment":0.4537,"p_buy_control":0.4939},{"uplift_score":-0.0357,"expected_incremental_profit":-18.32,"uplift_segment":"Sure Thing","customer_id":"C0431","p_buy_treatment":0.465,"p_buy_control":0.5008},{"uplift_score":0.0381,"expected_incremental_profit":-16.01,"uplift_segment":"Sure Thing","customer_id":"C0407","p_buy_treatment":0.5603,"p_buy_control":0.5222},{"uplift_score":0.1395,"expected_incremental_profit":-9.26,"uplift_segment":"Persuadal","customer_id":"C0120","p_buy_treatment":0.5818,"p_buy_control":0.4423},{"uplift_score":0.0247,"expected_incremental_profit":-16.58,"uplift_segment":"Sure Thing","customer_id":"C0141","p_buy_treatment":0.5478,"p_buy_control":0.5231},{"uplift_score":0.0285,"expected_incremental_profit":-15.31,"uplift_segment":"Lost Cause","customer_id":"C0339","p_buy_treatment":0.5171,"p_buy_control":0.4887},{"uplift_score":0.1172,"expected_incremental_profit":-12.37,"uplift_segment":"Persuadal","customer_id":"C0991","p_buy_treatment":0.6268,"p_buy_control":0.5096},{"uplift_score":-0.0824,"expected_incremental_profit":-22.76,"uplift_segment":"Sleeping Dog","customer_id":"C0360","p_buy_treatment":0.4958,"p_buy_control":0.5782},{"uplift_score":0.2586,"expected_incremental_profit":3.83,"uplift_segment":"Persuadal","customer_id":"C0807","p_buy_treatment":0.4489,"p_buy_control":0.1903},{"uplift_score":-0.0308,"expected_incremental_profit":-20.81,"uplift_segment":"Sure Thing","customer_id":"C0568","p_buy_treatment":0.5524,"p_buy_control":0.5832},{"uplift_score":0.3394,"expected_incremental_profit":7.04,"uplift_segment":"Persuadal","customer_id":"C0625","p_buy_treatment":0.5324,"p_buy_control":0.193},{"uplift_score":0.0442,"expected_incremental_profit":-15.57,"uplift_segment":"Sure Thing","customer_id":"C0858","p_buy_treatment":0.5607,"p_buy_control":0.5164},{"uplift_score":-0.2104,"expected_incremental_profit":-29.92,"uplift_segment":"Sleeping Dog","customer_id":"C0117","p_buy_treatment":0.4274,"p_buy_control":0.6378},{"uplift_score":-0.1869,"expected_incremental_profit":-26.88,"uplift_segment":"Sleeping Dog","customer_id":"C0075","p_buy_treatment":0.3872,"p_buy_control":0.5741}],
+  
+  top20: [{"customer_id":"C0508","customer_taxonomies":"Occasional","uplift_score":0.5335,"p_buy_treatment":0.6628,"p_buy_control":0.1293,"expected_incremental_profit":17.04,"uplift_segment":"Persuadal"},{"customer_id":"C0781","customer_taxonomies":"Price Sensitive","uplift_score":0.5235,"p_buy_treatment":0.665,"p_buy_control":0.1415,"expected_incremental_profit":16.24,"uplift_segment":"Persuadal"},{"customer_id":"C0134","customer_taxonomies":"Frequent Shopper","uplift_score":0.5195,"p_buy_treatment":0.6608,"p_buy_control":0.1413,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0722","customer_taxonomies":"Occasional","uplift_score":0.5238,"p_buy_treatment":0.662,"p_buy_control":0.1382,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0397","customer_taxonomies":"Price Sensitive","uplift_score":0.5218,"p_buy_treatment":0.6617,"p_buy_control":0.1399,"expected_incremental_profit":16.1,"uplift_segment":"Persuadal"},{"customer_id":"C0249","customer_taxonomies":"Occasional","uplift_score":0.5134,"p_buy_treatment":0.6543,"p_buy_control":0.1409,"expected_incremental_profit":15.78,"uplift_segment":"Persuadal"},{"customer_id":"C0831","customer_taxonomies":"Price Sensitive","uplift_score":0.5091,"p_buy_treatment":0.6532,"p_buy_control":0.1441,"expected_incremental_profit":15.61,"uplift_segment":"Persuadal"},{"customer_id":"C0173","customer_taxonomies":"Frequent Shopper","uplift_score":0.5057,"p_buy_treatment":0.6494,"p_buy_control":0.1437,"expected_incremental_profit":15.49,"uplift_segment":"Persuadal"},{"customer_id":"C0619","customer_taxonomies":"Occasional","uplift_score":0.5026,"p_buy_treatment":0.6462,"p_buy_control":0.1436,"expected_incremental_profit":15.37,"uplift_segment":"Persuadal"},{"customer_id":"C0055","customer_taxonomies":"Price Sensitive","uplift_score":0.5001,"p_buy_treatment":0.6437,"p_buy_control":0.1436,"expected_incremental_profit":15.28,"uplift_segment":"Persuadal"},{"customer_id":"C0387","customer_taxonomies":"Occasional","uplift_score":0.4993,"p_buy_treatment":0.6425,"p_buy_control":0.1432,"expected_incremental_profit":15.24,"uplift_segment":"Persuadal"},{"customer_id":"C0912","customer_taxonomies":"Price Sensitive","uplift_score":0.4985,"p_buy_treatment":0.6427,"p_buy_control":0.1442,"expected_incremental_profit":15.22,"uplift_segment":"Persuadal"},{"customer_id":"C0648","customer_taxonomies":"Frequent Shopper","uplift_score":0.496,"p_buy_treatment":0.6413,"p_buy_control":0.1453,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0476","customer_taxonomies":"High Value","uplift_score":0.4959,"p_buy_treatment":0.6411,"p_buy_control":0.1452,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0034","customer_taxonomies":"Occasional","uplift_score":0.4955,"p_buy_treatment":0.641,"p_buy_control":0.1455,"expected_incremental_profit":15.11,"uplift_segment":"Persuadal"},{"customer_id":"C0763","customer_taxonomies":"Occasional","uplift_score":0.4952,"p_buy_treatment":0.6408,"p_buy_control":0.1456,"expected_incremental_profit":15.1,"uplift_segment":"Persuadal"},{"customer_id":"C0218","customer_taxonomies":"Price Sensitive","uplift_score":0.4951,"p_buy_treatment":0.6407,"p_buy_control":0.1456,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0591","customer_taxonomies":"Frequent Shopper","uplift_score":0.495,"p_buy_treatment":0.6405,"p_buy_control":0.1455,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0802","customer_taxonomies":"High Value","uplift_score":0.4945,"p_buy_treatment":0.6403,"p_buy_control":0.1458,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"},{"customer_id":"C0167","customer_taxonomies":"Occasional","uplift_score":0.4942,"p_buy_treatment":0.6401,"p_buy_control":0.1459,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"}]
 };
 
-function segColor(seg) {
-  return {
-    'Persuadal':    '#3fb950',
-    'Sure Thing':   '#58a6ff',
-    'Lost Cause':   '#8b949e',
-    'Sleeping Dog': '#f85149',
-  }[seg] || '#8b949e';
-}
-function segAlpha(seg, a=0.85) {
-  return segColor(seg) + Math.round(a*255).toString(16).padStart(2,'0');
+// UTILITY LAYER
+
+const COLORS = {
+  Persuadal: '#3fb950',
+  'Sure Thing': '#58a6ff',
+  'Lost Cause': '#8b949e',
+  'Sleeping Dog': '#f85149'
+};
+
+const SEGMENT_COLORS = {
+  Persuadal: { bg: 'green', chip: 'green' },
+  'Sure Thing': { bg: 'blue', chip: 'blue' },
+  'Lost Cause': { bg: 'muted', chip: 'muted' },
+  'Sleeping Dog': { bg: 'red', chip: 'red' }
+};
+
+function getSegmentColor(segment) {
+  return COLORS[segment] || '#8b949e';
 }
 
-function buildDonut() {
-  const segs = ['Persuadal','Sure Thing','Lost Cause','Sleeping Dog'];
-  chartDonut = new Chart(document.getElementById('chartDonut').getContext('2d'), {
+function calcEIP(pTreatment, pControl, price, discountPct, cogs, cost) {
+  const tau = pTreatment - pControl;
+  const discountAmount = price * discountPct;
+  return tau * (price - cogs) - discountAmount * pTreatment - cost;
+}
+
+function formatCurrency(value) {
+  return '฿' + value.toLocaleString('th', { maximumFractionDigits: 0 });
+}
+
+function getActionLabel(tau, eip) {
+  if (tau < 0) return { label: 'SLEEPING DOG (DO NOT DISTURB)', chip: 'red' };
+  return eip > 0 ? { label: 'TARGET', chip: 'green' } : { label: 'SKIP', chip: 'muted' };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CHART INITIALIZATION
+// ═══════════════════════════════════════════════════════════════════════════════
+
+let charts = {};
+
+function initCharts() {
+  initDonutChart();
+  initHistogramChart();
+  initScatterChart();
+  initProfitCurveChart();
+}
+
+function initDonutChart() {
+  const segments = Object.keys(DATA.segmentCounts);
+  const counts = segments.map(s => DATA.segmentCounts[s]);
+  const colors = segments.map(s => getSegmentColor(s) + 'cc');
+
+  charts.donut = new Chart(document.getElementById('chartDonut').getContext('2d'), {
     type: 'doughnut',
     data: {
-      labels: segs,
+      labels: segments,
       datasets: [{
-        data: segs.map(s => SEG_COUNTS[s] || 0),
-        backgroundColor: segs.map(s => segColor(s) + 'cc'),
+        data: counts,
+        backgroundColor: colors,
         borderColor: '#161b22',
         borderWidth: 3,
-        hoverOffset: 8,
+        hoverOffset: 8
       }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
-        legend: { position: 'right', labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, padding: 16, usePointStyle: true } },
+        legend: {
+          position: 'right',
+          labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, padding: 16, usePointStyle: true }
+        },
         tooltip: {
           callbacks: {
-            label: ctx => ` ${ctx.label}: ${ctx.parsed} customers (${(ctx.parsed/10).toFixed(1)}%)`
+            label: ctx => ` ${ctx.label}: ${ctx.parsed} customers (${(ctx.parsed / 10).toFixed(1)}%)`
           }
         }
       }
@@ -488,23 +470,30 @@ function buildDonut() {
   });
 }
 
-function buildHist() {
-  const colors = HIST_DATA.map(d => d.x >= 0.05 ? '#3fb950cc' : d.x <= -0.05 ? '#f85149cc' : '#8b949ecc');
-  chartHist = new Chart(document.getElementById('chartHist').getContext('2d'), {
+function initHistogramChart() {
+  const colors = DATA.histogram.map(d => 
+    d.x >= 0.05 ? '#3fb950cc' : d.x <= -0.05 ? '#f85149cc' : '#8b949ecc'
+  );
+
+  charts.hist = new Chart(document.getElementById('chartHist').getContext('2d'), {
     type: 'bar',
     data: {
-      labels: HIST_DATA.map(d => d.x.toFixed(2)),
+      labels: DATA.histogram.map(d => d.x.toFixed(2)),
       datasets: [{
         label: 'Customers',
-        data: HIST_DATA.map(d => d.y),
+        data: DATA.histogram.map(d => d.y),
         backgroundColor: colors,
         borderWidth: 0,
-        borderRadius: 4,
+        borderRadius: 4
       }]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display: false }, tooltip: { callbacks: { title: ctx => `Uplift ≈ ${ctx[0].label}` } } },
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { title: ctx => `Uplift ≈ ${ctx[0].label}` } }
+      },
       scales: {
         x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#30363d22' } },
         y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } }
@@ -513,9 +502,9 @@ function buildHist() {
   });
 }
 
-function buildScatter() {
+function initScatterChart() {
   const segGroups = {};
-  SCATTER_RAW.forEach(d => {
+  DATA.scatter.forEach(d => {
     if (!segGroups[d.uplift_segment]) segGroups[d.uplift_segment] = [];
     segGroups[d.uplift_segment].push({ x: d.uplift_score, y: d.expected_incremental_profit, cid: d.customer_id });
   });
@@ -523,23 +512,24 @@ function buildScatter() {
   const datasets = Object.entries(segGroups).map(([seg, pts]) => ({
     label: seg,
     data: pts,
-    backgroundColor: segColor(seg) + 'bb',
-    borderColor: segColor(seg),
+    backgroundColor: getSegmentColor(seg) + 'bb',
+    borderColor: getSegmentColor(seg),
     borderWidth: 0,
     pointRadius: 5,
-    pointHoverRadius: 8,
+    pointHoverRadius: 8
   }));
 
-  chartScatter = new Chart(document.getElementById('chartScatter').getContext('2d'), {
+  charts.scatter = new Chart(document.getElementById('chartScatter').getContext('2d'), {
     type: 'scatter',
     data: { datasets },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
         tooltip: {
           callbacks: {
-            label: ctx => `${ctx.dataset.label} | Uplift: ${ctx.raw.x.toFixed(3)}, EIP: ฿${ctx.raw.y.toFixed(2)}`
+            label: ctx => `${ctx.dataset.label} | τ: ${ctx.raw.x.toFixed(3)}, EIP: ฿${ctx.raw.y.toFixed(2)}`
           }
         }
       },
@@ -551,35 +541,38 @@ function buildScatter() {
   });
 }
 
-function buildProfitCurve() {
-  const maxIdx = PROFIT_CURVE.reduce((mi, d, i, a) => d.profit > a[mi].profit ? i : mi, 0);
-  chartProfit = new Chart(document.getElementById('chartProfit').getContext('2d'), {
+function initProfitCurveChart() {
+  const maxIdx = DATA.profitCurve.reduce((mi, d, i, a) => d.profit > a[mi].profit ? i : mi, 0);
+  const maxPct = DATA.profitCurve[maxIdx].pct;
+
+  charts.profit = new Chart(document.getElementById('chartProfit').getContext('2d'), {
     type: 'line',
     data: {
-      labels: PROFIT_CURVE.map(d => d.pct + '%'),
+      labels: DATA.profitCurve.map(d => d.pct + '%'),
       datasets: [
         {
           label: 'Optimized Cumulative Profit',
-          data: PROFIT_CURVE.map(d => d.profit),
+          data: DATA.profitCurve.map(d => d.profit),
           borderColor: '#3fb950',
           backgroundColor: 'rgba(63,185,80,.08)',
           fill: true,
           borderWidth: 2.5,
           pointRadius: 0,
-          tension: 0.3,
+          tension: 0.3
         },
         {
           label: 'Zero-Profit Baseline',
-          data: PROFIT_CURVE.map(() => 0),
+          data: DATA.profitCurve.map(() => 0),
           borderColor: '#f8514966',
           borderDash: [6, 4],
           borderWidth: 1.5,
-          pointRadius: 0,
+          pointRadius: 0
         }
       ]
     },
     options: {
-      responsive: true, maintainAspectRatio: false,
+      responsive: true,
+      maintainAspectRatio: false,
       plugins: {
         legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
         tooltip: {
@@ -587,9 +580,8 @@ function buildProfitCurve() {
             title: ctx => `Top ${ctx[0].label} targeted`,
             label: ctx => ctx.datasetIndex === 0 ? ` Net Profit: ฿${ctx.raw.toFixed(2)}` : null
           },
-          filter: item => item.datasetIndex === 0,
-        },
-        annotation: { /* could add optimal marker */ }
+          filter: item => item.datasetIndex === 0
+        }
       },
       scales: {
         x: { ticks: { color: '#8b949e', maxTicksLimit: 10 }, grid: { color: '#30363d66' } },
@@ -598,148 +590,146 @@ function buildProfitCurve() {
     }
   });
 
-  // Draw vertical line at max profit
+  // Add optimal point marker
   const plugin = {
-    id: 'vertLine',
+    id: 'optimalMarker',
     afterDraw(chart) {
-      const ctx2 = chart.ctx;
+      const ctx = chart.ctx;
       const xScale = chart.scales.x;
       const x = xScale.getPixelForValue(maxIdx);
       const top = chart.chartArea.top;
       const bot = chart.chartArea.bottom;
-      ctx2.save();
-      ctx2.strokeStyle = '#a371f7';
-      ctx2.lineWidth = 2;
-      ctx2.setLineDash([4, 3]);
-      ctx2.beginPath(); ctx2.moveTo(x, top); ctx2.lineTo(x, bot); ctx2.stroke();
-      ctx2.fillStyle = '#a371f7';
-      ctx2.font = '11px Inter';
-      ctx2.fillText(`Optimal ≈ ${PROFIT_CURVE[maxIdx].pct}%`, x + 4, top + 14);
-      ctx2.restore();
+      
+      ctx.save();
+      ctx.strokeStyle = '#a371f7';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([4, 3]);
+      ctx.beginPath();
+      ctx.moveTo(x, top);
+      ctx.lineTo(x, bot);
+      ctx.stroke();
+      ctx.fillStyle = '#a371f7';
+      ctx.font = '11px Inter';
+      ctx.fillText(`Optimal ≈ ${maxPct}%`, x + 4, top + 14);
+      ctx.restore();
     }
   };
   Chart.register(plugin);
 }
 
-// ── Live update logic ─────────────────────────────────────────────────────────
-function getParams() {
-  return {
-    price:    parseFloat(document.getElementById('slPrice').value),
-    discount: parseFloat(document.getElementById('slDiscount').value) / 100,
-    cogs:     parseFloat(document.getElementById('slCogs').value),
-    cost:     parseFloat(document.getElementById('slCampaign').value),
-    segment:  document.getElementById('selSegment').value,
-  };
-}
+// ═════════════════════════════════════════════════════════════════════════════════
+// STATE & UPDATE LOGIC
+// ═════════════════════════════════════════════════════════════════════════════════
 
-function calcEIP(pt, pc, p, d, cogs, cost) {
-  const tau = pt - pc;
-  const disc = p * d;
-  return tau * (p - cogs) - disc * pt - cost;
-}
+const appState = {
+  getParams() {
+    return {
+      price: parseFloat(document.getElementById('slPrice').value),
+      discount: parseFloat(document.getElementById('slDiscount').value) / 100,
+      cogs: parseFloat(document.getElementById('slCogs').value),
+      cost: parseFloat(document.getElementById('slCampaign').value),
+      segment: document.getElementById('selSegment').value
+    };
+  },
 
-function update() {
-  const { price, discount, cogs, cost, segment } = getParams();
+  updateLabels(params) {
+    document.getElementById('vPrice').textContent = formatCurrency(params.price);
+    document.getElementById('vDiscount').textContent = (params.discount * 100) + '%';
+    document.getElementById('vCogs').textContent = formatCurrency(params.cogs);
+    document.getElementById('vCampaign').textContent = formatCurrency(params.cost);
 
-  // Update labels
-  document.getElementById('vPrice').textContent    = '฿' + price;
-  document.getElementById('vDiscount').textContent = discount*100 + '%';
-  document.getElementById('vCogs').textContent     = '฿' + cogs;
-  document.getElementById('vCampaign').textContent = '฿' + parseFloat(document.getElementById('slCampaign').value).toFixed(2);
+    const discountAmount = params.price * params.discount;
+    document.getElementById('fEIR').textContent = `EIR = τ × ฿${params.price} − ฿${discountAmount.toFixed(2)} × P(Buy|T)`;
+    document.getElementById('fEIP').textContent = `EIP = τ × (฿${params.price} − ฿${params.cogs}) − ฿${discountAmount.toFixed(2)} × P(Buy|T) − ฿${params.cost.toFixed(2)}`;
+  },
 
-  // Update formula display
-  const disc = (price * discount).toFixed(2);
-  document.getElementById('fEIR').textContent = `EIR = τ × ฿${price} − ฿${disc} × P(Buy|T)`;
-  document.getElementById('fEIP').textContent = `EIP = τ × (฿${price} − ฿${cogs}) − ฿${disc} × P(Buy|T) − ฿${parseFloat(document.getElementById('slCampaign').value).toFixed(2)}`;
+  updateKPIs(params) {
+    let targeted = 0, sleeping = 0, optProfit = 0, uniformProfit = 0, budgetOpt = 0, budgetAll = 0;
 
-  // Recalculate for each of the top20 entries
-  let optProfit = 0, uniformProfit = 0, targeted = 0, sleeping = 0, budgetOpt = 0, budgetAll = 0;
+    DATA.scatter.forEach(r => {
+      const tau = r.uplift_score;
+      const eip = calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost);
+      const action = tau < 0 ? 'SLEEPING' : eip > 0 ? 'TARGET' : 'SKIP';
 
-  const updated = TOP20.map(r => {
-    const tau = r.uplift_score;
-    const eip = calcEIP(r.p_buy_treatment, r.p_buy_control, price, discount, cogs, cost);
-    const action = tau < 0 ? 'SLEEPING DOG (DO NOT DISTURB)' : eip > 0 ? 'TARGET' : 'SKIP';
-    return { ...r, eip, action };
-  });
+      if (action === 'TARGET') {
+        targeted++;
+        optProfit += eip;
+      }
+      if (action === 'SLEEPING') sleeping++;
 
-  // For KPIs, use SCATTER_RAW (300 pts) extended with ratio extrapolation
-  let scatterTargeted = 0, scatterSleeping = 0, scatterOptP = 0, scatterUniP = 0;
-  let scatterBudgetOpt = 0, scatterBudgetAll = 0;
-  SCATTER_RAW.forEach(r => {
-    const tau = r.uplift_score;
-    const eip = calcEIP(r.p_buy_treatment, r.p_buy_control, price, discount, cogs, cost);
-    const action = tau < 0 ? 'SLEEPING DOG' : eip > 0 ? 'TARGET' : 'SKIP';
-    if (action === 'TARGET') { scatterTargeted++; scatterOptP += eip; }
-    if (action === 'SLEEPING DOG') scatterSleeping++;
-    scatterUniP += eip; // uniform = target everyone
-    const discAmt = price * discount;
-    const budgetCost = cost + discAmt * r.p_buy_treatment;
-    scatterBudgetAll += budgetCost;
-    if (action === 'TARGET') scatterBudgetOpt += budgetCost;
-  });
-  // Scale to 1000 customers (×1000/300)
-  const scale = 1000 / 300;
-  const estProfit    = scatterOptP * scale;
-  const estUniform   = scatterUniP * scale;
-  const estTargeted  = Math.round(scatterTargeted * scale);
-  const estSleeping  = Math.round(scatterSleeping * scale);
-  const savedPct     = scatterBudgetAll > 0 ? ((1 - scatterBudgetOpt/scatterBudgetAll)*100) : 0;
-  const savedAmt     = (scatterBudgetAll - scatterBudgetOpt) * scale;
+      uniformProfit += eip;
+      const discAmt = params.price * params.discount;
+      const budgetCost = params.cost + discAmt * r.p_buy_treatment;
+      budgetAll += budgetCost;
+      if (action === 'TARGET') budgetOpt += budgetCost;
+    });
 
-  // KPIs
-  document.getElementById('kpiProfit').textContent    = '฿' + estProfit.toLocaleString('th', {maximumFractionDigits:0});
-  document.getElementById('kpiProfitSub').textContent = `vs ฿${estUniform.toLocaleString('th',{maximumFractionDigits:0})} (Uniform)`;
-  document.getElementById('kpiTargeted').textContent  = estTargeted.toLocaleString();
-  document.getElementById('kpiTargetedSub').textContent = `of 1,000 customers`;
-  document.getElementById('kpiSaved').textContent     = savedPct.toFixed(1) + '%';
-  document.getElementById('kpiSavedSub').textContent  = `≈ ฿${savedAmt.toLocaleString('th',{maximumFractionDigits:0})} saved`;
-  document.getElementById('kpiSleeping').textContent  = estSleeping.toLocaleString();
+    const scale = 1000 / 300;
+    const estProfit = optProfit * scale;
+    const estUniform = uniformProfit * scale;
+    const estTargeted = Math.round(targeted * scale);
+    const estSleeping = Math.round(sleeping * scale);
+    const savedPct = budgetAll > 0 ? ((1 - budgetOpt / budgetAll) * 100) : 0;
+    const savedAmt = (budgetAll - budgetOpt) * scale;
 
-  // Table
-  const filtSeg = segment;
-  const tableRows = TOP20
-    .map(r => ({
-      ...r,
-      eip: calcEIP(r.p_buy_treatment, r.p_buy_control, price, discount, cogs, cost),
-      action: r.uplift_score < 0 ? 'SLEEPING DOG (DO NOT DISTURB)' : calcEIP(r.p_buy_treatment, r.p_buy_control, price, discount, cogs, cost) > 0 ? 'TARGET' : 'SKIP'
-    }))
-    .filter(r => filtSeg === 'all' || r.uplift_segment === filtSeg)
-    .sort((a,b) => b.eip - a.eip)
-    .slice(0, 15);
+    document.getElementById('kpiProfit').textContent = formatCurrency(estProfit);
+    document.getElementById('kpiProfitSub').textContent = `vs ${formatCurrency(estUniform)} (Uniform)`;
+    document.getElementById('kpiTargeted').textContent = estTargeted.toLocaleString();
+    document.getElementById('kpiTargetedSub').textContent = 'of 1,000 customers';
+    document.getElementById('kpiSaved').textContent = savedPct.toFixed(1) + '%';
+    document.getElementById('kpiSavedSub').textContent = `≈ ${formatCurrency(savedAmt)} saved`;
+    document.getElementById('kpiSleeping').textContent = estSleeping.toLocaleString();
+  },
 
-  const tbody = document.getElementById('topTable');
-  if (tableRows.length === 0) {
-    tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">No customers match this filter.</td></tr>`;
-    return;
+  updateTable(params) {
+    const filtSegment = params.segment;
+    const tableRows = DATA.top20
+      .map(r => ({
+        ...r,
+        eip: calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost)
+      }))
+      .filter(r => filtSegment === 'all' || r.uplift_segment === filtSegment)
+      .sort((a, b) => b.eip - a.eip)
+      .slice(0, 15);
+
+    const tbody = document.getElementById('topTable');
+    if (tableRows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">No customers match this filter.</td></tr>`;
+      return;
+    }
+
+    tbody.innerHTML = tableRows.map(r => {
+      const action = getActionLabel(r.uplift_score, r.eip);
+      const colors = SEGMENT_COLORS[r.uplift_segment];
+      const segChip = `<span class="chip ${colors.chip}">${r.uplift_segment}</span>`;
+      const actionChip = `<span class="chip ${action.chip}">${action.label === 'SLEEPING DOG (DO NOT DISTURB)' ? 'Sleeping Dog ⚠️' : action.label}</span>`;
+      const custChip = `<span class="chip ${r.customer_taxonomies === 'High Value' ? 'gold' : 'muted'}">${r.customer_taxonomies}</span>`;
+
+      return `<tr>
+        <td style="font-weight:600;color:var(--blue)">${r.customer_id}</td>
+        <td>${custChip}</td>
+        <td style="font-family:monospace">${r.uplift_score.toFixed(4)}</td>
+        <td style="font-family:monospace">${r.p_buy_treatment.toFixed(4)}</td>
+        <td style="font-family:monospace">${r.p_buy_control.toFixed(4)}</td>
+        <td style="font-weight:700;color:${r.eip > 0 ? 'var(--green)' : 'var(--red)'}">${formatCurrency(r.eip)}</td>
+        <td>${segChip}</td>
+      </tr>`;
+    }).join('');
+  },
+
+  update() {
+    const params = this.getParams();
+    this.updateLabels(params);
+    this.updateKPIs(params);
+    this.updateTable(params);
   }
+};
 
-  tbody.innerHTML = tableRows.map(r => {
-    const actionChip = r.action === 'TARGET'
-      ? `<span class="chip green">TARGET</span>`
-      : r.action.startsWith('SLEEPING')
-      ? `<span class="chip red">Sleeping Dog ⚠️</span>`
-      : `<span class="chip muted">SKIP</span>`;
-    const segChip = `<span class="chip ${r.uplift_segment === 'Persuadal' ? 'green' : r.uplift_segment === 'Sure Thing' ? 'blue' : r.uplift_segment === 'Sleeping Dog' ? 'red' : 'muted'}">${r.uplift_segment}</span>`;
-    const custSeg = `<span class="chip ${r.customer_taxonomies === 'High Value' ? 'gold' : 'muted'}">${r.customer_taxonomies}</span>`;
-    return `<tr>
-      <td style="font-weight:600;color:var(--blue)">${r.customer_id}</td>
-      <td>${custSeg}</td>
-      <td style="font-family:monospace">${r.uplift_score.toFixed(4)}</td>
-      <td style="font-family:monospace">${r.p_buy_treatment.toFixed(4)}</td>
-      <td style="font-family:monospace">${r.p_buy_control.toFixed(4)}</td>
-      <td style="font-weight:700;color:${r.eip > 0 ? 'var(--green)' : 'var(--red)'}">฿${r.eip.toFixed(2)}</td>
-      <td>${segChip}</td>
-    </tr>`;
-  }).join('');
-}
+// INITIALIZATION
 
-// ── Init ───────────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
-  buildDonut();
-  buildHist();
-  buildScatter();
-  buildProfitCurve();
-  update();
+  initCharts();
+  appState.update();
 });
 </script>
 </body>
