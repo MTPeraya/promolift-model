@@ -54,36 +54,35 @@ Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
 ## 🗂️ Repository Structure
 
 ```
-promotion-response-model/
+promolift-model/
 │
-├── README.md                    ← ไฟล์นี้
+├── README.md                           ← ไฟล์อธิบายโปรเจกต์ (ไฟล์นี้)
+├── demo.html                           ← Interactive dashboard (HTML/JS) เปิดดูได้ทันทีบนเบราว์เซอร์
+├── .gitignore                          ← การระบุไฟล์ที่ต้องการให้ Git ข้ามการติดตาม
 │
-├── data/
-│   ├── mock_sales_transactions.csv
-│   ├── mock_customer_master.csv
-│   ├── mock_product_master.csv
-│   ├── mock_promotion_master.csv
-│   ├── mock_store_master.csv
-│   └── data_dictionary.md       ← คำอธิบาย column ทุกตาราง
+├── data/                               ← โฟลเดอร์เก็บข้อมูลจำลอง (Mock Data)
+│   ├── mock_sales_transactions.csv     ← ประวัติการทำรายการซื้อขายย้อนหลัง
+│   ├── mock_customer_master.csv        ← ข้อมูลลูกค้าหลักและหมวดหมู่การแบ่งกลุ่มลูกค้า
+│   ├── mock_product_master.csv         ← ข้อมูลสินค้าหลัก ราคาสินค้า และต้นทุน (COGS)
+│   ├── mock_promotion_master.csv       ← ข้อมูลรูปแบบโปรโมชัน ส่วนลด และช่วงเวลาแคมเปญ
+│   ├── mock_store_master.csv           ← ข้อมูลสาขาของร้านค้า
+│   ├── mock_campaign_dispatch.csv      ← ข้อมูลลูกค้า 1,000 คนในแคมเปญทดสอบ (Treatment/Control Split)
+│   ├── mock_customer_master_with_ground_truth.csv ← ข้อมูลลูกค้าที่มี Uplift Segment จริง สำหรับตรวจสอบโมเดล
+│   └── data_dictionary.md              ← คำอธิบายของแต่ละคอลัมน์ในตารางข้อมูลข้างต้น
 │
-├── notebooks/
-│   ├── 01_eda_data_quality.ipynb      ← EDA + data quality check
-│   ├── 02_feature_engineering.ipynb   ← RFM + promo features
-│   ├── 03_uplift_model.ipynb          ← T-Learner model + validation
-│   └── 04_mock_output.ipynb           ← Targeting list + mock dashboard
+├── src/                                ← โค้ดหลักในการประมวลผลโมเดลและแอปพลิเคชัน
+│   ├── mock_data_generator.py          ← สคริปต์สำหรับสุ่มสร้างชุดข้อมูล Mock Data ทั้งหมด
+│   ├── data_loader.py                  ← สคริปต์ช่วยโหลดข้อมูล (Helper class) จาก CSV เข้าสู่ Pandas
+│   ├── features.py                     ← คำนวณพฤติกรรมลูกค้าเชิงประวัติ (RFM & Promo Redemptions)
+│   ├── uplift_model.py                 ← ตัวโมเดล T-Learner (LightGBM) และสูตรคำนวณ Qini Curve
+│   ├── scoring.py                      ← สคริปต์ประเมินความคุ้มค่าแคมเปญรายบุคคล (EIP, EIR) และจัดทำข้อเสนอแนะ
+│   └── app.py                          ← แอปพลิเคชัน Streamlit Dashboard ในการจำลองแคมเปญจริง
 │
-├── src/
-│   ├── data_loader.py           ← load & join 5 tables
-│   ├── features.py              ← feature engineering functions
-│   ├── uplift_model.py          ← T-Learner wrapper
-│   └── scoring.py               ← score & rank customers per promo
+├── tests/                              ← โฟลเดอร์เก็บโค้ดการทดสอบระบบ
+│   └── test_pipeline.py                ← การทดสอบความถูกต้องของการคำนวณและขั้นตอนการทำงานทั้งหมด
 │
-├── outputs/
-│   ├── targeting_list_sample.csv    ← ตัวอย่าง output ที่ส่งให้ planner
-│   └── mock_dashboard_sketch.png    ← dashboard wireframe
-│
-└── docs/
-    └── workflow_diagram.png         ← end-to-end pipeline diagram
+└── outputs/                            ← โฟลเดอร์เก็บผลลัพธ์ของโมเดล
+    └── targeting_list_sample.csv       ← รายชื่อลูกค้าเป้าหมายที่โมเดลแนะนำสำหรับการส่งโปรโมชัน
 ```
 
 ---
@@ -132,18 +131,20 @@ LEFT JOIN store_master     s  ON t.store_id      = s.store_id
 ## ⚙️ Features ที่ใช้ใน Model
 
 ```python
-CUSTOMER_FEATURES = [
-    "recency_days",        # ห่างจากการซื้อครั้งล่าสุด
-    "frequency_30d",       # ความถี่ในการซื้อ
-    "monetary_90d",        # ยอดใช้จ่ายสะสม
-    "customer_segment",    # จาก customer_taxonomies (encoded)
-]
-
-PROMO_FEATURES = [
-    "discount_pct",        # % ส่วนลด
-    "promo_duration_days", # ระยะเวลา promo
-    "product_category",    # ประเภทสินค้าที่เข้าร่วม
-    "store_type",          # ประเภทสาขา
+# Actual features used in uplift_model.py / scoring.py
+FEATURE_COLS = [
+    # RFM features (derived from historical transactions)
+    "recency_days",          # Days since last purchase (lower = more active)
+    "frequency_30d",         # Number of distinct orders in last 30 days
+    "monetary_90d",          # Total spend (THB) in last 90 days
+    "total_spend",           # All-time total spend (THB)
+    "total_visits",          # All-time number of distinct orders
+    "total_items",           # All-time total units purchased
+    "avg_basket_value",      # total_spend / total_visits
+    # Promo engagement
+    "promo_ratio",           # Share of historical transactions with a promo applied
+    # Customer segment (encoded)
+    "customer_segment_code", # Encoded from customer_taxonomies (High Value=3 … Occasional=0)
 ]
 ```
 
@@ -188,6 +189,15 @@ PROMO_FEATURES = [
 - **Baseline B:** target เฉพาะ customer segment ที่ซื้อสินค้า category นั้นเคยซื้อมาก่อน
 - **Model:** Uplift T-Learner top-30% targeting
 
+### ⚠️ Known Limitations (Mock Data)
+
+| Observation | Root Cause | Impact |
+|---|---|---|
+| Model predicts ~280 Sleeping Dogs; ground truth has only ~97 | T-Learner trained on small imbalanced pilot (768 treatment / 232 control). With few control samples, Model C learns a noisy, low-propensity surface that inflates negative uplift estimates. | `SLEEPING DOG` label is conservative — real-world data with balanced holdout will reduce this rate significantly. |
+| Training and scoring on same customers (no held-out test set) | This is a prototype/demo pipeline only | Do not use AUC/Qini values for real deployment decisions without a proper train/val/test split |
+
+> **On production data:** Use at least 50/50 treatment-control split, and evaluate Qini on a completely held-out test set.
+
 ---
 
 ## 🛠️ Tech Stack
@@ -197,8 +207,7 @@ PROMO_FEATURES = [
 | Data | Python, Pandas, SQL |
 | Model | LightGBM, Scikit-learn |
 | Validation | Qini Curve, Uplift@k |
-| Notebook | Google Colab |
-| Dashboard | Streamlit (prototype) |
+| Dashboard | Streamlit (prototype) / HTML (interactive demo) |
 | Version Control | GitHub |
 
 ---

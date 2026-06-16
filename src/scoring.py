@@ -79,38 +79,29 @@ def run_scoring_pipeline(data_dir='data', output_dir='outputs'):
     scored_df["expected_incremental_revenue"] = np.round(eir, 2)
     scored_df["expected_incremental_profit"] = np.round(eip, 2)
     
-    # Categorize into 4 quadrants
-    uplift_segments = []
-    for idx, r in scored_df.iterrows():
-        up = r["uplift_score"]
-        pc_val = r["p_buy_control"]
-        if up >= 0.05:
-            uplift_segments.append("Persuadal")
-        elif up <= -0.05:
-            uplift_segments.append("Sleeping Dog")
-        else:
-            if pc_val >= 0.50:
-                uplift_segments.append("Sure Thing")
-            else:
-                uplift_segments.append("Lost Cause")
-                
-    scored_df["uplift_segment"] = uplift_segments
-    
-    # Recommend Action: Target if expected profit > 0
-    # Also explicitly label Sleeping Dogs so marketers are warned
-    actions = []
-    for idx, r in scored_df.iterrows():
-        eip_val = r["expected_incremental_profit"]
-        up_val = r["uplift_score"]
-        
-        if up_val < 0:
-            actions.append("SLEEPING DOG (DO NOT DISTURB)")
-        elif eip_val > 0:
-            actions.append("TARGET")
-        else:
-            actions.append("SKIP")
-            
-    scored_df["recommended_action"] = actions
+    # Categorize into 4 uplift quadrants (vectorized)
+    up = scored_df["uplift_score"]
+    pc_val = scored_df["p_buy_control"]
+    scored_df["uplift_segment"] = np.select(
+        [
+            up >= 0.05,
+            up <= -0.05,
+            pc_val >= 0.50,
+        ],
+        ["Persuadal", "Sleeping Dog", "Sure Thing"],
+        default="Lost Cause"
+    )
+
+    # Recommend Action: vectorized — Sleeping Dogs first, then EIP filter
+    eip_val = scored_df["expected_incremental_profit"]
+    scored_df["recommended_action"] = np.select(
+        [
+            up < 0,
+            eip_val > 0,
+        ],
+        ["SLEEPING DOG (DO NOT DISTURB)", "TARGET"],
+        default="SKIP"
+    )
     
     # Select columns to output for marketing planners
     output_cols = [

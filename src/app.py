@@ -116,10 +116,10 @@ st.sidebar.image("https://img.icons8.com/nolan/96/target.png", width=80)
 st.sidebar.title("Campaign Control Panel")
 st.sidebar.markdown("Configure promotion parameters to dynamically recalculate targets.")
 
-# Product Category info
+# Product Category info — prices align with mock_product_master.csv generated values
 category_options = {
-    "P001 (Household Item)": {"price": 250.0, "cogs": 150.0, "discount": 0.20},
-    "P012 (Personal Care)": {"price": 180.0, "cogs": 90.0, "discount": 0.15},
+    "P001 (Household Item)": {"price": 163.37, "cogs": 89.89, "discount": 0.20},
+    "P012 (Personal Care)": {"price": 180.0, "cogs": 99.0, "discount": 0.15},
     "P025 (Dry Grocery)": {"price": 85.0, "cogs": 51.0, "discount": 0.10},
     "P035 (Beverage Package)": {"price": 45.0, "cogs": 22.5, "discount": 0.25}
 }
@@ -144,19 +144,14 @@ df_calc = df_base.copy()
 df_calc["expected_incremental_revenue"] = uplift * price - discount * p_t
 df_calc["expected_incremental_profit"] = uplift * (price - cogs) - discount * p_t - campaign_cost
 
-# Dynamic Action logic
-actions = []
-for idx, r in df_calc.iterrows():
-    up_val = r["uplift_score"]
-    eip_val = r["expected_incremental_profit"]
-    if up_val < 0:
-        actions.append("SLEEPING DOG (DO NOT DISTURB)")
-    elif eip_val > 0:
-        actions.append("TARGET")
-    else:
-        actions.append("SKIP")
-
-df_calc["recommended_action"] = actions
+# Dynamic Action logic (vectorized)
+up_arr = df_calc["uplift_score"]
+eip_arr = df_calc["expected_incremental_profit"]
+df_calc["recommended_action"] = np.select(
+    [up_arr < 0, eip_arr > 0],
+    ["SLEEPING DOG (DO NOT DISTURB)", "TARGET"],
+    default="SKIP"
+)
 
 # Title
 st.title("🎯 PromoLift: Smart Promotion Targeting Dashboard")
