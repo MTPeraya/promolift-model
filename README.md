@@ -207,7 +207,7 @@ PROMO_FEATURES = [
 
 | งาน | Tool | วิธีตรวจสอบผลลัพธ์ |
 |---|---|---|
-| Draft README / proposal structure | Claude | อ่านทวน ปรับให้ตรงกับ business context จริง |
-| Mock data generation | Claude + Pandas | check distribution ด้วย `.describe()` และ plot histogram |
-| Pseudo-code uplift model | Claude | ทดสอบรัน unit test กับ mock data |
-| Slide deck | Claude | ตรวจ content ทุก slide ว่าตอบ template ครบ |
+| Draft README / proposal structure | Claude + Antigravity | อ่านทวน ปรับให้ตรงกับ business context จริง |
+| Mock data generation | Antigravity | check distribution ด้วย `.describe()` และ plot histogram |
+| Pseudo-code uplift model | Antigravity | ทดสอบรัน unit test กับ mock data |
+| Slide deck | Antigravity + Canva AI | ตรวจ content ทุก slide ว่าตอบ template ครบ |
