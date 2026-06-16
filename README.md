@@ -5,7 +5,7 @@
 
 ---
 
-## 📌 Problem Statement
+## ที่มาและความสำคัญของปัญหา (Problem Statement)
 
 ร้านค้า SME Retail ส่วนใหญ่ยิง promotion แบบ **uniform** — ให้ส่วนลดเหมือนกันทุกคน ทุกสาขา ทุก segment ซึ่งทำให้เกิด promo waste จาก 2 กรณีหลัก:
 
@@ -18,22 +18,22 @@
 
 ---
 
-## 💡 Proposed Solution: Uplift Modeling & Value-Based Scoring
+## Proposed Solution: Uplift Modeling & Value-Based Scoring
 
-### 1. Uplift Segmentation (4-Quadrant Model)
+### 1. การแบ่งกลุ่มลูกค้าด้วย Uplift (4-Quadrant Model)
 การทำโปรโมชันแบบเดิมจะดูเพียงโอกาสในการซื้อ (Propensity) แต่ Uplift Model จะคำนวณ **Incremental Effect** เพื่อแบ่งลูกค้าออกเป็น 4 กลุ่มหลักอย่างชัดเจน:
 
-*   **Persuadables (กลุ่มจูงใจได้):** ลูกค้าที่จะซื้อ**ก็ต่อเมื่อ**ได้รับโปรโมชันเท่านั้น (Uplift > 0 สูง) 🎯 *ควรส่งโปรโมชันให้กลุ่มนี้เพื่อสร้างยอดขายเพิ่ม (Incremental Revenue)*
-*   **Sure Things (กลุ่มของตาย):** ลูกค้าที่จะซื้อ**ไม่ว่าจะได้**โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity สูง) 💸 *ไม่ควรส่งโปรโมชันให้ เพราะทำให้เสียส่วนลดเปล่าประโยชน์ (Cannibalization)*
-*   **Lost Causes (กลุ่มปล่อยไป):** ลูกค้าที่**อย่างไรก็ไม่ซื้อ** ไม่ว่าจะได้โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity ต่ำ) 💤 *ไม่ควรส่งโปรโมชันให้ เพราะสิ้นเปลืองงบการตลาด*
-*   **Sleeping Dogs (กลุ่มหมาหลับ - Do Not Disturb):** ลูกค้าที่จะซื้อหากปล่อยไว้เฉยๆ แต่**หากส่งโปรโมชันไปจะเลิกซื้อ** (Uplift < 0 ต่ำมาก) ⚠️ *ห้ามส่งโปรโมชันให้เด็ดขาด เช่น ลูกค้าเกิดความรำคาญจน Unsubscribe หรือส่วนลดทำให้ภาพลักษณ์แบรนด์ลดลง (Cheapening Effect) การหลีกเลี่ยงกลุ่มนี้ช่วยป้องกันการสูญเสียรายได้โดยตรง*
+*   **Persuadables (กลุ่มจูงใจได้):** ลูกค้าที่จะซื้อ**ก็ต่อเมื่อ**ได้รับโปรโมชันเท่านั้น (Uplift > 0 สูง) *ควรส่งโปรโมชันให้กลุ่มนี้เพื่อสร้างยอดขายเพิ่ม (Incremental Revenue)*
+*   **Sure Things (กลุ่มของตาย):** ลูกค้าที่จะซื้อ**ไม่ว่าจะได้**โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity สูง) *ไม่ควรส่งโปรโมชันให้ เพราะทำให้เสียส่วนลดเปล่าประโยชน์ (Cannibalization)*
+*   **Lost Causes (กลุ่มปล่อยไป):** ลูกค้าที่**อย่างไรก็ไม่ซื้อ** ไม่ว่าจะได้โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity ต่ำ) *ไม่ควรส่งโปรโมชันให้ เพราะสิ้นเปลืองงบการตลาด*
+*   **Sleeping Dogs (กลุ่มหมาหลับ - Do Not Disturb):** ลูกค้าที่จะซื้อหากปล่อยไว้เฉยๆ แต่**หากส่งโปรโมชันไปจะเลิกซื้อ** (Uplift < 0 ต่ำมาก) *ห้ามส่งโปรโมชันให้เด็ดขาด เช่น ลูกค้าเกิดความรำคาญจน Unsubscribe หรือส่วนลดทำให้ภาพลักษณ์แบรนด์ลดลง (Cheapening Effect) การหลีกเลี่ยงกลุ่มนี้ช่วยป้องกันการสูญเสียรายได้โดยตรง*
 
 ### 2. แนวคิดการคำนวณ Uplift Score
 ```
 Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
 ```
 
-### 3. Value-Based Scoring: Expected Incremental Profit (EIP)
+### 3. การประเมินมูลค่าลูกค้า: กำไรส่วนเพิ่มที่คาดหวัง (Expected Incremental Profit: EIP)
 เนื่องจากเป้าหมายคือการเพิ่มรายได้และกำไรสูงสุด การใช้เพียง Uplift Score อาจไม่สะท้อนมูลค่าจริง (เช่น ลูกค้าเปลี่ยนมาซื้อสินค้าถูกลง) เราจึงนำผลลัพธ์จากโมเดลมาคำนวณเป็นตัวเงินด้วย **Expected Incremental Profit (EIP)** สำหรับลูกค้าแต่ละคน $i$:
 
 *   **Expected Incremental Revenue (EIR):**
@@ -43,7 +43,7 @@ Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
 
 เราจะ Target เฉพาะลูกค้าที่มี **EIP > 0** เท่านั้นเพื่อการันตีว่า Campaign จะเพิ่มกำไรได้จริง
 
-### 4. Approach ที่เลือก: Two-Model (T-Learner)
+### 4. แนวทางที่เลือกใช้: Two-Model (T-Learner)
 เราใช้ **T-Learner** ในการประมาณค่าความน่าจะเป็น:
 *   **Model T:** Train บนกลุ่ม Treatment (ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Treatment})$
 *   **Model C:** Train บนกลุ่ม Control (ไม่ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Control})$
@@ -51,7 +51,7 @@ Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
 
 ---
 
-## 🗂️ Repository Structure
+## Repository Structure
 
 ```
 promolift-model/
@@ -87,19 +87,19 @@ promolift-model/
 
 ---
 
-## 📊 Data Plan
+## แผนงานจัดการข้อมูล (Data Plan)
 
-### Tables ที่ใช้ (จาก schema ที่กำหนด)
+### ตารางข้อมูลที่ใช้งาน (ตาม Schema ที่กำหนด)
 
-| Table | Key Columns | ใช้ทำอะไร |
+| ตาราง | คีย์หลัก (Key Columns) | การนำไปใช้งาน |
 |---|---|---|
-| `sales_transactions` | datetime, product_id, price, qty, customer_id, promotion_id, store_id | fact table หลัก — ดู treatment/control |
-| `customer_master` | customer_id, customer_taxonomies | customer segment features |
-| `promotion_master` | promotion_id, discount, product_id, start_date, end_date | promo metadata + discount depth |
-| `product_master` | product_id, price, product_taxonomies | product category features |
-| `store_master` | store_id, store_taxonomies | store type/region features |
+| `sales_transactions` | datetime, product_id, price, qty, customer_id, promotion_id, store_id | ตารางธุรกรรมหลัก (Fact Table) — ใช้ระบุกลุ่ม Treatment และ Control |
+| `customer_master` | customer_id, customer_taxonomies | สำหรับสร้างฟีเจอร์พฤติกรรมลูกค้า (Customer Segment Features) |
+| `promotion_master` | promotion_id, discount, product_id, start_date, end_date | ข้อมูลรายละเอียดโปรโมชันและส่วนลด (Promo Metadata & Discount Depth) |
+| `product_master` | product_id, price, product_taxonomies | สำหรับสร้างฟีเจอร์ประเภทและรายละเอียดของสินค้า (Product Category Features) |
+| `store_master` | store_id, store_taxonomies | สำหรับสร้างฟีเจอร์ระบุสาขาและพื้นที่ร้านค้า (Store Type/Region Features) |
 
-### Join Logic
+### ขั้นตอนการเชื่อมโยงข้อมูล (Join Logic)
 ```sql
 SELECT
     t.*,
@@ -114,9 +114,9 @@ LEFT JOIN product_master   pr ON t.product_id    = pr.product_id
 LEFT JOIN store_master     s  ON t.store_id      = s.store_id
 ```
 
-### Mock Data ที่เพิ่มเอง
+### ข้อมูลจำลองที่สร้างเพิ่มเติม (Mock Data)
 
-| Column | เหตุผลที่เพิ่ม |
+| คอลัมน์ (Column) | เหตุผลที่เพิ่มเติมเข้ามา |
 |---|---|
 | `recency_days` | วันนับจากครั้งสุดท้ายที่ซื้อ — RFM feature สำคัญ |
 | `frequency_30d` | จำนวนครั้งที่ซื้อใน 30 วันที่ผ่านมา |
@@ -128,10 +128,10 @@ LEFT JOIN store_master     s  ON t.store_id      = s.store_id
 
 ---
 
-## ⚙️ Features ที่ใช้ใน Model
+## ฟีเจอร์ที่ใช้ในโมเดล (Features)
 
 ```python
-# Actual features used in uplift_model.py / scoring.py
+# ฟีเจอร์จริงที่ใช้ประมวลผลใน uplift_model.py / scoring.py
 FEATURE_COLS = [
     # RFM features (derived from historical transactions)
     "recency_days",          # Days since last purchase (lower = more active)
@@ -150,11 +150,11 @@ FEATURE_COLS = [
 
 ---
 
-## 📤 Expected Output
+## ผลลัพธ์ที่คาดหวัง (Expected Output)
 
-### สิ่งที่ส่งมอบให้ลูกค้า
+### สิ่งที่จะส่งมอบ (Deliverables)
 
-1. **Targeting List** — ranked list ของลูกค้าที่ควร target ต่อ promo แต่ละตัว
+1. **Targeting List (รายชื่อกลุ่มเป้าหมาย)** — รายชื่อลูกค้าเรียงตามลำดับความคุ้มค่าที่ควรได้รับข้อเสนอโปรโมชันแต่ละแคมเปญ
    ```
    customer_id | promo_id | uplift_score | recommended_action
    C001        | P003     | 0.42         | TARGET
@@ -162,61 +162,61 @@ FEATURE_COLS = [
    C003        | P003     | -0.08        | SKIP (sleeping dog)
    ```
 
-2. **Budget Efficiency Report** — เปรียบเทียบ expected revenue ถ้า target top-30% vs ยิงทุกคน
+2. **Budget Efficiency Report (รายงานประสิทธิภาพงบประมาณ)** — รายงานการเปรียบเทียบรายได้ที่คาดว่าจะได้รับระหว่างการทำการตลาดเฉพาะกลุ่ม Top 30% แรกเทียบกับการส่งโปรโมชันให้ลูกค้าทั้งหมด (Uniform)
 
-3. **Mock Dashboard** — Streamlit/Looker Studio ที่ planner กรอง promo และดู top customers ได้
+3. **Mock Dashboard (แดชบอร์ดจำลอง)** — แดชบอร์ดพัฒนาด้วย Streamlit/Looker Studio เพื่อช่วยให้ฝ่ายวางแผน (Planner) กรองข้อมูลโปรโมชันและดูรายชื่อลูกค้าอันดับแรกๆ ได้ทันที
 
 ---
 
-## ✅ Validation Approach
+## แนวทางการวัดผลและตรวจสอบความถูกต้อง (Validation Approach)
 
-### ก่อนมี model สมบูรณ์ (Feasibility Check)
+### ก่อนมีโมเดลที่สมบูรณ์ (การทดสอบความเป็นไปได้)
 ```
-1. แบ่งลูกค้าด้วย RFM score เป็น quartile
-2. ดู promo redemption rate ของแต่ละ quartile
-3. ถ้า Q1 (high-value) redeem สูงกว่า Q4 อย่างมีนัย → signal มีอยู่จริง
+1. แบ่งกลุ่มลูกค้าด้วยคะแนน RFM Score ออกเป็น 4 ส่วนเท่าๆ กัน (Quartiles)
+2. สังเกตสัดส่วนการใช้โปรโมชัน (Redemption Rate) ของลูกค้าในแต่ละกลุ่ม
+3. หากกลุ่ม Q1 (ลูกค้ามูลค่าสูง) มีอัตราการใช้สูงกว่ากลุ่ม Q4 อย่างมีนัยสำคัญ แสดงว่ามีสัญญาณบ่งชี้ที่สามารถใช้ได้จริง
 ```
 
-### เมื่อมี model
-| Metric | Target |
+### เมื่อพัฒนาโมเดลเรียบร้อย
+| ตัวชี้วัด (Metric) | เป้าหมาย (Target) |
 |---|---|
 | AUC-ROC | ≥ 0.72 |
 | Precision@20% | ≥ 65% |
-| Simulated Revenue Uplift | +15% vs uniform promo |
+| ยอดขายส่วนเพิ่มจำลอง (Simulated Revenue Uplift) | +15% เมื่อเทียบกับแคมเปญแบบปกติ (Uniform Promo) |
 
-### Baseline เปรียบเทียบ
-- **Baseline A:** ยิงทุกคน (current state)
-- **Baseline B:** target เฉพาะ customer segment ที่ซื้อสินค้า category นั้นเคยซื้อมาก่อน
-- **Model:** Uplift T-Learner top-30% targeting
+### เกณฑ์เปรียบเทียบมาตรฐาน (Baselines)
+- **Baseline A:** ส่งโปรโมชันให้ลูกค้าทุกคน (แนวทางปัจจุบัน)
+- **Baseline B:** ส่งเฉพาะกลุ่มลูกค้า (Customer Segment) ที่เคยซื้อสินค้าในหมวดหมู่นั้นๆ มาก่อน
+- **Model (โมเดล):** เลือกส่งให้เฉพาะกลุ่มที่มีคะแนน Uplift สูงสุด 30% แรก (Top 30% targeting) ด้วย T-Learner
 
-### ⚠️ Known Limitations (Mock Data)
+### ข้อจำกัดที่ควรทราบ (สำหรับข้อมูลจำลอง)
 
-| Observation | Root Cause | Impact |
+| สิ่งที่พบ (Observation) | สาเหตุหลัก (Root Cause) | ผลกระทบ (Impact) |
 |---|---|---|
-| Model predicts ~280 Sleeping Dogs; ground truth has only ~97 | T-Learner trained on small imbalanced pilot (768 treatment / 232 control). With few control samples, Model C learns a noisy, low-propensity surface that inflates negative uplift estimates. | `SLEEPING DOG` label is conservative — real-world data with balanced holdout will reduce this rate significantly. |
-| Training and scoring on same customers (no held-out test set) | This is a prototype/demo pipeline only | Do not use AUC/Qini values for real deployment decisions without a proper train/val/test split |
+| โมเดลทำนายกลุ่ม Sleeping Dogs ประมาณ 280 คน แต่ข้อมูลจริง (Ground Truth) มีเพียงประมาณ 97 คน | T-Learner ถูกฝึกสอนด้วยข้อมูลนำร่องขนาดเล็กที่ไม่มีความสมดุล (Treatment 768 คน / Control 232 คน) เมื่อกลุ่มตัวอย่าง Control มีน้อย โมเดล C จึงเรียนรู้พฤติกรรมได้ไม่เสถียรและประเมินโอกาสซื้อต่ำเกินไป ส่งผลให้ค่าความแตกต่าง (Uplift) ติดลบมากกว่าความเป็นจริง | การจำแนกประเภทเป็น `SLEEPING DOG` จะมีความรัดกุมสูงกว่าปกติ (จัดกลุ่มเซฟไว้ก่อน) ซึ่งการใช้ข้อมูลจริงที่มีการแบ่งกลุ่ม Holdout อย่างสมดุลจะช่วยลดสัดส่วนนี้ลงได้อย่างมาก |
+| การเทรนโมเดลและวัดผลบนลูกค้ารายเดียวกัน (ไม่มีชุดข้อมูลทดสอบแยกต่างหาก) | เป็นเพียงท่อประมวลผลต้นแบบ (Prototype/Demo Pipeline) เท่านั้น | ห้ามนำค่า AUC/Qini ไปใช้ในการตัดสินใจสำหรับการใช้งานจริงบนระบบงานจริง หากยังไม่มีการแบ่งชุดข้อมูล Train/Validation/Test ที่เหมาะสม |
 
-> **On production data:** Use at least 50/50 treatment-control split, and evaluate Qini on a completely held-out test set.
+> **คำแนะนำสำหรับการใช้งานจริง (On production data):** ควรแบ่งอัตราส่วนระหว่างกลุ่ม Treatment และ Control อย่างน้อย 50/50 และประเมินผลลัพธ์ประสิทธิภาพ (เช่น Qini Curve) บนชุดข้อมูลทดสอบ (Test Set) ที่ถูกแยกออกมาโดยสมบูรณ์
 
 ---
 
-## 🛠️ Tech Stack
+## เทคโนโลยีที่ใช้งาน (Tech Stack)
 
-| Layer | Tools |
+| ส่วนของงาน (Layer) | เครื่องมือที่ใช้ (Tools) |
 |---|---|
-| Data | Python, Pandas, SQL |
-| Model | LightGBM, Scikit-learn |
-| Validation | Qini Curve, Uplift@k |
-| Dashboard | Streamlit (prototype) / HTML (interactive demo) |
-| Version Control | GitHub |
+| การจัดการข้อมูล | Python, Pandas, SQL |
+| การพัฒนาโมเดล | LightGBM, Scikit-learn |
+| หลักเกณฑ์การวัดผล | Qini Curve, Uplift@k |
+| หน้าแสดงผล (Dashboard) | Streamlit (ตัวต้นแบบ) / HTML (ตัวอย่างพร้อมใช้งานแบบอินเทอร์แอคทีฟ) |
+| ระบบควบคุมเวอร์ชัน | GitHub |
 
 ---
 
-## 🤖 AI Tools ที่ใช้ช่วย
+## เครื่องมือ AI ที่ใช้สนับสนุน
 
-| งาน | Tool | วิธีตรวจสอบผลลัพธ์ |
+| งาน | เครื่องมือที่ใช้งาน | วิธีตรวจสอบความถูกต้องของผลลัพธ์ |
 |---|---|---|
-| Draft README / proposal structure | Claude + Antigravity | อ่านทวน ปรับให้ตรงกับ business context จริง |
-| Mock data generation | Antigravity | check distribution ด้วย `.describe()` และ plot histogram |
-| Pseudo-code uplift model | Antigravity | ทดสอบรัน unit test กับ mock data |
-| Slide deck | Antigravity + Canva AI | ตรวจ content ทุก slide ว่าตอบ template ครบ |
+| ร่างเนื้อหาคู่มือและนำเสนอโครงสร้างโครงการ | Claude + Antigravity | ตรวจทานและปรับปรุงเนื้อหาให้ตรงกับบริบททางธุรกิจจริง |
+| สร้างข้อมูลจำลองสำหรับโครงการ | Antigravity | ตรวจสอบการกระจายตัวของข้อมูลด้วยฟังก์ชัน `.describe()` และแสดงผลด้วยกราฟฮิสโตแกรม |
+| เขียนรหัสโครงสร้างจำลองโมเดล Uplift | Antigravity | ทดสอบการทำงานด้วยกระบวนการ Unit Test ร่วมกับข้อมูลจำลอง |
+| เตรียมนำเสนอเนื้อหาสไลด์ (Slide deck) | Antigravity + Canva AI | ตรวจสอบเนื้อหาของสไลด์แต่ละหน้าว่าครบถ้วนตามความต้องการเชิงลึก |
