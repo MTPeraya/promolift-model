@@ -1,31 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>PromoLift — Interactive Demo</title>
-  <meta name="description" content="Interactive demo of the PromoLift T-Learner Uplift Model for SME Retail promotion targeting." />
+  <meta name="description"
+    content="Interactive demo of the PromoLift T-Learner Uplift Model for SME Retail promotion targeting." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --surface2:  #1c2333;
-      --border:    #30363d;
-      --text:      #e6edf3;
-      --muted:     #8b949e;
-      --green:     #3fb950;
-      --blue:      #58a6ff;
-      --purple:    #a371f7;
-      --red:       #f85149;
-      --gold:      #d29922;
-      --radius:    12px;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface2: #1c2333;
+      --border: #30363d;
+      --text: #e6edf3;
+      --muted: #8b949e;
+      --green: #3fb950;
+      --blue: #58a6ff;
+      --purple: #a371f7;
+      --red: #f85149;
+      --gold: #d29922;
+      --radius: 12px;
     }
 
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Inter', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
 
     /* ────────────── HEADER ────────────── */
     header {
@@ -40,10 +52,17 @@
       z-index: 100;
       backdrop-filter: blur(8px);
     }
-    header .logo { font-size: 22px; font-weight: 700; color: var(--blue); letter-spacing: -0.5px; }
+
+    header .logo {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--blue);
+      letter-spacing: -0.5px;
+    }
+
     header .badge {
-      background: rgba(88,166,255,.15);
-      border: 1px solid rgba(88,166,255,.4);
+      background: rgba(88, 166, 255, .15);
+      border: 1px solid rgba(88, 166, 255, .4);
       color: var(--blue);
       font-size: 11px;
       font-weight: 600;
@@ -52,14 +71,45 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
-    header .subtitle { font-size: 13px; color: var(--muted); margin-left: auto; }
+
+    header .subtitle {
+      font-size: 13px;
+      color: var(--muted);
+      margin-left: auto;
+    }
 
     /* ────────────── LAYOUT ────────────── */
-    .container { max-width: 1200px; margin: 0 auto; padding: 32px 24px; }
-    .hero { text-align: center; padding: 48px 0 40px; }
-    .hero h1 { font-size: 38px; font-weight: 700; letter-spacing: -1px; margin-bottom: 12px; }
-    .hero h1 span { background: linear-gradient(90deg, var(--blue), var(--purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-    .hero p { color: var(--muted); font-size: 16px; max-width: 560px; margin: 0 auto 24px; line-height: 1.7; }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 48px 0 40px;
+    }
+
+    .hero h1 {
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -1px;
+      margin-bottom: 12px;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(90deg, var(--blue), var(--purple));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      color: var(--muted);
+      font-size: 16px;
+      max-width: 560px;
+      margin: 0 auto 24px;
+      line-height: 1.7;
+    }
 
     /* ────────────── CONTROLS ────────────── */
     .controls-panel {
@@ -69,11 +119,39 @@
       padding: 24px;
       margin-bottom: 28px;
     }
-    .controls-panel h2 { font-size: 15px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 20px; }
-    .controls-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; align-items: end; }
-    
-    .ctrl label { display: block; font-size: 12px; color: var(--muted); font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: .5px; }
-    .ctrl input[type=range] { width: 100%; accent-color: var(--blue); cursor: pointer; }
+
+    .controls-panel h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 20px;
+    }
+
+    .controls-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 20px;
+      align-items: end;
+    }
+
+    .ctrl label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
+    .ctrl input[type=range] {
+      width: 100%;
+      accent-color: var(--blue);
+      cursor: pointer;
+    }
+
     .ctrl select {
       width: 100%;
       background: var(--surface2);
@@ -85,11 +163,14 @@
       font-family: inherit;
       cursor: pointer;
     }
-    .ctrl select:focus { outline: 2px solid var(--blue); }
-    
+
+    .ctrl select:focus {
+      outline: 2px solid var(--blue);
+    }
+
     .val-badge {
       display: inline-block;
-      background: rgba(88,166,255,.15);
+      background: rgba(88, 166, 255, .15);
       color: var(--blue);
       font-size: 13px;
       font-weight: 700;
@@ -99,9 +180,19 @@
     }
 
     /* ────────────── KPI CARDS ────────────── */
-    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-    @media(max-width: 768px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
-    
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    @media(max-width: 768px) {
+      .kpi-row {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
     .kpi {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -111,26 +202,74 @@
       position: relative;
       overflow: hidden;
     }
+
     .kpi::after {
       content: '';
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 3px;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
       border-radius: var(--radius) var(--radius) 0 0;
     }
-    .kpi.green::after { background: var(--green); }
-    .kpi.blue::after { background: var(--blue); }
-    .kpi.purple::after { background: var(--purple); }
-    .kpi.gold::after { background: var(--gold); }
-    .kpi:hover { transform: translateY(-3px); border-color: #444c56; }
-    
-    .kpi .label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; }
-    .kpi .value { font-size: 26px; font-weight: 700; line-height: 1.1; }
-    .kpi.green .value { color: var(--green); }
-    .kpi.blue .value { color: var(--blue); }
-    .kpi.purple .value { color: var(--purple); }
-    .kpi.gold .value { color: var(--gold); }
-    .kpi .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+    .kpi.green::after {
+      background: var(--green);
+    }
+
+    .kpi.blue::after {
+      background: var(--blue);
+    }
+
+    .kpi.purple::after {
+      background: var(--purple);
+    }
+
+    .kpi.gold::after {
+      background: var(--gold);
+    }
+
+    .kpi:hover {
+      transform: translateY(-3px);
+      border-color: #444c56;
+    }
+
+    .kpi .label {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 8px;
+    }
+
+    .kpi .value {
+      font-size: 26px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .kpi.green .value {
+      color: var(--green);
+    }
+
+    .kpi.blue .value {
+      color: var(--blue);
+    }
+
+    .kpi.purple .value {
+      color: var(--purple);
+    }
+
+    .kpi.gold .value {
+      color: var(--gold);
+    }
+
+    .kpi .sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 4px;
+    }
 
     /* ────────────── FORMULAS ────────────── */
     .formula-box {
@@ -140,13 +279,36 @@
       padding: 20px;
       margin-bottom: 20px;
     }
-    .formula-box h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: var(--blue); }
-    .formula-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
-    @media(max-width: 640px) { .formula-row { grid-template-columns: 1fr; } }
-    
-    .formula-item .flabel { font-size: 11px; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; letter-spacing:.5px; }
+
+    .formula-box h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 14px;
+      color: var(--blue);
+    }
+
+    .formula-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    @media(max-width: 640px) {
+      .formula-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .formula-item .flabel {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+
     .formula-item pre {
-      background: rgba(13,17,23,.7);
+      background: rgba(13, 17, 23, .7);
       border: 1px solid var(--border);
       border-radius: 8px;
       padding: 10px 14px;
@@ -167,33 +329,99 @@
       gap: 10px;
       line-height: 1.6;
     }
-    .alert.warn { background: rgba(210,153,34,.1); border: 1px solid rgba(210,153,34,.35); color: var(--gold); }
-    .alert.info { background: rgba(88,166,255,.08); border: 1px solid rgba(88,166,255,.3); color: var(--blue); }
-    .alert .ico { flex-shrink: 0; font-size: 16px; }
+
+    .alert.warn {
+      background: rgba(210, 153, 34, .1);
+      border: 1px solid rgba(210, 153, 34, .35);
+      color: var(--gold);
+    }
+
+    .alert.info {
+      background: rgba(88, 166, 255, .08);
+      border: 1px solid rgba(88, 166, 255, .3);
+      color: var(--blue);
+    }
+
+    .alert .ico {
+      flex-shrink: 0;
+      font-size: 16px;
+    }
 
     /* ────────────── CHARTS ────────────── */
-    .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-    @media(max-width: 900px) { .chart-row { grid-template-columns: 1fr; } }
-    
-    .chart-full { margin-bottom: 20px; }
-    
+    .chart-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 20px;
+    }
+
+    @media(max-width: 900px) {
+      .chart-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .chart-full {
+      margin-bottom: 20px;
+    }
+
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 22px;
     }
-    .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
-    .card .card-sub { font-size: 12px; color: var(--muted); margin-bottom: 18px; }
-    .chart-wrap { position: relative; height: 280px; }
 
-    .quad-legend { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
-    .quad-tag { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--muted); }
-    .quad-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .card .card-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 18px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 280px;
+    }
+
+    .quad-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .quad-tag {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .quad-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
 
     /* ────────────── TABLE ────────────── */
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
     thead th {
       text-align: left;
       padding: 10px 12px;
@@ -204,10 +432,20 @@
       text-transform: uppercase;
       letter-spacing: .5px;
     }
-    tbody tr { border-bottom: 1px solid rgba(48,54,61,.5); transition: background .15s; }
-    tbody tr:hover { background: rgba(88,166,255,.04); }
-    tbody td { padding: 10px 12px; }
-    
+
+    tbody tr {
+      border-bottom: 1px solid rgba(48, 54, 61, .5);
+      transition: background .15s;
+    }
+
+    tbody tr:hover {
+      background: rgba(88, 166, 255, .04);
+    }
+
+    tbody td {
+      padding: 10px 12px;
+    }
+
     .chip {
       display: inline-block;
       padding: 3px 10px;
@@ -215,497 +453,562 @@
       font-size: 11px;
       font-weight: 600;
     }
-    .chip.green { background: rgba(63,185,80,.15); color: var(--green); }
-    .chip.blue { background: rgba(88,166,255,.15); color: var(--blue); }
-    .chip.muted { background: rgba(139,148,158,.1); color: var(--muted); }
-    .chip.red { background: rgba(248,81,73,.15); color: var(--red); }
-    .chip.gold { background: rgba(210,153,34,.15); color: var(--gold); }
+
+    .chip.green {
+      background: rgba(63, 185, 80, .15);
+      color: var(--green);
+    }
+
+    .chip.blue {
+      background: rgba(88, 166, 255, .15);
+      color: var(--blue);
+    }
+
+    .chip.muted {
+      background: rgba(139, 148, 158, .1);
+      color: var(--muted);
+    }
+
+    .chip.red {
+      background: rgba(248, 81, 73, .15);
+      color: var(--red);
+    }
+
+    .chip.gold {
+      background: rgba(210, 153, 34, .15);
+      color: var(--gold);
+    }
 
     /* ────────────── FOOTER ────────────── */
-    footer { text-align: center; padding: 32px; border-top: 1px solid var(--border); color: var(--muted); font-size: 13px; margin-top: 20px; }
-    footer a { color: var(--blue); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
+    footer {
+      text-align: center;
+      padding: 32px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 13px;
+      margin-top: 20px;
+    }
+
+    footer a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
+
 <body>
 
-<header>
-  <div class="logo">PromoLift</div>
-  <div class="badge">Interactive Demo</div>
-  <div class="subtitle">T-Learner Uplift Model · 1,000 Customers · P001 Household</div>
-</header>
+  <header>
+    <div class="logo">PromoLift</div>
+    <div class="badge">Interactive Demo</div>
+    <div class="subtitle">T-Learner Uplift Model · 1,000 Customers · P001 Household</div>
+  </header>
 
-<div class="container">
-  <div class="hero">
-    <h1>Smarter Promotions with <span>Uplift Modeling</span></h1>
-    <p>Stop wasting promo budget on customers who would buy anyway — or never will.
-       Tune the sliders below to see how the model re-ranks every customer in real time.</p>
-  </div>
+  <div class="container">
+    <div class="hero">
+      <h1>Smarter Promotions with <span>Uplift Modeling</span></h1>
+      <p>Stop wasting promo budget on customers who would buy anyway — or never will.
+        Tune the sliders below to see how the model re-ranks every customer in real time.</p>
+    </div>
 
-  <div class="alert warn">
-    <span class="ico">⚠️</span>
-    <span><strong>Mock Data Notice:</strong> All scores are from the pre-trained T-Learner pipeline on simulated data.
-    Uplift scores are fixed; only the EIP / recommended action reacts to slider changes.</span>
-  </div>
+    <div class="alert warn">
+      <span class="ico">⚠️</span>
+      <span><strong>Mock Data Notice:</strong> All scores are from the pre-trained T-Learner pipeline on simulated data.
+        Uplift scores are fixed; only the EIP / recommended action reacts to slider changes.</span>
+    </div>
 
-  <div class="controls-panel">
-    <h2>⚙️ Campaign Parameters</h2>
-    <div class="controls-grid">
-      <div class="ctrl">
-        <label>Retail Price (THB)</label>
-        <input type="range" id="slPrice" min="50" max="400" value="163" step="1" oninput="appState.update()"/>
-        <div class="val-badge" id="vPrice">฿163</div>
+    <div class="controls-panel">
+      <h2>⚙️ Campaign Parameters</h2>
+      <div class="controls-grid">
+        <div class="ctrl">
+          <label>Retail Price (THB)</label>
+          <input type="range" id="slPrice" min="50" max="400" value="163" step="1" oninput="appState.update()" />
+          <div class="val-badge" id="vPrice">฿163</div>
+        </div>
+        <div class="ctrl">
+          <label>Discount Depth (%)</label>
+          <input type="range" id="slDiscount" min="0" max="50" value="20" oninput="appState.update()" />
+          <div class="val-badge" id="vDiscount">20%</div>
+        </div>
+        <div class="ctrl">
+          <label>COGS (THB)</label>
+          <input type="range" id="slCogs" min="10" max="350" value="90" step="1" oninput="appState.update()" />
+          <div class="val-badge" id="vCogs">฿90</div>
+        </div>
+        <div class="ctrl">
+          <label>Campaign Cost / User (THB)</label>
+          <input type="range" id="slCampaign" min="0" max="5" value="0.5" step="0.1" oninput="appState.update()" />
+          <div class="val-badge" id="vCampaign">฿0.50</div>
+        </div>
+        <div class="ctrl">
+          <label>Filter Uplift Segment</label>
+          <select id="selSegment" onchange="appState.update()">
+            <option value="all">All Segments</option>
+            <option value="Persuadal">Persuadables Only</option>
+            <option value="Sure Thing">Sure Things Only</option>
+            <option value="Lost Cause">Lost Causes Only</option>
+            <option value="Sleeping Dog">Sleeping Dogs Only</option>
+          </select>
+        </div>
       </div>
-      <div class="ctrl">
-        <label>Discount Depth (%)</label>
-        <input type="range" id="slDiscount" min="0" max="50" value="20" oninput="appState.update()"/>
-        <div class="val-badge" id="vDiscount">20%</div>
+    </div>
+
+    <div class="kpi-row">
+      <div class="kpi green">
+        <div class="label">Optimized Net Profit</div>
+        <div class="value" id="kpiProfit">—</div>
+        <div class="sub" id="kpiProfitSub">—</div>
       </div>
-      <div class="ctrl">
-        <label>COGS (THB)</label>
-        <input type="range" id="slCogs" min="10" max="350" value="90" step="1" oninput="appState.update()"/>
-        <div class="val-badge" id="vCogs">฿90</div>
+      <div class="kpi blue">
+        <div class="label">Customers Targeted</div>
+        <div class="value" id="kpiTargeted">—</div>
+        <div class="sub" id="kpiTargetedSub">—</div>
       </div>
-      <div class="ctrl">
-        <label>Campaign Cost / User (THB)</label>
-        <input type="range" id="slCampaign" min="0" max="5" value="0.5" step="0.1" oninput="appState.update()"/>
-        <div class="val-badge" id="vCampaign">฿0.50</div>
+      <div class="kpi purple">
+        <div class="label">Budget Saved vs Uniform</div>
+        <div class="value" id="kpiSaved">—</div>
+        <div class="sub" id="kpiSavedSub">—</div>
       </div>
-      <div class="ctrl">
-        <label>Filter Uplift Segment</label>
-        <select id="selSegment" onchange="appState.update()">
-          <option value="all">All Segments</option>
-          <option value="Persuadal">Persuadables Only</option>
-          <option value="Sure Thing">Sure Things Only</option>
-          <option value="Lost Cause">Lost Causes Only</option>
-          <option value="Sleeping Dog">Sleeping Dogs Only</option>
-        </select>
+      <div class="kpi gold">
+        <div class="label">Sleeping Dogs Avoided</div>
+        <div class="value" id="kpiSleeping">—</div>
+        <div class="sub">Do Not Disturb</div>
       </div>
+    </div>
+
+    <div class="formula-box">
+      <h3>📐 Value Scoring Formulas (live)</h3>
+      <div class="formula-row">
+        <div class="formula-item">
+          <div class="flabel">Expected Incremental Revenue (EIR)</div>
+          <pre id="fEIR">EIR = τ × Price − Discount × P(Buy|T)</pre>
+        </div>
+        <div class="formula-item">
+          <div class="flabel">Expected Incremental Profit (EIP)</div>
+          <pre id="fEIP">EIP = τ × (Price − COGS) − Discount × P(Buy|T) − Cost</pre>
+        </div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="card">
+        <h3>Uplift Segment Distribution</h3>
+        <div class="card-sub">4-Quadrant breakdown of all 1,000 customers</div>
+        <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
+        <div class="quad-legend">
+          <div class="quad-tag">
+            <div class="quad-dot" style="background:#3fb950"></div>Persuadables (Target!)
+          </div>
+          <div class="quad-tag">
+            <div class="quad-dot" style="background:#58a6ff"></div>Sure Things (Skip)
+          </div>
+          <div class="quad-tag">
+            <div class="quad-dot" style="background:#8b949e"></div>Lost Causes (Skip)
+          </div>
+          <div class="quad-tag">
+            <div class="quad-dot" style="background:#f85149"></div>Sleeping Dogs (⚠️ Avoid)
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <h3>Uplift Score Distribution</h3>
+        <div class="card-sub">Histogram of model-predicted uplift τ = P(Buy|T) − P(Buy|C)</div>
+        <div class="chart-wrap"><canvas id="chartHist"></canvas></div>
+      </div>
+    </div>
+
+    <div class="chart-row">
+      <div class="card">
+        <h3>EIP Scatter (Uplift vs. Profit)</h3>
+        <div class="card-sub">Sample customers — colored by uplift segment</div>
+        <div class="chart-wrap"><canvas id="chartScatter"></canvas></div>
+      </div>
+      <div class="card">
+        <h3>Cumulative Profit Curve</h3>
+        <div class="card-sub">Expected profit when targeting top-N% of customers ranked by EIP</div>
+        <div class="chart-wrap"><canvas id="chartProfit"></canvas></div>
+      </div>
+    </div>
+
+    <div class="card chart-full">
+      <h3>🏆 Top TARGET Customers</h3>
+      <div class="card-sub">Highest EIP customers recommended for this campaign (live-filtered by parameters)</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Customer ID</th>
+              <th>Segment</th>
+              <th>Uplift Score</th>
+              <th>P(Buy|T)</th>
+              <th>P(Buy|C)</th>
+              <th>EIP (฿)</th>
+              <th>Uplift Segment</th>
+            </tr>
+          </thead>
+          <tbody id="topTable">
+            <tr>
+              <td colspan="7" style="color:var(--muted);text-align:center;padding:24px">Calculating…</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="alert info">
+      <span class="ico">ℹ️</span>
+      <span><strong>How it works:</strong> The T-Learner trains <strong>Model T</strong> on the treatment group and
+        <strong>Model C</strong> on the control group.
+        Uplift τ = P_T(Buy) − P_C(Buy). Customers with EIP &gt; 0 and τ ≥ 0 are recommended for targeting.</span>
     </div>
   </div>
 
-  <div class="kpi-row">
-    <div class="kpi green"><div class="label">Optimized Net Profit</div><div class="value" id="kpiProfit">—</div><div class="sub" id="kpiProfitSub">—</div></div>
-    <div class="kpi blue"><div class="label">Customers Targeted</div><div class="value" id="kpiTargeted">—</div><div class="sub" id="kpiTargetedSub">—</div></div>
-    <div class="kpi purple"><div class="label">Budget Saved vs Uniform</div><div class="value" id="kpiSaved">—</div><div class="sub" id="kpiSavedSub">—</div></div>
-    <div class="kpi gold"><div class="label">Sleeping Dogs Avoided</div><div class="value" id="kpiSleeping">—</div><div class="sub">Do Not Disturb</div></div>
-  </div>
+  <footer>
+    PromoLift · T-Learner Uplift Model Demo · Built with real scored output<br />
+    <a href="README.md">README</a> · <a href="data/data_dictionary.md">Data Dictionary</a> · Mock data only
+  </footer>
 
-  <div class="formula-box">
-    <h3>📐 Value Scoring Formulas (live)</h3>
-    <div class="formula-row">
-      <div class="formula-item">
-        <div class="flabel">Expected Incremental Revenue (EIR)</div>
-        <pre id="fEIR">EIR = τ × Price − Discount × P(Buy|T)</pre>
-      </div>
-      <div class="formula-item">
-        <div class="flabel">Expected Incremental Profit (EIP)</div>
-        <pre id="fEIP">EIP = τ × (Price − COGS) − Discount × P(Buy|T) − Cost</pre>
-      </div>
-    </div>
-  </div>
+  <script>
+    // DATA LAYER
 
-  <div class="chart-row">
-    <div class="card">
-      <h3>Uplift Segment Distribution</h3>
-      <div class="card-sub">4-Quadrant breakdown of all 1,000 customers</div>
-      <div class="chart-wrap"><canvas id="chartDonut"></canvas></div>
-      <div class="quad-legend">
-        <div class="quad-tag"><div class="quad-dot" style="background:#3fb950"></div>Persuadables (Target!)</div>
-        <div class="quad-tag"><div class="quad-dot" style="background:#58a6ff"></div>Sure Things (Skip)</div>
-        <div class="quad-tag"><div class="quad-dot" style="background:#8b949e"></div>Lost Causes (Skip)</div>
-        <div class="quad-tag"><div class="quad-dot" style="background:#f85149"></div>Sleeping Dogs (⚠️ Avoid)</div>
-      </div>
-    </div>
-    <div class="card">
-      <h3>Uplift Score Distribution</h3>
-      <div class="card-sub">Histogram of model-predicted uplift τ = P(Buy|T) − P(Buy|C)</div>
-      <div class="chart-wrap"><canvas id="chartHist"></canvas></div>
-    </div>
-  </div>
+    const DATA = {
+      histogram: [{ "x": -0.575, "y": 0 }, { "x": -0.525, "y": 0 }, { "x": -0.475, "y": 0 }, { "x": -0.425, "y": 0 }, { "x": -0.375, "y": 0 }, { "x": -0.325, "y": 2 }, { "x": -0.275, "y": 7 }, { "x": -0.225, "y": 17 }, { "x": -0.175, "y": 39 }, { "x": -0.125, "y": 50 }, { "x": -0.075, "y": 85 }, { "x": -0.025, "y": 84 }, { "x": 0.025, "y": 127 }, { "x": 0.075, "y": 123 }, { "x": 0.125, "y": 118 }, { "x": 0.175, "y": 68 }, { "x": 0.225, "y": 75 }, { "x": 0.275, "y": 63 }, { "x": 0.325, "y": 55 }, { "x": 0.375, "y": 46 }, { "x": 0.425, "y": 29 }, { "x": 0.475, "y": 26 }, { "x": 0.525, "y": 20 }, { "x": 0.575, "y": 21 }, { "x": 0.625, "y": 15 }, { "x": 0.675, "y": 12 }, { "x": 0.725, "y": 9 }, { "x": 0.775, "y": 8 }],
 
-  <div class="chart-row">
-    <div class="card">
-      <h3>EIP Scatter (Uplift vs. Profit)</h3>
-      <div class="card-sub">300 random customers — colored by uplift segment</div>
-      <div class="chart-wrap"><canvas id="chartScatter"></canvas></div>
-    </div>
-    <div class="card">
-      <h3>Cumulative Profit Curve</h3>
-      <div class="card-sub">Expected profit when targeting top-N% of customers ranked by EIP</div>
-      <div class="chart-wrap"><canvas id="chartProfit"></canvas></div>
-    </div>
-  </div>
+      segmentCounts: { "Persuadal": 589, "Sure Thing": 122, "Lost Cause": 89, "Sleeping Dog": 200 },
 
-  <div class="card chart-full">
-    <h3>🏆 Top TARGET Customers</h3>
-    <div class="card-sub">Highest EIP customers recommended for this campaign (live-filtered by parameters)</div>
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr>
-            <th>Customer ID</th>
-            <th>Segment</th>
-            <th>Uplift Score</th>
-            <th>P(Buy|T)</th>
-            <th>P(Buy|C)</th>
-            <th>EIP (฿)</th>
-            <th>Uplift Segment</th>
-          </tr>
-        </thead>
-        <tbody id="topTable">
-          <tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">Calculating…</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
+      profitCurve: [{ "pct": 0.1, "profit": 17.04 }, { "pct": 1.1, "profit": 142.96 }, { "pct": 2.1, "profit": 264.82 }, { "pct": 3.1, "profit": 383.59 }, { "pct": 4.1, "profit": 497.83 }, { "pct": 5.1, "profit": 606.35 }, { "pct": 6.1, "profit": 711.57 }, { "pct": 7.1, "profit": 812.03 }, { "pct": 8.1, "profit": 905.65 }, { "pct": 9.1, "profit": 990.5 }, { "pct": 10.1, "profit": 1072.35 }, { "pct": 11.1, "profit": 1149.09 }, { "pct": 12.1, "profit": 1221.3 }, { "pct": 13.1, "profit": 1287.94 }, { "pct": 14.1, "profit": 1349.7 }, { "pct": 15.1, "profit": 1406.25 }, { "pct": 16.1, "profit": 1459.08 }, { "pct": 17.1, "profit": 1507.04 }, { "pct": 18.1, "profit": 1549.81 }, { "pct": 19.1, "profit": 1588.2 }, { "pct": 20.1, "profit": 1619.96 }, { "pct": 21.1, "profit": 1647.88 }, { "pct": 22.1, "profit": 1672.94 }, { "pct": 23.1, "profit": 1691.74 }, { "pct": 24.1, "profit": 1708.44 }, { "pct": 25.1, "profit": 1724.13 }, { "pct": 26.1, "profit": 1737.69 }, { "pct": 27.1, "profit": 1747.47 }, { "pct": 28.1, "profit": 1754.26 }, { "pct": 29.1, "profit": 1756.41 }, { "pct": 30.1, "profit": 1757.7 }, { "pct": 31.1, "profit": 1758.34 }, { "pct": 32.1, "profit": 1756.63 }, { "pct": 33.1, "profit": 1753.69 }, { "pct": 34.1, "profit": 1749.34 }, { "pct": 35.1, "profit": 1742.97 }, { "pct": 36.1, "profit": 1735.36 }, { "pct": 37.1, "profit": 1727.45 }, { "pct": 38.1, "profit": 1718.55 }, { "pct": 39.1, "profit": 1708.05 }, { "pct": 40.1, "profit": 1695.88 }, { "pct": 41.1, "profit": 1683.09 }, { "pct": 42.1, "profit": 1669.56 }, { "pct": 43.1, "profit": 1655.66 }, { "pct": 44.1, "profit": 1639.45 }, { "pct": 45.1, "profit": 1623.5 }, { "pct": 46.1, "profit": 1605.26 }, { "pct": 47.1, "profit": 1586.64 }, { "pct": 48.1, "profit": 1567.09 }, { "pct": 49.1, "profit": 1547.27 }, { "pct": 50.1, "profit": 1525.97 }, { "pct": 51.1, "profit": 1503.44 }, { "pct": 52.1, "profit": 1480.6 }, { "pct": 53.1, "profit": 1455.95 }, { "pct": 54.1, "profit": 1430.46 }, { "pct": 55.1, "profit": 1403.74 }, { "pct": 56.1, "profit": 1375.37 }, { "pct": 57.1, "profit": 1344.95 }, { "pct": 58.1, "profit": 1313.85 }, { "pct": 59.1, "profit": 1282.17 }, { "pct": 60.1, "profit": 1248.92 }, { "pct": 61.1, "profit": 1213.75 }, { "pct": 62.1, "profit": 1177.63 }, { "pct": 63.1, "profit": 1139.6 }, { "pct": 64.1, "profit": 1099.96 }, { "pct": 65.1, "profit": 1059.04 }, { "pct": 66.1, "profit": 1017.69 }, { "pct": 67.1, "profit": 974.14 }, { "pct": 68.1, "profit": 929.06 }, { "pct": 69.1, "profit": 882.76 }, { "pct": 70.1, "profit": 835.69 }, { "pct": 71.1, "profit": 786.07 }, { "pct": 72.1, "profit": 735.82 }, { "pct": 73.1, "profit": 684.42 }, { "pct": 74.1, "profit": 631.55 }, { "pct": 75.1, "profit": 578.04 }, { "pct": 76.1, "profit": 523.91 }, { "pct": 77.1, "profit": 469.39 }, { "pct": 78.1, "profit": 412.88 }, { "pct": 79.1, "profit": 355.65 }, { "pct": 80.1, "profit": 296.58 }, { "pct": 81.1, "profit": 237.31 }, { "pct": 82.1, "profit": 177.54 }, { "pct": 83.1, "profit": 116.25 }, { "pct": 84.1, "profit": 53.86 }, { "pct": 85.1, "profit": -9.08 }, { "pct": 86.1, "profit": -73.17 }, { "pct": 87.1, "profit": -138.41 }, { "pct": 88.1, "profit": -204.41 }, { "pct": 89.1, "profit": -271.66 }, { "pct": 90.1, "profit": -340.42 }, { "pct": 91.1, "profit": -411.53 }, { "pct": 92.1, "profit": -483.43 }, { "pct": 93.1, "profit": -556.39 }, { "pct": 94.1, "profit": -630.6 }, { "pct": 95.1, "profit": -705.93 }, { "pct": 96.1, "profit": -783.35 }, { "pct": 97.1, "profit": -863.17 }, { "pct": 98.1, "profit": -944.2 }, { "pct": 99.1, "profit": -1026.8 }, { "pct": 100.0, "profit": -1113.55 }],
 
-  <div class="alert info">
-    <span class="ico">ℹ️</span>
-    <span><strong>How it works:</strong> The T-Learner trains <strong>Model T</strong> on the treatment group and <strong>Model C</strong> on the control group.
-    Uplift τ = P_T(Buy) − P_C(Buy). Customers with EIP &gt; 0 and τ ≥ 0 are recommended for targeting.</span>
-  </div>
-</div>
+      scatter: [{ "uplift_score": 0.0444, "expected_incremental_profit": -12.6, "uplift_segment": "Lost Cause", "customer_id": "C0565", "p_buy_treatment": 0.4701, "p_buy_control": 0.4258 }, { "uplift_score": -0.0402, "expected_incremental_profit": -18.28, "uplift_segment": "Lost Cause", "customer_id": "C0305", "p_buy_treatment": 0.4537, "p_buy_control": 0.4939 }, { "uplift_score": -0.0357, "expected_incremental_profit": -18.32, "uplift_segment": "Sure Thing", "customer_id": "C0431", "p_buy_treatment": 0.465, "p_buy_control": 0.5008 }, { "uplift_score": 0.0381, "expected_incremental_profit": -16.01, "uplift_segment": "Sure Thing", "customer_id": "C0407", "p_buy_treatment": 0.5603, "p_buy_control": 0.5222 }, { "uplift_score": 0.1395, "expected_incremental_profit": -9.26, "uplift_segment": "Persuadal", "customer_id": "C0120", "p_buy_treatment": 0.5818, "p_buy_control": 0.4423 }, { "uplift_score": 0.0247, "expected_incremental_profit": -16.58, "uplift_segment": "Sure Thing", "customer_id": "C0141", "p_buy_treatment": 0.5478, "p_buy_control": 0.5231 }, { "uplift_score": 0.0285, "expected_incremental_profit": -15.31, "uplift_segment": "Lost Cause", "customer_id": "C0339", "p_buy_treatment": 0.5171, "p_buy_control": 0.4887 }, { "uplift_score": 0.1172, "expected_incremental_profit": -12.37, "uplift_segment": "Persuadal", "customer_id": "C0991", "p_buy_treatment": 0.6268, "p_buy_control": 0.5096 }, { "uplift_score": -0.0824, "expected_incremental_profit": -22.76, "uplift_segment": "Sleeping Dog", "customer_id": "C0360", "p_buy_treatment": 0.4958, "p_buy_control": 0.5782 }, { "uplift_score": 0.2586, "expected_incremental_profit": 3.83, "uplift_segment": "Persuadal", "customer_id": "C0807", "p_buy_treatment": 0.4489, "p_buy_control": 0.1903 }, { "uplift_score": -0.0308, "expected_incremental_profit": -20.81, "uplift_segment": "Sure Thing", "customer_id": "C0568", "p_buy_treatment": 0.5524, "p_buy_control": 0.5832 }, { "uplift_score": 0.3394, "expected_incremental_profit": 7.04, "uplift_segment": "Persuadal", "customer_id": "C0625", "p_buy_treatment": 0.5324, "p_buy_control": 0.193 }, { "uplift_score": 0.0442, "expected_incremental_profit": -15.57, "uplift_segment": "Sure Thing", "customer_id": "C0858", "p_buy_treatment": 0.5607, "p_buy_control": 0.5164 }, { "uplift_score": -0.2104, "expected_incremental_profit": -29.92, "uplift_segment": "Sleeping Dog", "customer_id": "C0117", "p_buy_treatment": 0.4274, "p_buy_control": 0.6378 }, { "uplift_score": -0.1869, "expected_incremental_profit": -26.88, "uplift_segment": "Sleeping Dog", "customer_id": "C0075", "p_buy_treatment": 0.3872, "p_buy_control": 0.5741 }],
 
-<footer>
-  PromoLift · T-Learner Uplift Model Demo · Built with real scored output<br/>
-  <a href="README.md">README</a> · <a href="data/data_dictionary.md">Data Dictionary</a> · Mock data only
-</footer>
-
-<script>
-// DATA LAYER
-
-const DATA = {
-  histogram: [{"x": -0.575, "y": 0}, {"x": -0.525, "y": 0}, {"x": -0.475, "y": 0}, {"x": -0.425, "y": 0}, {"x": -0.375, "y": 0}, {"x": -0.325, "y": 2}, {"x": -0.275, "y": 7}, {"x": -0.225, "y": 17}, {"x": -0.175, "y": 39}, {"x": -0.125, "y": 50}, {"x": -0.075, "y": 85}, {"x": -0.025, "y": 84}, {"x": 0.025, "y": 127}, {"x": 0.075, "y": 123}, {"x": 0.125, "y": 118}, {"x": 0.175, "y": 68}, {"x": 0.225, "y": 75}, {"x": 0.275, "y": 63}, {"x": 0.325, "y": 55}, {"x": 0.375, "y": 46}, {"x": 0.425, "y": 29}, {"x": 0.475, "y": 26}, {"x": 0.525, "y": 20}, {"x": 0.575, "y": 21}, {"x": 0.625, "y": 15}, {"x": 0.675, "y": 12}, {"x": 0.725, "y": 9}, {"x": 0.775, "y": 8}],
-  
-  segmentCounts: { "Persuadal": 589, "Sure Thing": 122, "Lost Cause": 89, "Sleeping Dog": 200 },
-  
-  profitCurve: [{"pct": 0.1, "profit": 17.04}, {"pct": 1.1, "profit": 142.96}, {"pct": 2.1, "profit": 264.82}, {"pct": 3.1, "profit": 383.59}, {"pct": 4.1, "profit": 497.83}, {"pct": 5.1, "profit": 606.35}, {"pct": 6.1, "profit": 711.57}, {"pct": 7.1, "profit": 812.03}, {"pct": 8.1, "profit": 905.65}, {"pct": 9.1, "profit": 990.5}, {"pct": 10.1, "profit": 1072.35}, {"pct": 11.1, "profit": 1149.09}, {"pct": 12.1, "profit": 1221.3}, {"pct": 13.1, "profit": 1287.94}, {"pct": 14.1, "profit": 1349.7}, {"pct": 15.1, "profit": 1406.25}, {"pct": 16.1, "profit": 1459.08}, {"pct": 17.1, "profit": 1507.04}, {"pct": 18.1, "profit": 1549.81}, {"pct": 19.1, "profit": 1588.2}, {"pct": 20.1, "profit": 1619.96}, {"pct": 21.1, "profit": 1647.88}, {"pct": 22.1, "profit": 1672.94}, {"pct": 23.1, "profit": 1691.74}, {"pct": 24.1, "profit": 1708.44}, {"pct": 25.1, "profit": 1724.13}, {"pct": 26.1, "profit": 1737.69}, {"pct": 27.1, "profit": 1747.47}, {"pct": 28.1, "profit": 1754.26}, {"pct": 29.1, "profit": 1756.41}, {"pct": 30.1, "profit": 1757.7}, {"pct": 31.1, "profit": 1758.34}, {"pct": 32.1, "profit": 1756.63}, {"pct": 33.1, "profit": 1753.69}, {"pct": 34.1, "profit": 1749.34}, {"pct": 35.1, "profit": 1742.97}, {"pct": 36.1, "profit": 1735.36}, {"pct": 37.1, "profit": 1727.45}, {"pct": 38.1, "profit": 1718.55}, {"pct": 39.1, "profit": 1708.05}, {"pct": 40.1, "profit": 1695.88}, {"pct": 41.1, "profit": 1683.09}, {"pct": 42.1, "profit": 1669.56}, {"pct": 43.1, "profit": 1655.66}, {"pct": 44.1, "profit": 1639.45}, {"pct": 45.1, "profit": 1623.5}, {"pct": 46.1, "profit": 1605.26}, {"pct": 47.1, "profit": 1586.64}, {"pct": 48.1, "profit": 1567.09}, {"pct": 49.1, "profit": 1547.27}, {"pct": 50.1, "profit": 1525.97}, {"pct": 51.1, "profit": 1503.44}, {"pct": 52.1, "profit": 1480.6}, {"pct": 53.1, "profit": 1455.95}, {"pct": 54.1, "profit": 1430.46}, {"pct": 55.1, "profit": 1403.74}, {"pct": 56.1, "profit": 1375.37}, {"pct": 57.1, "profit": 1344.95}, {"pct": 58.1, "profit": 1313.85}, {"pct": 59.1, "profit": 1282.17}, {"pct": 60.1, "profit": 1248.92}, {"pct": 61.1, "profit": 1213.75}, {"pct": 62.1, "profit": 1177.63}, {"pct": 63.1, "profit": 1139.6}, {"pct": 64.1, "profit": 1099.96}, {"pct": 65.1, "profit": 1059.04}, {"pct": 66.1, "profit": 1017.69}, {"pct": 67.1, "profit": 974.14}, {"pct": 68.1, "profit": 929.06}, {"pct": 69.1, "profit": 882.76}, {"pct": 70.1, "profit": 835.69}, {"pct": 71.1, "profit": 786.07}, {"pct": 72.1, "profit": 735.82}, {"pct": 73.1, "profit": 684.42}, {"pct": 74.1, "profit": 631.55}, {"pct": 75.1, "profit": 578.04}, {"pct": 76.1, "profit": 523.91}, {"pct": 77.1, "profit": 469.39}, {"pct": 78.1, "profit": 412.88}, {"pct": 79.1, "profit": 355.65}, {"pct": 80.1, "profit": 296.58}, {"pct": 81.1, "profit": 237.31}, {"pct": 82.1, "profit": 177.54}, {"pct": 83.1, "profit": 116.25}, {"pct": 84.1, "profit": 53.86}, {"pct": 85.1, "profit": -9.08}, {"pct": 86.1, "profit": -73.17}, {"pct": 87.1, "profit": -138.41}, {"pct": 88.1, "profit": -204.41}, {"pct": 89.1, "profit": -271.66}, {"pct": 90.1, "profit": -340.42}, {"pct": 91.1, "profit": -411.53}, {"pct": 92.1, "profit": -483.43}, {"pct": 93.1, "profit": -556.39}, {"pct": 94.1, "profit": -630.6}, {"pct": 95.1, "profit": -705.93}, {"pct": 96.1, "profit": -783.35}, {"pct": 97.1, "profit": -863.17}, {"pct": 98.1, "profit": -944.2}, {"pct": 99.1, "profit": -1026.8}, {"pct": 100.0, "profit": -1113.55}],
-  
-  scatter: [{"uplift_score":0.0444,"expected_incremental_profit":-12.6,"uplift_segment":"Lost Cause","customer_id":"C0565","p_buy_treatment":0.4701,"p_buy_control":0.4258},{"uplift_score":-0.0402,"expected_incremental_profit":-18.28,"uplift_segment":"Lost Cause","customer_id":"C0305","p_buy_treatment":0.4537,"p_buy_control":0.4939},{"uplift_score":-0.0357,"expected_incremental_profit":-18.32,"uplift_segment":"Sure Thing","customer_id":"C0431","p_buy_treatment":0.465,"p_buy_control":0.5008},{"uplift_score":0.0381,"expected_incremental_profit":-16.01,"uplift_segment":"Sure Thing","customer_id":"C0407","p_buy_treatment":0.5603,"p_buy_control":0.5222},{"uplift_score":0.1395,"expected_incremental_profit":-9.26,"uplift_segment":"Persuadal","customer_id":"C0120","p_buy_treatment":0.5818,"p_buy_control":0.4423},{"uplift_score":0.0247,"expected_incremental_profit":-16.58,"uplift_segment":"Sure Thing","customer_id":"C0141","p_buy_treatment":0.5478,"p_buy_control":0.5231},{"uplift_score":0.0285,"expected_incremental_profit":-15.31,"uplift_segment":"Lost Cause","customer_id":"C0339","p_buy_treatment":0.5171,"p_buy_control":0.4887},{"uplift_score":0.1172,"expected_incremental_profit":-12.37,"uplift_segment":"Persuadal","customer_id":"C0991","p_buy_treatment":0.6268,"p_buy_control":0.5096},{"uplift_score":-0.0824,"expected_incremental_profit":-22.76,"uplift_segment":"Sleeping Dog","customer_id":"C0360","p_buy_treatment":0.4958,"p_buy_control":0.5782},{"uplift_score":0.2586,"expected_incremental_profit":3.83,"uplift_segment":"Persuadal","customer_id":"C0807","p_buy_treatment":0.4489,"p_buy_control":0.1903},{"uplift_score":-0.0308,"expected_incremental_profit":-20.81,"uplift_segment":"Sure Thing","customer_id":"C0568","p_buy_treatment":0.5524,"p_buy_control":0.5832},{"uplift_score":0.3394,"expected_incremental_profit":7.04,"uplift_segment":"Persuadal","customer_id":"C0625","p_buy_treatment":0.5324,"p_buy_control":0.193},{"uplift_score":0.0442,"expected_incremental_profit":-15.57,"uplift_segment":"Sure Thing","customer_id":"C0858","p_buy_treatment":0.5607,"p_buy_control":0.5164},{"uplift_score":-0.2104,"expected_incremental_profit":-29.92,"uplift_segment":"Sleeping Dog","customer_id":"C0117","p_buy_treatment":0.4274,"p_buy_control":0.6378},{"uplift_score":-0.1869,"expected_incremental_profit":-26.88,"uplift_segment":"Sleeping Dog","customer_id":"C0075","p_buy_treatment":0.3872,"p_buy_control":0.5741}],
-  
-  top20: [{"customer_id":"C0508","customer_taxonomies":"Occasional","uplift_score":0.5335,"p_buy_treatment":0.6628,"p_buy_control":0.1293,"expected_incremental_profit":17.04,"uplift_segment":"Persuadal"},{"customer_id":"C0781","customer_taxonomies":"Price Sensitive","uplift_score":0.5235,"p_buy_treatment":0.665,"p_buy_control":0.1415,"expected_incremental_profit":16.24,"uplift_segment":"Persuadal"},{"customer_id":"C0134","customer_taxonomies":"Frequent Shopper","uplift_score":0.5195,"p_buy_treatment":0.6608,"p_buy_control":0.1413,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0722","customer_taxonomies":"Occasional","uplift_score":0.5238,"p_buy_treatment":0.662,"p_buy_control":0.1382,"expected_incremental_profit":16.12,"uplift_segment":"Persuadal"},{"customer_id":"C0397","customer_taxonomies":"Price Sensitive","uplift_score":0.5218,"p_buy_treatment":0.6617,"p_buy_control":0.1399,"expected_incremental_profit":16.1,"uplift_segment":"Persuadal"},{"customer_id":"C0249","customer_taxonomies":"Occasional","uplift_score":0.5134,"p_buy_treatment":0.6543,"p_buy_control":0.1409,"expected_incremental_profit":15.78,"uplift_segment":"Persuadal"},{"customer_id":"C0831","customer_taxonomies":"Price Sensitive","uplift_score":0.5091,"p_buy_treatment":0.6532,"p_buy_control":0.1441,"expected_incremental_profit":15.61,"uplift_segment":"Persuadal"},{"customer_id":"C0173","customer_taxonomies":"Frequent Shopper","uplift_score":0.5057,"p_buy_treatment":0.6494,"p_buy_control":0.1437,"expected_incremental_profit":15.49,"uplift_segment":"Persuadal"},{"customer_id":"C0619","customer_taxonomies":"Occasional","uplift_score":0.5026,"p_buy_treatment":0.6462,"p_buy_control":0.1436,"expected_incremental_profit":15.37,"uplift_segment":"Persuadal"},{"customer_id":"C0055","customer_taxonomies":"Price Sensitive","uplift_score":0.5001,"p_buy_treatment":0.6437,"p_buy_control":0.1436,"expected_incremental_profit":15.28,"uplift_segment":"Persuadal"},{"customer_id":"C0387","customer_taxonomies":"Occasional","uplift_score":0.4993,"p_buy_treatment":0.6425,"p_buy_control":0.1432,"expected_incremental_profit":15.24,"uplift_segment":"Persuadal"},{"customer_id":"C0912","customer_taxonomies":"Price Sensitive","uplift_score":0.4985,"p_buy_treatment":0.6427,"p_buy_control":0.1442,"expected_incremental_profit":15.22,"uplift_segment":"Persuadal"},{"customer_id":"C0648","customer_taxonomies":"Frequent Shopper","uplift_score":0.496,"p_buy_treatment":0.6413,"p_buy_control":0.1453,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0476","customer_taxonomies":"High Value","uplift_score":0.4959,"p_buy_treatment":0.6411,"p_buy_control":0.1452,"expected_incremental_profit":15.12,"uplift_segment":"Persuadal"},{"customer_id":"C0034","customer_taxonomies":"Occasional","uplift_score":0.4955,"p_buy_treatment":0.641,"p_buy_control":0.1455,"expected_incremental_profit":15.11,"uplift_segment":"Persuadal"},{"customer_id":"C0763","customer_taxonomies":"Occasional","uplift_score":0.4952,"p_buy_treatment":0.6408,"p_buy_control":0.1456,"expected_incremental_profit":15.1,"uplift_segment":"Persuadal"},{"customer_id":"C0218","customer_taxonomies":"Price Sensitive","uplift_score":0.4951,"p_buy_treatment":0.6407,"p_buy_control":0.1456,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0591","customer_taxonomies":"Frequent Shopper","uplift_score":0.495,"p_buy_treatment":0.6405,"p_buy_control":0.1455,"expected_incremental_profit":15.09,"uplift_segment":"Persuadal"},{"customer_id":"C0802","customer_taxonomies":"High Value","uplift_score":0.4945,"p_buy_treatment":0.6403,"p_buy_control":0.1458,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"},{"customer_id":"C0167","customer_taxonomies":"Occasional","uplift_score":0.4942,"p_buy_treatment":0.6401,"p_buy_control":0.1459,"expected_incremental_profit":15.07,"uplift_segment":"Persuadal"}]
-};
-
-// UTILITY LAYER
-
-const COLORS = {
-  Persuadal: '#3fb950',
-  'Sure Thing': '#58a6ff',
-  'Lost Cause': '#8b949e',
-  'Sleeping Dog': '#f85149'
-};
-
-const SEGMENT_COLORS = {
-  Persuadal: { bg: 'green', chip: 'green' },
-  'Sure Thing': { bg: 'blue', chip: 'blue' },
-  'Lost Cause': { bg: 'muted', chip: 'muted' },
-  'Sleeping Dog': { bg: 'red', chip: 'red' }
-};
-
-function getSegmentColor(segment) {
-  return COLORS[segment] || '#8b949e';
-}
-
-function calcEIP(pTreatment, pControl, price, discountPct, cogs, cost) {
-  const tau = pTreatment - pControl;
-  const discountAmount = price * discountPct;
-  return tau * (price - cogs) - discountAmount * pTreatment - cost;
-}
-
-function formatCurrency(value) {
-  return '฿' + value.toLocaleString('th', { maximumFractionDigits: 0 });
-}
-
-function getActionLabel(tau, eip) {
-  if (tau < 0) return { label: 'SLEEPING DOG (DO NOT DISTURB)', chip: 'red' };
-  return eip > 0 ? { label: 'TARGET', chip: 'green' } : { label: 'SKIP', chip: 'muted' };
-}
-
-// ═══════════════════════════════════════════════════════════════════════════════
-// CHART INITIALIZATION
-// ═══════════════════════════════════════════════════════════════════════════════
-
-let charts = {};
-
-function initCharts() {
-  initDonutChart();
-  initHistogramChart();
-  initScatterChart();
-  initProfitCurveChart();
-}
-
-function initDonutChart() {
-  const segments = Object.keys(DATA.segmentCounts);
-  const counts = segments.map(s => DATA.segmentCounts[s]);
-  const colors = segments.map(s => getSegmentColor(s) + 'cc');
-
-  charts.donut = new Chart(document.getElementById('chartDonut').getContext('2d'), {
-    type: 'doughnut',
-    data: {
-      labels: segments,
-      datasets: [{
-        data: counts,
-        backgroundColor: colors,
-        borderColor: '#161b22',
-        borderWidth: 3,
-        hoverOffset: 8
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'right',
-          labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, padding: 16, usePointStyle: true }
-        },
-        tooltip: {
-          callbacks: {
-            label: ctx => ` ${ctx.label}: ${ctx.parsed} customers (${(ctx.parsed / 10).toFixed(1)}%)`
-          }
-        }
-      }
-    }
-  });
-}
-
-function initHistogramChart() {
-  const colors = DATA.histogram.map(d => 
-    d.x >= 0.05 ? '#3fb950cc' : d.x <= -0.05 ? '#f85149cc' : '#8b949ecc'
-  );
-
-  charts.hist = new Chart(document.getElementById('chartHist').getContext('2d'), {
-    type: 'bar',
-    data: {
-      labels: DATA.histogram.map(d => d.x.toFixed(2)),
-      datasets: [{
-        label: 'Customers',
-        data: DATA.histogram.map(d => d.y),
-        backgroundColor: colors,
-        borderWidth: 0,
-        borderRadius: 4
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: { callbacks: { title: ctx => `Uplift ≈ ${ctx[0].label}` } }
-      },
-      scales: {
-        x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#30363d22' } },
-        y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } }
-      }
-    }
-  });
-}
-
-function initScatterChart() {
-  const segGroups = {};
-  DATA.scatter.forEach(d => {
-    if (!segGroups[d.uplift_segment]) segGroups[d.uplift_segment] = [];
-    segGroups[d.uplift_segment].push({ x: d.uplift_score, y: d.expected_incremental_profit, cid: d.customer_id });
-  });
-
-  const datasets = Object.entries(segGroups).map(([seg, pts]) => ({
-    label: seg,
-    data: pts,
-    backgroundColor: getSegmentColor(seg) + 'bb',
-    borderColor: getSegmentColor(seg),
-    borderWidth: 0,
-    pointRadius: 5,
-    pointHoverRadius: 8
-  }));
-
-  charts.scatter = new Chart(document.getElementById('chartScatter').getContext('2d'), {
-    type: 'scatter',
-    data: { datasets },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
-        tooltip: {
-          callbacks: {
-            label: ctx => `${ctx.dataset.label} | τ: ${ctx.raw.x.toFixed(3)}, EIP: ฿${ctx.raw.y.toFixed(2)}`
-          }
-        }
-      },
-      scales: {
-        x: { title: { display: true, text: 'Uplift Score (τ)', color: '#8b949e' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } },
-        y: { title: { display: true, text: 'EIP (฿)', color: '#8b949e' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } }
-      }
-    }
-  });
-}
-
-function initProfitCurveChart() {
-  const maxIdx = DATA.profitCurve.reduce((mi, d, i, a) => d.profit > a[mi].profit ? i : mi, 0);
-  const maxPct = DATA.profitCurve[maxIdx].pct;
-
-  charts.profit = new Chart(document.getElementById('chartProfit').getContext('2d'), {
-    type: 'line',
-    data: {
-      labels: DATA.profitCurve.map(d => d.pct + '%'),
-      datasets: [
-        {
-          label: 'Optimized Cumulative Profit',
-          data: DATA.profitCurve.map(d => d.profit),
-          borderColor: '#3fb950',
-          backgroundColor: 'rgba(63,185,80,.08)',
-          fill: true,
-          borderWidth: 2.5,
-          pointRadius: 0,
-          tension: 0.3
-        },
-        {
-          label: 'Zero-Profit Baseline',
-          data: DATA.profitCurve.map(() => 0),
-          borderColor: '#f8514966',
-          borderDash: [6, 4],
-          borderWidth: 1.5,
-          pointRadius: 0
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
-        tooltip: {
-          callbacks: {
-            title: ctx => `Top ${ctx[0].label} targeted`,
-            label: ctx => ctx.datasetIndex === 0 ? ` Net Profit: ฿${ctx.raw.toFixed(2)}` : null
-          },
-          filter: item => item.datasetIndex === 0
-        }
-      },
-      scales: {
-        x: { ticks: { color: '#8b949e', maxTicksLimit: 10 }, grid: { color: '#30363d66' } },
-        y: { ticks: { color: '#8b949e', callback: v => '฿' + v.toFixed(0) }, grid: { color: '#30363d66' } }
-      }
-    }
-  });
-
-  // Add optimal point marker
-  const plugin = {
-    id: 'optimalMarker',
-    afterDraw(chart) {
-      const ctx = chart.ctx;
-      const xScale = chart.scales.x;
-      const x = xScale.getPixelForValue(maxIdx);
-      const top = chart.chartArea.top;
-      const bot = chart.chartArea.bottom;
-      
-      ctx.save();
-      ctx.strokeStyle = '#a371f7';
-      ctx.lineWidth = 2;
-      ctx.setLineDash([4, 3]);
-      ctx.beginPath();
-      ctx.moveTo(x, top);
-      ctx.lineTo(x, bot);
-      ctx.stroke();
-      ctx.fillStyle = '#a371f7';
-      ctx.font = '11px Inter';
-      ctx.fillText(`Optimal ≈ ${maxPct}%`, x + 4, top + 14);
-      ctx.restore();
-    }
-  };
-  Chart.register(plugin);
-}
-
-// ═════════════════════════════════════════════════════════════════════════════════
-// STATE & UPDATE LOGIC
-// ═════════════════════════════════════════════════════════════════════════════════
-
-const appState = {
-  getParams() {
-    return {
-      price: parseFloat(document.getElementById('slPrice').value),
-      discount: parseFloat(document.getElementById('slDiscount').value) / 100,
-      cogs: parseFloat(document.getElementById('slCogs').value),
-      cost: parseFloat(document.getElementById('slCampaign').value),
-      segment: document.getElementById('selSegment').value
+      top20: [{ "customer_id": "C0508", "customer_taxonomies": "Occasional", "uplift_score": 0.5335, "p_buy_treatment": 0.6628, "p_buy_control": 0.1293, "expected_incremental_profit": 17.04, "uplift_segment": "Persuadal" }, { "customer_id": "C0781", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.5235, "p_buy_treatment": 0.665, "p_buy_control": 0.1415, "expected_incremental_profit": 16.24, "uplift_segment": "Persuadal" }, { "customer_id": "C0134", "customer_taxonomies": "Frequent Shopper", "uplift_score": 0.5195, "p_buy_treatment": 0.6608, "p_buy_control": 0.1413, "expected_incremental_profit": 16.12, "uplift_segment": "Persuadal" }, { "customer_id": "C0722", "customer_taxonomies": "Occasional", "uplift_score": 0.5238, "p_buy_treatment": 0.662, "p_buy_control": 0.1382, "expected_incremental_profit": 16.12, "uplift_segment": "Persuadal" }, { "customer_id": "C0397", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.5218, "p_buy_treatment": 0.6617, "p_buy_control": 0.1399, "expected_incremental_profit": 16.1, "uplift_segment": "Persuadal" }, { "customer_id": "C0249", "customer_taxonomies": "Occasional", "uplift_score": 0.5134, "p_buy_treatment": 0.6543, "p_buy_control": 0.1409, "expected_incremental_profit": 15.78, "uplift_segment": "Persuadal" }, { "customer_id": "C0831", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.5091, "p_buy_treatment": 0.6532, "p_buy_control": 0.1441, "expected_incremental_profit": 15.61, "uplift_segment": "Persuadal" }, { "customer_id": "C0173", "customer_taxonomies": "Frequent Shopper", "uplift_score": 0.5057, "p_buy_treatment": 0.6494, "p_buy_control": 0.1437, "expected_incremental_profit": 15.49, "uplift_segment": "Persuadal" }, { "customer_id": "C0619", "customer_taxonomies": "Occasional", "uplift_score": 0.5026, "p_buy_treatment": 0.6462, "p_buy_control": 0.1436, "expected_incremental_profit": 15.37, "uplift_segment": "Persuadal" }, { "customer_id": "C0055", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.5001, "p_buy_treatment": 0.6437, "p_buy_control": 0.1436, "expected_incremental_profit": 15.28, "uplift_segment": "Persuadal" }, { "customer_id": "C0387", "customer_taxonomies": "Occasional", "uplift_score": 0.4993, "p_buy_treatment": 0.6425, "p_buy_control": 0.1432, "expected_incremental_profit": 15.24, "uplift_segment": "Persuadal" }, { "customer_id": "C0912", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.4985, "p_buy_treatment": 0.6427, "p_buy_control": 0.1442, "expected_incremental_profit": 15.22, "uplift_segment": "Persuadal" }, { "customer_id": "C0648", "customer_taxonomies": "Frequent Shopper", "uplift_score": 0.496, "p_buy_treatment": 0.6413, "p_buy_control": 0.1453, "expected_incremental_profit": 15.12, "uplift_segment": "Persuadal" }, { "customer_id": "C0476", "customer_taxonomies": "High Value", "uplift_score": 0.4959, "p_buy_treatment": 0.6411, "p_buy_control": 0.1452, "expected_incremental_profit": 15.12, "uplift_segment": "Persuadal" }, { "customer_id": "C0034", "customer_taxonomies": "Occasional", "uplift_score": 0.4955, "p_buy_treatment": 0.641, "p_buy_control": 0.1455, "expected_incremental_profit": 15.11, "uplift_segment": "Persuadal" }, { "customer_id": "C0763", "customer_taxonomies": "Occasional", "uplift_score": 0.4952, "p_buy_treatment": 0.6408, "p_buy_control": 0.1456, "expected_incremental_profit": 15.1, "uplift_segment": "Persuadal" }, { "customer_id": "C0218", "customer_taxonomies": "Price Sensitive", "uplift_score": 0.4951, "p_buy_treatment": 0.6407, "p_buy_control": 0.1456, "expected_incremental_profit": 15.09, "uplift_segment": "Persuadal" }, { "customer_id": "C0591", "customer_taxonomies": "Frequent Shopper", "uplift_score": 0.495, "p_buy_treatment": 0.6405, "p_buy_control": 0.1455, "expected_incremental_profit": 15.09, "uplift_segment": "Persuadal" }, { "customer_id": "C0802", "customer_taxonomies": "High Value", "uplift_score": 0.4945, "p_buy_treatment": 0.6403, "p_buy_control": 0.1458, "expected_incremental_profit": 15.07, "uplift_segment": "Persuadal" }, { "customer_id": "C0167", "customer_taxonomies": "Occasional", "uplift_score": 0.4942, "p_buy_treatment": 0.6401, "p_buy_control": 0.1459, "expected_incremental_profit": 15.07, "uplift_segment": "Persuadal" }]
     };
-  },
 
-  updateLabels(params) {
-    document.getElementById('vPrice').textContent = formatCurrency(params.price);
-    document.getElementById('vDiscount').textContent = (params.discount * 100) + '%';
-    document.getElementById('vCogs').textContent = formatCurrency(params.cogs);
-    document.getElementById('vCampaign').textContent = formatCurrency(params.cost);
+    // UTILITY LAYER
 
-    const discountAmount = params.price * params.discount;
-    document.getElementById('fEIR').textContent = `EIR = τ × ฿${params.price} − ฿${discountAmount.toFixed(2)} × P(Buy|T)`;
-    document.getElementById('fEIP').textContent = `EIP = τ × (฿${params.price} − ฿${params.cogs}) − ฿${discountAmount.toFixed(2)} × P(Buy|T) − ฿${params.cost.toFixed(2)}`;
-  },
+    const COLORS = {
+      Persuadal: '#3fb950',
+      'Sure Thing': '#58a6ff',
+      'Lost Cause': '#8b949e',
+      'Sleeping Dog': '#f85149'
+    };
 
-  updateKPIs(params) {
-    let targeted = 0, sleeping = 0, optProfit = 0, uniformProfit = 0, budgetOpt = 0, budgetAll = 0;
+    const SEGMENT_COLORS = {
+      Persuadal: { bg: 'green', chip: 'green' },
+      'Sure Thing': { bg: 'blue', chip: 'blue' },
+      'Lost Cause': { bg: 'muted', chip: 'muted' },
+      'Sleeping Dog': { bg: 'red', chip: 'red' }
+    };
 
-    DATA.scatter.forEach(r => {
-      const tau = r.uplift_score;
-      const eip = calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost);
-      const action = tau < 0 ? 'SLEEPING' : eip > 0 ? 'TARGET' : 'SKIP';
-
-      if (action === 'TARGET') {
-        targeted++;
-        optProfit += eip;
-      }
-      if (action === 'SLEEPING') sleeping++;
-
-      uniformProfit += eip;
-      const discAmt = params.price * params.discount;
-      const budgetCost = params.cost + discAmt * r.p_buy_treatment;
-      budgetAll += budgetCost;
-      if (action === 'TARGET') budgetOpt += budgetCost;
-    });
-
-    const scale = 1000 / 300;
-    const estProfit = optProfit * scale;
-    const estUniform = uniformProfit * scale;
-    const estTargeted = Math.round(targeted * scale);
-    const estSleeping = Math.round(sleeping * scale);
-    const savedPct = budgetAll > 0 ? ((1 - budgetOpt / budgetAll) * 100) : 0;
-    const savedAmt = (budgetAll - budgetOpt) * scale;
-
-    document.getElementById('kpiProfit').textContent = formatCurrency(estProfit);
-    document.getElementById('kpiProfitSub').textContent = `vs ${formatCurrency(estUniform)} (Uniform)`;
-    document.getElementById('kpiTargeted').textContent = estTargeted.toLocaleString();
-    document.getElementById('kpiTargetedSub').textContent = 'of 1,000 customers';
-    document.getElementById('kpiSaved').textContent = savedPct.toFixed(1) + '%';
-    document.getElementById('kpiSavedSub').textContent = `≈ ${formatCurrency(savedAmt)} saved`;
-    document.getElementById('kpiSleeping').textContent = estSleeping.toLocaleString();
-  },
-
-  updateTable(params) {
-    const filtSegment = params.segment;
-    const tableRows = DATA.top20
-      .map(r => ({
-        ...r,
-        eip: calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost)
-      }))
-      .filter(r => filtSegment === 'all' || r.uplift_segment === filtSegment)
-      .sort((a, b) => b.eip - a.eip)
-      .slice(0, 15);
-
-    const tbody = document.getElementById('topTable');
-    if (tableRows.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">No customers match this filter.</td></tr>`;
-      return;
+    function getSegmentColor(segment) {
+      return COLORS[segment] || '#8b949e';
     }
 
-    tbody.innerHTML = tableRows.map(r => {
-      const action = getActionLabel(r.uplift_score, r.eip);
-      const colors = SEGMENT_COLORS[r.uplift_segment];
-      const segChip = `<span class="chip ${colors.chip}">${r.uplift_segment}</span>`;
-      const actionChip = `<span class="chip ${action.chip}">${action.label === 'SLEEPING DOG (DO NOT DISTURB)' ? 'Sleeping Dog ⚠️' : action.label}</span>`;
-      const custChip = `<span class="chip ${r.customer_taxonomies === 'High Value' ? 'gold' : 'muted'}">${r.customer_taxonomies}</span>`;
+    function calcEIP(pTreatment, pControl, price, discountPct, cogs, cost) {
+      const tau = pTreatment - pControl;
+      const discountAmount = price * discountPct;
+      return tau * (price - cogs) - discountAmount * pTreatment - cost;
+    }
 
-      return `<tr>
+    function formatCurrency(value) {
+      return '฿' + Math.round(value).toLocaleString('en-US');
+    }
+
+    function getActionLabel(tau, eip) {
+      if (tau < 0) return { label: 'SLEEPING DOG (DO NOT DISTURB)', chip: 'red' };
+      return eip > 0 ? { label: 'TARGET', chip: 'green' } : { label: 'SKIP', chip: 'muted' };
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════════
+    // CHART INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════════════════════
+
+    let charts = {};
+
+    function initCharts() {
+      initDonutChart();
+      initHistogramChart();
+      initScatterChart();
+      initProfitCurveChart();
+    }
+
+    function initDonutChart() {
+      const segments = Object.keys(DATA.segmentCounts);
+      const counts = segments.map(s => DATA.segmentCounts[s]);
+      const colors = segments.map(s => getSegmentColor(s) + 'cc');
+
+      charts.donut = new Chart(document.getElementById('chartDonut').getContext('2d'), {
+        type: 'doughnut',
+        data: {
+          labels: segments,
+          datasets: [{
+            data: counts,
+            backgroundColor: colors,
+            borderColor: '#161b22',
+            borderWidth: 3,
+            hoverOffset: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: {
+              position: 'right',
+              labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, padding: 16, usePointStyle: true }
+            },
+            tooltip: {
+              callbacks: {
+                label: ctx => ` ${ctx.label}: ${ctx.parsed} customers (${(ctx.parsed / 10).toFixed(1)}%)`
+              }
+            }
+          }
+        }
+      });
+    }
+
+    function initHistogramChart() {
+      const colors = DATA.histogram.map(d =>
+        d.x >= 0.05 ? '#3fb950cc' : d.x <= -0.05 ? '#f85149cc' : '#8b949ecc'
+      );
+
+      charts.hist = new Chart(document.getElementById('chartHist').getContext('2d'), {
+        type: 'bar',
+        data: {
+          labels: DATA.histogram.map(d => d.x.toFixed(2)),
+          datasets: [{
+            label: 'Customers',
+            data: DATA.histogram.map(d => d.y),
+            backgroundColor: colors,
+            borderWidth: 0,
+            borderRadius: 4
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { title: ctx => `Uplift ≈ ${ctx[0].label}` } }
+          },
+          scales: {
+            x: { ticks: { color: '#8b949e', font: { size: 10 } }, grid: { color: '#30363d22' } },
+            y: { ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } }
+          }
+        }
+      });
+    }
+
+    function initScatterChart() {
+      const segGroups = {};
+      DATA.scatter.forEach(d => {
+        if (!segGroups[d.uplift_segment]) segGroups[d.uplift_segment] = [];
+        segGroups[d.uplift_segment].push({ x: d.uplift_score, y: d.expected_incremental_profit, cid: d.customer_id });
+      });
+
+      const datasets = Object.entries(segGroups).map(([seg, pts]) => ({
+        label: seg,
+        data: pts,
+        backgroundColor: getSegmentColor(seg) + 'bb',
+        borderColor: getSegmentColor(seg),
+        borderWidth: 0,
+        pointRadius: 5,
+        pointHoverRadius: 8
+      }));
+
+      charts.scatter = new Chart(document.getElementById('chartScatter').getContext('2d'), {
+        type: 'scatter',
+        data: { datasets },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
+            tooltip: {
+              callbacks: {
+                label: ctx => `${ctx.dataset.label} | τ: ${ctx.raw.x.toFixed(3)}, EIP: ฿${ctx.raw.y.toFixed(2)}`
+              }
+            }
+          },
+          scales: {
+            x: { title: { display: true, text: 'Uplift Score (τ)', color: '#8b949e' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } },
+            y: { title: { display: true, text: 'EIP (฿)', color: '#8b949e' }, ticks: { color: '#8b949e' }, grid: { color: '#30363d66' } }
+          }
+        }
+      });
+    }
+
+    function initProfitCurveChart() {
+      const maxIdx = DATA.profitCurve.reduce((mi, d, i, a) => d.profit > a[mi].profit ? i : mi, 0);
+      const maxPct = DATA.profitCurve[maxIdx].pct;
+
+      // Local plugin — NOT globally registered, so it only affects this chart
+      const optimalMarkerPlugin = {
+        id: 'optimalMarker',
+        afterDraw(chart) {
+          const ctx = chart.ctx;
+          const xScale = chart.scales.x;
+          if (!xScale || !chart.chartArea) return;
+          const x = xScale.getPixelForValue(maxIdx);
+          const top = chart.chartArea.top;
+          const bot = chart.chartArea.bottom;
+
+          ctx.save();
+          ctx.strokeStyle = '#a371f7';
+          ctx.lineWidth = 2;
+          ctx.setLineDash([4, 3]);
+          ctx.beginPath();
+          ctx.moveTo(x, top);
+          ctx.lineTo(x, bot);
+          ctx.stroke();
+          ctx.fillStyle = '#a371f7';
+          ctx.font = '11px Inter';
+          ctx.fillText(`Optimal ≈ ${maxPct}%`, x + 4, top + 14);
+          ctx.restore();
+        }
+      };
+
+      charts.profit = new Chart(document.getElementById('chartProfit').getContext('2d'), {
+        type: 'line',
+        plugins: [optimalMarkerPlugin],
+        data: {
+          labels: DATA.profitCurve.map(d => d.pct + '%'),
+          datasets: [
+            {
+              label: 'Optimized Cumulative Profit',
+              data: DATA.profitCurve.map(d => d.profit),
+              borderColor: '#3fb950',
+              backgroundColor: 'rgba(63,185,80,.08)',
+              fill: true,
+              borderWidth: 2.5,
+              pointRadius: 0,
+              tension: 0.3
+            },
+            {
+              label: 'Zero-Profit Baseline',
+              data: DATA.profitCurve.map(() => 0),
+              borderColor: '#f8514966',
+              borderDash: [6, 4],
+              borderWidth: 1.5,
+              pointRadius: 0
+            }
+          ]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { labels: { color: '#8b949e', font: { family: 'Inter', size: 12 }, usePointStyle: true } },
+            tooltip: {
+              callbacks: {
+                title: ctx => `Top ${ctx[0].label} targeted`,
+                label: ctx => ctx.datasetIndex === 0 ? ` Net Profit: ฿${Number(ctx.raw).toFixed(2)}` : null
+              },
+              filter: item => item.datasetIndex === 0
+            }
+          },
+          scales: {
+            x: { ticks: { color: '#8b949e', maxTicksLimit: 10 }, grid: { color: '#30363d66' } },
+            y: { ticks: { color: '#8b949e', callback: v => '฿' + Number(v).toFixed(0) }, grid: { color: '#30363d66' } }
+          }
+        }
+      });
+    }
+
+    // ═════════════════════════════════════════════════════════════════════════════════
+    // STATE & UPDATE LOGIC
+    // ═════════════════════════════════════════════════════════════════════════════════
+
+    const appState = {
+      getParams() {
+        return {
+          price: parseFloat(document.getElementById('slPrice').value),
+          discount: parseFloat(document.getElementById('slDiscount').value) / 100,
+          cogs: parseFloat(document.getElementById('slCogs').value),
+          cost: parseFloat(document.getElementById('slCampaign').value),
+          segment: document.getElementById('selSegment').value
+        };
+      },
+
+      updateLabels(params) {
+        document.getElementById('vPrice').textContent = formatCurrency(params.price);
+        document.getElementById('vDiscount').textContent = (params.discount * 100).toFixed(0) + '%';
+        document.getElementById('vCogs').textContent = formatCurrency(params.cogs);
+        document.getElementById('vCampaign').textContent = formatCurrency(params.cost);
+
+        const discountAmount = params.price * params.discount;
+        document.getElementById('fEIR').textContent = `EIR = τ × ฿${params.price} − ฿${discountAmount.toFixed(2)} × P(Buy|T)`;
+        document.getElementById('fEIP').textContent = `EIP = τ × (฿${params.price} − ฿${params.cogs}) − ฿${discountAmount.toFixed(2)} × P(Buy|T) − ฿${params.cost.toFixed(2)}`;
+      },
+
+      updateKPIs(params) {
+        let targeted = 0, sleeping = 0, optProfit = 0, uniformProfit = 0, budgetOpt = 0, budgetAll = 0;
+        const sampleSize = DATA.scatter.length;
+
+        DATA.scatter.forEach(r => {
+          const tau = r.uplift_score;
+          const eip = calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost);
+          const action = tau < 0 ? 'SLEEPING' : eip > 0 ? 'TARGET' : 'SKIP';
+
+          if (action === 'TARGET') {
+            targeted++;
+            optProfit += eip;
+          }
+          if (action === 'SLEEPING') sleeping++;
+
+          uniformProfit += eip;
+          const discAmt = params.price * params.discount;
+          const budgetCost = params.cost + discAmt * r.p_buy_treatment;
+          budgetAll += budgetCost;
+          if (action === 'TARGET') budgetOpt += budgetCost;
+        });
+
+        const scale = 1000 / sampleSize;
+        const estProfit = optProfit * scale;
+        const estUniform = uniformProfit * scale;
+        const estTargeted = Math.round(targeted * scale);
+        const savedPct = budgetAll > 0 ? ((1 - budgetOpt / budgetAll) * 100) : 0;
+        const savedAmt = (budgetAll - budgetOpt) * scale;
+        // Use actual segment counts for sleeping dogs (more accurate than extrapolating from tiny sample)
+        const estSleeping = DATA.segmentCounts['Sleeping Dog'];
+
+        document.getElementById('kpiProfit').textContent = formatCurrency(estProfit);
+        document.getElementById('kpiProfitSub').textContent = `vs ${formatCurrency(estUniform)} (Uniform)`;
+        document.getElementById('kpiTargeted').textContent = estTargeted.toLocaleString();
+        document.getElementById('kpiTargetedSub').textContent = 'of 1,000 customers';
+        document.getElementById('kpiSaved').textContent = savedPct.toFixed(1) + '%';
+        document.getElementById('kpiSavedSub').textContent = `≈ ${formatCurrency(savedAmt)} saved`;
+        document.getElementById('kpiSleeping').textContent = estSleeping.toLocaleString();
+      },
+
+      updateTable(params) {
+        const filtSegment = params.segment;
+        const tableRows = DATA.top20
+          .map(r => ({
+            ...r,
+            eip: calcEIP(r.p_buy_treatment, r.p_buy_control, params.price, params.discount, params.cogs, params.cost)
+          }))
+          .filter(r => filtSegment === 'all' || r.uplift_segment === filtSegment)
+          .sort((a, b) => b.eip - a.eip)
+          .slice(0, 15);
+
+        const tbody = document.getElementById('topTable');
+        if (tableRows.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">No customers match this filter.</td></tr>`;
+          return;
+        }
+
+        tbody.innerHTML = tableRows.map(r => {
+          const action = getActionLabel(r.uplift_score, r.eip);
+          const colors = SEGMENT_COLORS[r.uplift_segment];
+          const segChip = `<span class="chip ${colors.chip}">${r.uplift_segment}</span>`;
+          const actionChip = `<span class="chip ${action.chip}">${action.label === 'SLEEPING DOG (DO NOT DISTURB)' ? 'Sleeping Dog ⚠️' : action.label}</span>`;
+          const custChip = `<span class="chip ${r.customer_taxonomies === 'High Value' ? 'gold' : 'muted'}">${r.customer_taxonomies}</span>`;
+
+          return `<tr>
         <td style="font-weight:600;color:var(--blue)">${r.customer_id}</td>
         <td>${custChip}</td>
         <td style="font-family:monospace">${r.uplift_score.toFixed(4)}</td>
@@ -714,23 +1017,65 @@ const appState = {
         <td style="font-weight:700;color:${r.eip > 0 ? 'var(--green)' : 'var(--red)'}">${formatCurrency(r.eip)}</td>
         <td>${segChip}</td>
       </tr>`;
-    }).join('');
-  },
+        }).join('');
+      },
 
-  update() {
-    const params = this.getParams();
-    this.updateLabels(params);
-    this.updateKPIs(params);
-    this.updateTable(params);
-  }
-};
+      updateCharts(params) {
+        // ── Scatter: recalculate EIP for each point from current params ──
+        if (charts.scatter) {
+          // Rebuild a map from customer_id → recalculated EIP
+          const eipMap = {};
+          DATA.scatter.forEach(r => {
+            eipMap[r.customer_id] = calcEIP(
+              r.p_buy_treatment, r.p_buy_control,
+              params.price, params.discount, params.cogs, params.cost
+            );
+          });
 
-// INITIALIZATION
+          // Update each dataset's y values in-place
+          charts.scatter.data.datasets.forEach(ds => {
+            ds.data.forEach(pt => {
+              if (pt.cid && eipMap[pt.cid] !== undefined) {
+                pt.y = eipMap[pt.cid];
+              }
+            });
+          });
+          charts.scatter.update('none'); // 'none' = no animation, instant
+        }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initCharts();
-  appState.update();
-});
-</script>
+        // ── Profit curve: rescale proportionally to margin change ──
+        // Default params the curve was computed with:
+        if (charts.profit) {
+          const defaultPrice    = 163;
+          const defaultCogs     = 90;
+          const defaultDiscount = 0.20;
+          const defaultCost     = 0.50;
+          // Compute a "margin ratio" relative to defaults to scale the curve
+          const defaultMargin = defaultPrice - defaultCogs - defaultPrice * defaultDiscount - defaultCost;
+          const newMargin     = params.price - params.cogs - params.price * params.discount - params.cost;
+          const ratio = defaultMargin !== 0 ? newMargin / defaultMargin : 1;
+
+          charts.profit.data.datasets[0].data = DATA.profitCurve.map(d => d.profit * ratio);
+          charts.profit.update('none');
+        }
+      },
+
+      update() {
+        const params = this.getParams();
+        this.updateLabels(params);
+        this.updateKPIs(params);
+        this.updateTable(params);
+        this.updateCharts(params);
+      }
+    };
+
+    // INITIALIZATION
+
+    document.addEventListener('DOMContentLoaded', () => {
+      initCharts();
+      appState.update();
+    });
+  </script>
 </body>
+
 </html>
