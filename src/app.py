@@ -1,13 +1,16 @@
 """
 Streamlit Dashboard for PromoLift: Campaign Optimizer and Uplift Visualizer.
 
-Decoupled production dashboard: consumes pre-trained model artifacts and inference outputs.
-Does not perform model training inside the dashboard loop.
+Decoupled production dashboard:
+- Queries the FastAPI Inference Service (API_URL) for live predictions and model metadata.
+- Gracefully falls back to local artifact scoring if the API service is unreachable.
+- Never trains models inside the UI thread.
 """
 
 import os
 import json
 import io
+import requests
 import streamlit as st
 import pandas as pd
 import numpy as np
@@ -88,14 +91,26 @@ st.markdown("""
         letter-spacing: 1px;
     }
 
-    .badge {
+    .status-badge-green {
         display: inline-block;
         padding: 4px 10px;
         border-radius: 6px;
         font-size: 12px;
         font-weight: 600;
-        background-color: #2b6cb0;
-        color: white;
+        background-color: #22543d;
+        color: #9ae6b4;
+        border: 1px solid #276749;
+    }
+
+    .status-badge-yellow {
+        display: inline-block;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        background-color: #744210;
+        color: #fbd38d;
+        border: 1px solid #975a16;
     }
     
     section[data-testid="stSidebar"] {
@@ -104,40 +119,84 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-MODEL_DIR = os.environ.get("PROMOLIFT_MODEL_DIR", "models/promolift_latest")
+# Environment configuration
+API_URL = os.environ.get("API_URL", "http://localhost:8000").rstrip("/")
+MODEL_PATH = os.environ.get("MODEL_PATH") or os.environ.get("PROMOLIFT_MODEL_DIR", "models/production")
 OUTPUTS_DIR = os.environ.get("PROMOLIFT_OUTPUTS_DIR", "outputs")
 
 
+@st.cache_data(ttl=60)
+def check_api_health():
+    """Checks whether the FastAPI inference backend is accessible."""
+    try:
+        r = requests.get(f"{API_URL}/health", timeout=2.0)
+        if r.status_code == 200:
+            return True, r.json()
+    except Exception:
+        pass
+    return False, None
+
+
+@st.cache_data(ttl=300)
+def load_model_info():
+    """Fetches model info from API or local metadata.json."""
+    # Attempt 1: From API
+    try:
+        r = requests.get(f"{API_URL}/model-info", timeout=2.0)
+        if r.status_code == 200:
+            return r.json()
+    except Exception:
+        pass
+
+    # Attempt 2: Local metadata.json fallback
+    candidates = [MODEL_PATH, "models/production", "models/promolift_latest"]
+    for dir_path in candidates:
+        meta_file = os.path.join(dir_path, "metadata.json")
+        if os.path.exists(meta_file):
+            try:
+                with open(meta_file, "r", encoding="utf-8") as f:
+                    return json.load(f)
+            except Exception:
+                pass
+    return None
+
+
 @st.cache_data
-def load_dashboard_data():
-    """Loads precomputed scored customer list and model metadata."""
+def load_base_scored_data():
+    """Loads base customer scored table from outputs or generates on demand."""
     sample_path = os.path.join(OUTPUTS_DIR, "targeting_list_sample.csv")
-    meta_path = os.path.join(MODEL_DIR, "metadata.json")
+    if os.path.exists(sample_path):
+        return pd.read_csv(sample_path)
+    
+    # Check alternate outputs
+    alt_path = os.path.join(OUTPUTS_DIR, "targeting_p003.csv")
+    if os.path.exists(alt_path):
+        return pd.read_csv(alt_path)
 
-    if not os.path.exists(sample_path):
-        st.error(f"Scored targeting output not found at '{sample_path}'. Please run 'promolift train' first.")
-        st.stop()
-
-    df_base = pd.read_csv(sample_path)
-
-    metadata = None
-    if os.path.exists(meta_path):
-        try:
-            with open(meta_path, "r", encoding="utf-8") as f:
-                metadata = json.load(f)
-        except Exception:
-            metadata = None
-
-    return df_base, metadata
+    st.error("No scored dataset found in outputs/. Please run 'promolift score' or 'promolift train' first.")
+    st.stop()
 
 
-df_base, metadata = load_dashboard_data()
+api_alive, api_health = check_api_health()
+model_info = load_model_info()
+df_base = load_base_scored_data()
 
-# Sidebar: Campaign Financial Inputs
+# Sidebar: Campaign Financial Inputs & Backend Status
 st.sidebar.image("https://img.icons8.com/nolan/96/target.png", width=70)
 st.sidebar.title("Campaign Control Panel")
-if metadata:
-    st.sidebar.caption(f"Model: {metadata.get('model_type', 'T-Learner')} | Version: {metadata.get('model_version', '0.1.0')} (SHA: {metadata.get('git_commit', 'unknown')})")
+
+# Display Backend Connection Badge
+if api_alive:
+    st.sidebar.markdown(f'<div class="status-badge-green">● Connected to FastAPI ({API_URL})</div>', unsafe_allow_html=True)
+else:
+    st.sidebar.markdown(f'<div class="status-badge-yellow">● Offline (Local Artifact Fallback)</div>', unsafe_allow_html=True)
+
+if model_info:
+    m_ver = model_info.get("model_version", "0.1.0")
+    g_sha = model_info.get("git_commit", "unknown")
+    st.sidebar.caption(f"Model Version: **{m_ver}** | Git Commit: **{g_sha}**")
+
+st.sidebar.markdown("---")
 
 category_options = {
     "P001 (Household Item)": {"price": 163.37, "cogs": 89.89, "discount": 0.20},
@@ -172,7 +231,7 @@ df_calc["recommended_action"] = np.select(
     default="SKIP"
 )
 
-# Header
+# Main Title
 st.title("🎯 PromoLift: Production Uplift Modeling Dashboard")
 st.markdown("Targeting optimizer powered by causal T-Learner uplift modeling. Decoupled from training loop.")
 
@@ -266,7 +325,7 @@ with tab1:
         
     with c2:
         st.markdown("#### 📥 Export Targeting List")
-        st.write("Extract the optimized list of customers matching target criteria to load directly into marketing dispatch (SMS / Line OA).")
+        st.write("Extract the optimized list of customers matching target criteria to load directly into marketing dispatch tools (SMS / Line OA).")
         
         display_cols = ["customer_id", "uplift_score", "expected_incremental_profit", "recommended_action"]
         if "customer_taxonomies" in df_calc.columns:
@@ -317,8 +376,6 @@ with tab2:
             for spine in ax.spines.values():
                 spine.set_color('#2d3748')
             st.pyplot(fig)
-        else:
-            st.info("Uplift segment column not present.")
             
     with c2:
         st.markdown("#### Cumulative Revenue & Profit Curves")
@@ -385,15 +442,13 @@ with tab3:
             for spine in ax.spines.values():
                 spine.set_color('#2d3748')
             st.pyplot(fig)
-    else:
-        st.info("Customer segment information not available in scored output.")
 
 with tab4:
     st.markdown("### 🔬 Model Performance & Benchmark Baselines")
     st.write("Evaluating the causal model on the untouched Holdout Test Set against industry targeting baselines.")
 
-    if metadata and "test_metrics" in metadata:
-        m = metadata["test_metrics"]
+    if model_info and "test_metrics" in model_info:
+        m = model_info["test_metrics"]
         col_m1, col_m2, col_m3, col_m4 = st.columns(4)
         with col_m1:
             st.metric("Test AUUC", f"{m.get('auuc', 0.0):.4f}")
@@ -405,8 +460,8 @@ with tab4:
             st.metric("Avg Treatment Effect (ATE)", f"{m.get('average_treatment_effect', 0.0):.4f}")
 
         st.markdown("#### 🏆 Benchmark Strategy Comparison on Holdout Test Set")
-        if "baseline_comparisons" in metadata and metadata["baseline_comparisons"]:
-            df_comp = pd.DataFrame(metadata["baseline_comparisons"])
+        if "baseline_comparisons" in model_info and model_info["baseline_comparisons"]:
+            df_comp = pd.DataFrame(model_info["baseline_comparisons"])
             st.dataframe(
                 df_comp[[
                     "strategy",
@@ -422,12 +477,11 @@ with tab4:
         
         st.markdown("#### 📦 Model Artifact Provenance")
         st.json({
-            "model_version": metadata.get("model_version"),
-            "model_type": metadata.get("model_type"),
-            "git_commit": metadata.get("git_commit"),
-            "created_at": metadata.get("created_at"),
-            "features": metadata.get("feature_names"),
-            "training_config": metadata.get("training_config")
+            "model_version": model_info.get("model_version"),
+            "model_type": model_info.get("model_type"),
+            "git_commit": model_info.get("git_commit"),
+            "features": model_info.get("features"),
+            "training_samples": model_info.get("training_samples")
         })
     else:
         st.info("Model metadata file not loaded. Run 'promolift train' to populate holdout metrics.")

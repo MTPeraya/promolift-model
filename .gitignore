@@ -24,6 +24,8 @@ ENV/
 *.pkl
 *.joblib
 *.model
+!models/production/*.joblib
+!models/production/*.json
 
 # OS generated files (macOS specific)
 .DS_Store

@@ -1,0 +1,46 @@
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: promolift-api
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - MODEL_PATH=/app/models/production
+      - LOG_LEVEL=INFO
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  dashboard:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: promolift-dashboard
+    restart: unless-stopped
+    command: [
+      "streamlit", "run", "src/app.py",
+      "--server.port=8501",
+      "--server.address=0.0.0.0",
+      "--server.headless=true",
+      "--browser.gatherUsageStats=false"
+    ]
+    ports:
+      - "8501:8501"
+    environment:
+      - API_URL=http://api:8000
+      - MODEL_PATH=/app/models/production
+    depends_on:
+      api:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8501/_stcore/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 15s
