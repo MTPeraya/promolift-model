@@ -168,7 +168,51 @@ promolift-model/
 
 ---
 
-## Local Setup & Installation
+## ⚡ Quickstart with Docker (Zero Configuration)
+
+PromoLift is fully containerized and production-ready. You can spin up both the **FastAPI Inference Service** and the **Streamlit Optimization Dashboard** with a single command:
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/MTPeraya/promolift-model.git
+cd promolift-model
+
+# 2. Build and launch all services
+docker compose up --build
+```
+
+### Access Local Endpoints & UIs
+
+Once the containers report `healthy`:
+*   🎯 **Streamlit Campaign Dashboard**: [http://localhost:8501](http://localhost:8501)
+*   ⚡ **FastAPI REST API & Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+*   🩺 **API Health Diagnostic**: [http://localhost:8000/health](http://localhost:8000/health)
+*   📊 **Model Holdout Provenance & Baselines**: [http://localhost:8000/model-info](http://localhost:8000/model-info)
+*   🌐 **Standalone Interactive Web Optimizer**: Open [`demo.html`](demo.html) directly in any modern browser!
+
+### Developer Commands (`Makefile`)
+
+```bash
+make docker-up      # Launch FastAPI and Streamlit in background
+make docker-test    # Run automated smoke tests against live containers
+make docker-down    # Cleanly stop and tear down containers
+make docker-logs    # Stream live logs from all containers
+make test           # Run complete pytest test suite (unit + integration + api + regression)
+make lint           # Check formatting and typing (Ruff + Mypy)
+```
+
+### Key Environment Variables
+
+| Variable | Default | Service | Description |
+|---|---|---|---|
+| `MODEL_PATH` | `/app/models/production` | API & Dashboard | Path to the production model bundle directory containing `model.joblib` and `metadata.json` |
+| `API_URL` | `http://api:8000` | Dashboard | Hostname and port of the FastAPI inference service |
+| `LOG_LEVEL` | `INFO` | API | Application logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
+| `MPLCONFIGDIR` | `/tmp/matplotlib` | Dashboard | Writable temporary directory for Matplotlib cache |
+
+---
+
+## Local Setup & Installation (Python Virtualenv)
 
 ### Prerequisites
 * Python 3.11 or 3.12
@@ -349,9 +393,3 @@ In a production deployment, monitor the following signals:
 1. **Unconfoundedness Assumption**: T-Learner assumes treatment assignment is conditionally independent of potential outcomes given features ($Y(1), Y(0) \perp W \mid X$). In production, this requires randomized holdout experiments or propensity-weighted adjustments.
 2. **Control Sample Size**: When control group size is small, the control estimator $\mu_0$ may have higher variance than $\mu_1$, occasionally exaggerating negative uplift predictions. Maintain at least a 20% (ideally 50%) control group during pilot testing.
 3. **Single-Item Cross-Elasticity**: Current EIP calculates incremental profit assuming no basket-level cannibalization across substitute categories. Future iterations should incorporate category-level basket elasticity.
-
----
-
-## License
-
-This project is licensed under the MIT License.

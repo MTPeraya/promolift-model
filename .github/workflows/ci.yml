@@ -44,3 +44,29 @@ jobs:
         run: |
           pip install build
           python -m build --wheel
+
+  docker-smoke:
+    name: Docker Build & Smoke Tests
+    runs-on: ubuntu-latest
+    needs: test
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Docker images
+        run: docker compose build
+
+      - name: Start services in detached mode
+        run: docker compose up -d
+
+      - name: Smoke test API & Dashboard
+        run: |
+          sleep 12
+          docker compose ps
+          curl --retry 5 --retry-delay 3 -f http://localhost:8000/health
+          curl --retry 5 --retry-delay 3 -f http://localhost:8000/model-info
+          curl --retry 5 --retry-delay 3 -f http://localhost:8501/_stcore/health
+
+      - name: Teardown Docker compose
+        if: always()
+        run: docker compose down -v
