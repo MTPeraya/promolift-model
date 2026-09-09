@@ -1,24 +1,24 @@
 """Production FastAPI REST API for PromoLift serving."""
 
+import logging
 import os
 import time
-import logging
-from typing import List, Optional, Dict, Any, Union
 from contextlib import asynccontextmanager
+from typing import Any
+
 from fastapi import FastAPI, HTTPException, Request, status
-from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from promolift.artifacts.bundle import PromoLiftArtifact
+from promolift.business.policy import assign_targeting_actions, assign_uplift_segments
+from promolift.business.scoring import calculate_value_scores
 from promolift.types import (
     CampaignFinancialParams,
-    UpliftSegment,
     TargetingAction,
-    FeatureNames,
+    UpliftSegment,
 )
-from promolift.business.scoring import calculate_value_scores
-from promolift.business.policy import assign_targeting_actions, assign_uplift_segments
 
 # Structured logger setup
 logging.basicConfig(
@@ -39,7 +39,7 @@ def get_default_model_dir() -> str:
     return "models/production"
 
 
-_app_state: Dict[str, Any] = {
+_app_state: dict[str, Any] = {
     "artifact": None,
     "model_dir": get_default_model_dir(),
     "start_time": time.time()
@@ -59,7 +59,7 @@ async def lifespan(app: FastAPI):
                 _app_state["artifact"].metadata.model_version,
                 _app_state["artifact"].metadata.git_commit
             )
-        except Exception as e:
+        except (OSError, ValueError, RuntimeError) as e:
             logger.error("Failed to load model artifact from %s: %s", model_dir, e)
     else:
         logger.warning("No model artifact found at %s on startup", model_dir)
@@ -99,7 +99,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
 @app.exception_handler(Exception)
 async def generic_exception_handler(request: Request, exc: Exception):
     # Log detailed internal stack trace on server, but return clean sanitized response to client
-    logger.error("Internal server error during request %s: %s", request.url.path, str(exc), exc_info=True)
+    logger.error("Internal server error during request %s: %s", request.url.path, str(exc), exc_info=exc)
     return JSONResponse(
         status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
         content={
@@ -130,16 +130,16 @@ class SingleScoringRequest(BaseModel):
 
 class BatchScoringRequest(BaseModel):
     campaign_id: str
-    customers: List[CustomerFeaturePayload]
+    customers: list[CustomerFeaturePayload]
     financial_params: CampaignFinancialParams
 
 
 class PredictRequest(BaseModel):
     campaign_id: str = Field(default="DEFAULT", description="Campaign identifier")
-    customers: Union[CustomerFeaturePayload, List[CustomerFeaturePayload]] = Field(
+    customers: CustomerFeaturePayload | list[CustomerFeaturePayload] = Field(
         ..., description="Single customer object or array of customer objects"
     )
-    financial_params: Optional[CampaignFinancialParams] = Field(
+    financial_params: CampaignFinancialParams | None = Field(
         default_factory=lambda: CampaignFinancialParams(
             price=163.37,
             cogs=89.89,
@@ -166,8 +166,8 @@ class ScoredCustomerResponse(BaseModel):
 class HealthResponse(BaseModel):
     status: str
     model_loaded: bool
-    model_version: Optional[str] = None
-    git_commit: Optional[str] = None
+    model_version: str | None = None
+    git_commit: str | None = None
     uptime_seconds: float
 
 
@@ -177,16 +177,16 @@ class ModelInfoResponse(BaseModel):
     model_type: str
     git_commit: str
     feature_version: str
-    features: List[str]
-    training_samples: Optional[int] = None
-    test_metrics: Dict[str, Any] = Field(default_factory=dict)
-    baseline_comparisons: Optional[List[Dict[str, Any]]] = None
+    features: list[str]
+    training_samples: int | None = None
+    test_metrics: dict[str, Any] = Field(default_factory=dict)
+    baseline_comparisons: list[dict[str, Any]] | None = None
 
 
 @app.get("/health", response_model=HealthResponse)
 def health_check():
     """Liveness and readiness check verifying service health and loaded model status."""
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     uptime = round(time.time() - _app_state["start_time"], 2)
     return HealthResponse(
         status="healthy",
@@ -200,7 +200,7 @@ def health_check():
 @app.get("/model-info", response_model=ModelInfoResponse)
 def get_model_info():
     """Returns non-sensitive model metadata, training configuration, and holdout evaluation metrics."""
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     if not artifact:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -223,7 +223,7 @@ def get_model_info():
 @app.get("/metadata")
 def get_metadata():
     """Legacy metadata endpoint returning complete serialized artifact dictionary."""
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     if not artifact:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -234,12 +234,12 @@ def get_metadata():
 
 def _score_payload(
     artifact: PromoLiftArtifact,
-    customers: List[CustomerFeaturePayload],
+    customers: list[CustomerFeaturePayload],
     campaign_id: str,
     params: CampaignFinancialParams
-) -> List[ScoredCustomerResponse]:
-    import pandas as pd
+) -> list[ScoredCustomerResponse]:
     import numpy as np
+    import pandas as pd
 
     t0 = time.time()
     df_feats = pd.DataFrame([c.model_dump() for c in customers])
@@ -280,13 +280,13 @@ def _score_payload(
     return results
 
 
-@app.post("/predict", response_model=List[ScoredCustomerResponse])
+@app.post("/predict", response_model=list[ScoredCustomerResponse])
 def predict(req: PredictRequest):
     """
     Unified prediction endpoint for real-time scoring.
     Accepts either a single customer object or a list of customer objects.
     """
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     if not artifact:
         raise HTTPException(
             status_code=status.HTTP_503_SERVICE_UNAVAILABLE,
@@ -306,17 +306,17 @@ def predict(req: PredictRequest):
 @app.post("/score/single", response_model=ScoredCustomerResponse)
 def score_single(req: SingleScoringRequest):
     """Legacy scoring endpoint for a single customer."""
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     if not artifact:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Model not loaded.")
     res = _score_payload(artifact, [req.customer], req.campaign_id, req.financial_params)
     return res[0]
 
 
-@app.post("/score/batch", response_model=List[ScoredCustomerResponse])
+@app.post("/score/batch", response_model=list[ScoredCustomerResponse])
 def score_batch(req: BatchScoringRequest):
     """Legacy batch scoring endpoint for multiple customers."""
-    artifact: Optional[PromoLiftArtifact] = _app_state.get("artifact")
+    artifact: PromoLiftArtifact | None = _app_state.get("artifact")
     if not artifact:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Model not loaded.")
     return _score_payload(artifact, req.customers, req.campaign_id, req.financial_params)

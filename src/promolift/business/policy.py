@@ -1,14 +1,15 @@
 """Targeting policy and customer categorization logic."""
 
-from typing import Union
+
 import numpy as np
 import pandas as pd
-from promolift.types import UpliftSegment, TargetingAction
+
+from promolift.types import TargetingAction, UpliftSegment
 
 
 def assign_uplift_segments(
-    uplift_scores: Union[np.ndarray, pd.Series],
-    p_control: Union[np.ndarray, pd.Series],
+    uplift_scores: np.ndarray | pd.Series,
+    p_control: np.ndarray | pd.Series,
     persuadable_threshold: float = 0.05,
     sleeping_dog_threshold: float = -0.05,
     sure_thing_threshold: float = 0.50
@@ -37,8 +38,8 @@ def assign_uplift_segments(
 
 
 def assign_targeting_actions(
-    uplift_scores: Union[np.ndarray, pd.Series],
-    eip_scores: Union[np.ndarray, pd.Series]
+    uplift_scores: np.ndarray | pd.Series,
+    eip_scores: np.ndarray | pd.Series
 ) -> np.ndarray:
     """
     Determines action recommendation per customer:

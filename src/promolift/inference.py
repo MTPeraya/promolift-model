@@ -1,15 +1,14 @@
 """Batch inference and campaign scoring engine."""
 
-import os
 import logging
-from typing import Optional
+
 import numpy as np
 import pandas as pd
 
 from promolift.artifacts.bundle import PromoLiftArtifact
-from promolift.types import CampaignFinancialParams
-from promolift.business.scoring import calculate_value_scores
 from promolift.business.policy import assign_targeting_actions, assign_uplift_segments
+from promolift.business.scoring import calculate_value_scores
+from promolift.types import CampaignFinancialParams
 
 logger = logging.getLogger(__name__)
 

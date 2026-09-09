@@ -1,11 +1,12 @@
 """Unit tests for model artifact persistence and schema enforcement."""
 
 import os
-import shutil
-import pytest
+
 import numpy as np
 import pandas as pd
-from promolift.artifacts.bundle import PromoLiftArtifact, ModelArtifactMetadata
+import pytest
+
+from promolift.artifacts.bundle import ModelArtifactMetadata, PromoLiftArtifact
 from promolift.models.t_learner import TLearnerUpliftModel
 from promolift.validation import ValidationError
 
@@ -47,7 +48,7 @@ def test_save_and_load_artifact(fitted_artifact, tmp_path):
         "feat_a": [1.5, 2.5],
         "feat_b": [15.0, 25.0]
     })
-    pt, pc, up = loaded.predict(df_test)
+    _pt, _pc, up = loaded.predict(df_test)
     assert len(up) == 2
 
 

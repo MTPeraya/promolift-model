@@ -1,8 +1,9 @@
 """Unit tests for UpliftModel and TLearner."""
 
-import pytest
 import numpy as np
 import pandas as pd
+import pytest
+
 from promolift.models.base import UpliftModel
 from promolift.models.t_learner import TLearnerUpliftModel
 

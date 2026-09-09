@@ -1,13 +1,13 @@
 """Artifact persistence subpackage."""
 
 from promolift.artifacts.bundle import (
-    PromoLiftArtifact,
     ModelArtifactMetadata,
+    PromoLiftArtifact,
     get_git_commit_hash,
 )
 
 __all__ = [
-    "PromoLiftArtifact",
     "ModelArtifactMetadata",
+    "PromoLiftArtifact",
     "get_git_commit_hash",
 ]

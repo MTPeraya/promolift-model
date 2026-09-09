@@ -1,9 +1,9 @@
 """Leak-free feature engineering for customer transaction history and RFM metrics."""
 
 import logging
-from typing import Optional
-import pandas as pd
+
 import numpy as np
+import pandas as pd
 
 logger = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ def compute_rfm_features(
     transactions: pd.DataFrame,
     customers: pd.DataFrame,
     reference_date_str: str = "2026-06-01",
-    segment_mapping: Optional[dict] = None
+    segment_mapping: dict | None = None
 ) -> pd.DataFrame:
     """
     Computes RFM and historical promotion engagement features for all customers

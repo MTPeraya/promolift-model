@@ -1,5 +1,6 @@
 import os
 import sys
+
 sys.path.append('.')
 
 def test_pipeline():
@@ -36,7 +37,7 @@ def test_pipeline():
     y = train_data["bought_after_promo"]
     
     model.fit(X, treatment, y)
-    pt, pc, uplift = model.predict(X)
+    _pt, _pc, uplift = model.predict(X)
     assert len(uplift) == len(X), "Uplift predictions shape mismatch"
     
     # 4. Test scoring and CSV outputs

@@ -1,10 +1,11 @@
 """Unit tests for financial scoring (EIR and EIP)."""
 
-import pytest
 import numpy as np
+import pytest
+
 from promolift.business.scoring import (
+    calculate_financial_metrics_from_params,
     calculate_value_scores,
-    calculate_financial_metrics_from_params
 )
 from promolift.types import CampaignFinancialParams
 

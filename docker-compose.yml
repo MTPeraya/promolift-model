@@ -46,3 +46,19 @@ services:
       timeout: 5s
       retries: 5
       start_period: 15s
+
+  frontend:
+    image: nginx:1.27-alpine
+    container_name: promolift-frontend
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./demo.html:/usr/share/nginx/html/demo.html:ro
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:8080/nginx-health"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 5s

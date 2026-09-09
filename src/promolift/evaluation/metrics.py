@@ -1,7 +1,8 @@
 """Evaluation metrics for uplift models: Qini, AUUC, Uplift@K, and Baselines."""
 
 import logging
-from typing import Dict, Any, List, Optional
+from typing import Any
+
 import numpy as np
 import pandas as pd
 
@@ -65,7 +66,7 @@ def _integrate(y: Any, x: Any) -> float:
     if hasattr(np, "trapezoid"):
         return float(np.trapezoid(y, x))
     # Fallback for older numpy
-    trapz_fn = getattr(np, "trapz")
+    trapz_fn = np.trapz
     return float(trapz_fn(y, x))
 
 
@@ -116,8 +117,8 @@ def calculate_uplift_at_k(
     y_true: np.ndarray,
     treatment: np.ndarray,
     uplift_scores: np.ndarray,
-    k_fractions: Optional[List[float]] = None
-) -> Dict[str, float]:
+    k_fractions: list[float] | None = None
+) -> dict[str, float]:
     """
     Calculates Uplift @ Top K% of population (e.g. K=0.10, 0.20, 0.30).
     Uplift@K = ConvRate_T(top K) - ConvRate_C(top K)
@@ -155,7 +156,7 @@ def evaluate_uplift_full(
     y_true: np.ndarray,
     treatment: np.ndarray,
     uplift_scores: np.ndarray
-) -> Dict[str, Any]:
+) -> dict[str, Any]:
     """Computes comprehensive uplift evaluation summary dictionary."""
     df_qini = calculate_qini_curve(y_true, treatment, uplift_scores)
     qini_score = calculate_qini_score(df_qini)

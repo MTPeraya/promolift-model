@@ -1,14 +1,14 @@
 """Command Line Interface for PromoLift."""
 
 import os
-import typer
+
 import pandas as pd
-from typing import Optional
+import typer
 
 from promolift.artifacts.bundle import PromoLiftArtifact
 from promolift.inference import score_customers
-from promolift.types import CampaignFinancialParams
 from promolift.pipeline import train_and_evaluate_pipeline
+from promolift.types import CampaignFinancialParams
 
 app = typer.Typer(help="PromoLift: Uplift Modeling & Campaign Optimization CLI")
 
@@ -21,7 +21,7 @@ def train(
 ):
     """Train T-Learner uplift model with stratified train/val/test split and export versioned artifact."""
     typer.echo(f"Initiating model training from '{data_dir}'...")
-    artifact, metrics, baselines, _ = train_and_evaluate_pipeline(
+    _artifact, metrics, _baselines, _ = train_and_evaluate_pipeline(
         data_dir=data_dir,
         model_output_dir=model_output,
         random_state=seed

@@ -8,17 +8,21 @@ Decoupled production dashboard:
 - Never trains models inside the UI thread.
 """
 
+import io
+import json
+import logging
 import os
+
 os.environ.setdefault("MPLCONFIGDIR", "/tmp/matplotlib")
 
-import json
-import io
-import requests
-import streamlit as st
-import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import requests
 import seaborn as sns
+import streamlit as st
+
+logger = logging.getLogger(__name__)
 
 # Set page configuration with a premium dark theme
 st.set_page_config(
@@ -140,8 +144,8 @@ def check_api_health():
         r = requests.get(f"{API_URL}/health", timeout=2.0)
         if r.status_code == 200:
             return True, r.json()
-    except Exception:
-        pass
+    except requests.RequestException as exc:
+        logger.debug("API health check failed: %s", exc)
     return False, None
 
 
@@ -152,8 +156,8 @@ def load_model_info():
         r = requests.get(f"{API_URL}/model-info", timeout=2.0)
         if r.status_code == 200:
             return r.json()
-    except Exception:
-        pass
+    except requests.RequestException as exc:
+        logger.debug("API model-info fetch failed: %s", exc)
 
     candidates = [MODEL_PATH, "models/production", "models/promolift_latest"]
     for dir_path in candidates:
@@ -162,8 +166,8 @@ def load_model_info():
             try:
                 with open(meta_file, "r", encoding="utf-8") as f:
                     return json.load(f)
-            except Exception:
-                pass
+            except OSError as exc:
+                logger.warning("Could not read metadata file %s: %s", meta_file, exc)
     return None
 
 
@@ -194,7 +198,7 @@ st.sidebar.title("Campaign Control Panel")
 if api_alive:
     st.sidebar.markdown(f'<div class="status-badge-green">● Connected to FastAPI ({API_URL})</div>', unsafe_allow_html=True)
 else:
-    st.sidebar.markdown(f'<div class="status-badge-yellow">● Offline (Local Artifact Fallback)</div>', unsafe_allow_html=True)
+    st.sidebar.markdown('<div class="status-badge-yellow">● Offline (Local Artifact Fallback)</div>', unsafe_allow_html=True)
 
 if model_info:
     m_ver = model_info.get("model_version", "0.1.0")
@@ -288,7 +292,7 @@ with tab1:
         st.markdown(f"""
         <div class="kpi-card">
             <div class="kpi-label">Profit Lift vs Uniform</div>
-            <div class="kpi-value">+{((optimized_profit - uniform_profit)):+,.2f} THB</div>
+            <div class="kpi-value">+{(optimized_profit - uniform_profit):+,.2f} THB</div>
             <div class="kpi-label">({(optimized_profit/uniform_profit - 1)*100 if uniform_profit != 0 else 0:+.1f}%)</div>
         </div>
         """, unsafe_allow_html=True)
@@ -507,14 +511,17 @@ with tab4:
                     r = requests.post(f"{API_URL}/predict", json=payload, timeout=3.0)
                     if r.status_code == 200:
                         res = r.json()[0]
-                except Exception as ex:
+                except requests.RequestException as ex:
                     st.warning(f"Live API call failed: {ex}. Using local scoring.")
 
             if not res:
                 # Local calculation fallback
                 from promolift.artifacts.bundle import PromoLiftArtifact
+                from promolift.business.policy import (
+                    assign_targeting_actions,
+                    assign_uplift_segments,
+                )
                 from promolift.business.scoring import calculate_value_scores
-                from promolift.business.policy import assign_targeting_actions, assign_uplift_segments
 
                 artifact = PromoLiftArtifact.load(MODEL_PATH)
                 df_single = pd.DataFrame([payload["customers"]])
@@ -597,7 +604,7 @@ with tab5:
             st.metric("Avg Treatment Effect (ATE)", f"{m.get('average_treatment_effect', 0.0):.4f}")
 
         st.markdown("#### 🏆 Benchmark Strategy Comparison on Holdout Test Set")
-        if "baseline_comparisons" in model_info and model_info["baseline_comparisons"]:
+        if model_info.get("baseline_comparisons"):
             df_comp = pd.DataFrame(model_info["baseline_comparisons"])
             st.dataframe(
                 df_comp[[

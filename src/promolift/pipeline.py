@@ -1,19 +1,20 @@
 """End-to-end training, evaluation, and artifact generation pipeline."""
 
-import os
 import logging
-from typing import Tuple, Dict, Any
+import os
+from typing import Any
+
 import pandas as pd
 
+from promolift.artifacts.bundle import ModelArtifactMetadata, PromoLiftArtifact
 from promolift.data_loader import load_raw_data
-from promolift.features import compute_rfm_features
-from promolift.models.t_learner import TLearnerUpliftModel
-from promolift.evaluation.splitting import stratified_uplift_split
-from promolift.evaluation.metrics import evaluate_uplift_full
 from promolift.evaluation.baselines import compare_baselines
-from promolift.artifacts.bundle import PromoLiftArtifact, ModelArtifactMetadata
-from promolift.types import FeatureNames, CampaignFinancialParams
+from promolift.evaluation.metrics import evaluate_uplift_full
+from promolift.evaluation.splitting import stratified_uplift_split
+from promolift.features import compute_rfm_features
 from promolift.inference import score_customers
+from promolift.models.t_learner import TLearnerUpliftModel
+from promolift.types import CampaignFinancialParams, FeatureNames
 
 logger = logging.getLogger(__name__)
 
@@ -23,7 +24,7 @@ def train_and_evaluate_pipeline(
     model_output_dir: str = "models/promolift_latest",
     scoring_output_dir: str = "outputs",
     random_state: int = 42
-) -> Tuple[PromoLiftArtifact, Dict[str, Any], pd.DataFrame, pd.DataFrame]:
+) -> tuple[PromoLiftArtifact, dict[str, Any], pd.DataFrame, pd.DataFrame]:
     """
     Executes production-grade ML training and evaluation workflow:
       1. Load & validate raw data.
@@ -76,7 +77,7 @@ def train_and_evaluate_pipeline(
 
     print("Step 5: Evaluating on validation and untouched holdout test partition...")
     # Validation evaluation
-    val_pt, val_pc, val_up = model.predict(val_df[feature_cols])
+    _val_pt, _val_pc, val_up = model.predict(val_df[feature_cols])
     val_metrics = evaluate_uplift_full(val_df["bought_after_promo"], val_df["is_treatment"], val_up)
 
     # Test evaluation
@@ -131,7 +132,7 @@ def train_and_evaluate_pipeline(
     artifact = PromoLiftArtifact(model=model, metadata=metadata)
     artifact.save(model_output_dir)
 
-    print(f"Step 8: Scoring full customer base for default campaign (P001)...")
+    print("Step 8: Scoring full customer base for default campaign (P001)...")
     scored_df = score_customers(
         artifact=artifact,
         features_df=features_df,

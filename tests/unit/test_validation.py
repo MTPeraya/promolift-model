@@ -1,12 +1,13 @@
 """Unit tests for data validation."""
 
-import pytest
-import pandas as pd
 import numpy as np
+import pandas as pd
+import pytest
+
 from promolift.validation import (
-    validate_raw_datasets,
+    ValidationError,
     validate_features_df,
-    ValidationError
+    validate_raw_datasets,
 )
 
 

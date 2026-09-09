@@ -1,8 +1,8 @@
 """Unit tests for baseline comparisons."""
 
-import pytest
 import numpy as np
 import pandas as pd
+
 from promolift.evaluation.baselines import compare_baselines
 from promolift.types import CampaignFinancialParams
 

@@ -1,15 +1,16 @@
 """Data loading utilities with validation."""
 
-import os
 import logging
-from typing import Dict
+import os
+
 import pandas as pd
+
 from promolift.validation import validate_raw_datasets
 
 logger = logging.getLogger(__name__)
 
 
-def load_raw_data(data_dir: str = "data", validate: bool = True) -> Dict[str, pd.DataFrame]:
+def load_raw_data(data_dir: str = "data", validate: bool = True) -> dict[str, pd.DataFrame]:
     """
     Loads all core CSV datasets from data_dir.
     

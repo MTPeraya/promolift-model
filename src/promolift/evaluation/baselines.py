@@ -1,10 +1,10 @@
 """Benchmark baselines for comparing promotional targeting strategies."""
 
-from typing import Dict, Any, List
 import numpy as np
 import pandas as pd
-from promolift.types import CampaignFinancialParams
+
 from promolift.business.scoring import calculate_value_scores
+from promolift.types import CampaignFinancialParams
 
 
 def evaluate_targeting_policy_on_test(
@@ -14,7 +14,7 @@ def evaluate_targeting_policy_on_test(
     p_c: np.ndarray,
     uplift: np.ndarray,
     financial_params: CampaignFinancialParams
-) -> Dict[str, float]:
+) -> dict[str, float]:
     """
     Evaluates a specific targeting policy mask on the test dataset.
 

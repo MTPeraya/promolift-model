@@ -1,14 +1,14 @@
 """Unit tests for evaluation metrics (Qini, AUUC, Uplift@K, Stratified Split)."""
 
-import pytest
 import numpy as np
 import pandas as pd
+
 from promolift.evaluation.metrics import (
+    calculate_auuc,
     calculate_qini_curve,
     calculate_qini_score,
-    calculate_auuc,
     calculate_uplift_at_k,
-    evaluate_uplift_full
+    evaluate_uplift_full,
 )
 from promolift.evaluation.splitting import stratified_uplift_split
 

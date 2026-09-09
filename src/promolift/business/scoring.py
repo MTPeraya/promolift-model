@@ -1,20 +1,21 @@
 """Pure financial logic for Expected Incremental Revenue and Profit scoring."""
 
-from typing import Tuple, Union
+
 import numpy as np
 import pandas as pd
+
 from promolift.types import CampaignFinancialParams
 
 
 def calculate_value_scores(
-    p_t: Union[np.ndarray, pd.Series],
-    p_c: Union[np.ndarray, pd.Series],
-    uplift: Union[np.ndarray, pd.Series],
+    p_t: np.ndarray | pd.Series,
+    p_c: np.ndarray | pd.Series,
+    uplift: np.ndarray | pd.Series,
     price: float,
     discount_rate: float,
     cogs_rate: float = 0.60,
     campaign_cost: float = 0.50
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """
     Computes expected incremental revenue (EIR) and expected incremental profit (EIP) per customer.
 
@@ -35,7 +36,6 @@ def calculate_value_scores(
         (eir, eip): Tuple of numpy arrays containing revenue and profit per customer.
     """
     p_t_arr = np.asarray(p_t, dtype=float)
-    p_c_arr = np.asarray(p_c, dtype=float)
     up_arr = np.asarray(uplift, dtype=float)
 
     discount = price * discount_rate
@@ -53,11 +53,11 @@ def calculate_value_scores(
 
 
 def calculate_financial_metrics_from_params(
-    p_t: Union[np.ndarray, pd.Series],
-    p_c: Union[np.ndarray, pd.Series],
-    uplift: Union[np.ndarray, pd.Series],
+    p_t: np.ndarray | pd.Series,
+    p_c: np.ndarray | pd.Series,
+    uplift: np.ndarray | pd.Series,
     params: CampaignFinancialParams
-) -> Tuple[np.ndarray, np.ndarray]:
+) -> tuple[np.ndarray, np.ndarray]:
     """Helper accepting CampaignFinancialParams directly."""
     return calculate_value_scores(
         p_t=p_t,

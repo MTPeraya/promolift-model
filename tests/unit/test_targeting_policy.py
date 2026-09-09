@@ -1,14 +1,14 @@
 """Unit tests for targeting policy and uplift quadrant categorization."""
 
-import pytest
 import numpy as np
 import pandas as pd
+
 from promolift.business.policy import (
-    assign_uplift_segments,
+    apply_targeting_policy,
     assign_targeting_actions,
-    apply_targeting_policy
+    assign_uplift_segments,
 )
-from promolift.types import UpliftSegment, TargetingAction
+from promolift.types import TargetingAction, UpliftSegment
 
 
 def test_assign_uplift_segments():

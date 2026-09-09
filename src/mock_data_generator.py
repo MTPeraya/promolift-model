@@ -1,7 +1,9 @@
 import os
-import pandas as pd
+from datetime import datetime, timedelta, timezone
+
 import numpy as np
-from datetime import datetime, timedelta
+import pandas as pd
+
 
 def generate_mock_data(output_dir='data', seed=42):
     np.random.seed(seed)
@@ -83,9 +85,8 @@ def generate_mock_data(output_dir='data', seed=42):
     
     print("Generating Historical Transaction Data...")
     # Generate transactions for 180 days (Dec 1, 2025 to May 31, 2026)
-    start_date = datetime(2025, 12, 1)
-    end_date = datetime(2026, 5, 31)
-    days_range = (end_date - start_date).days
+    start_date = datetime(2025, 12, 1, tzinfo=timezone.utc)
+    end_date = datetime(2026, 5, 31, tzinfo=timezone.utc)
     
     tx_records = []
     po_counter = 100000
@@ -157,8 +158,7 @@ def generate_mock_data(output_dir='data', seed=42):
     
     p_promo = product_master[product_master["product_id"] == "P001"].iloc[0]
     p_price = p_promo["price"]
-    p_cogs = p_promo["cogs"]
-    p_discount = p_promo["price"] * 0.20 # 20% discount
+    p_discount = p_promo["price"] * 0.20  # 20% discount
     
     for idx, row in customer_master.iterrows():
         cust_id = row["customer_id"]

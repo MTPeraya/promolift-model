@@ -1,7 +1,7 @@
 """T-Learner (Two-Model) implementation of UpliftModel."""
 
 import logging
-from typing import Optional, Union
+
 import numpy as np
 import pandas as pd
 from lightgbm import LGBMClassifier
@@ -74,9 +74,9 @@ class TLearnerUpliftModel(UpliftModel):
 
     def fit(
         self,
-        X: Union[pd.DataFrame, np.ndarray],
-        treatment: Union[pd.Series, np.ndarray],
-        y: Union[pd.Series, np.ndarray]
+        X: pd.DataFrame | np.ndarray,
+        treatment: pd.Series | np.ndarray,
+        y: pd.Series | np.ndarray
     ) -> "TLearnerUpliftModel":
         """Fits treatment and control estimators independently."""
         treatment_arr = np.asarray(treatment).ravel()
@@ -112,21 +112,21 @@ class TLearnerUpliftModel(UpliftModel):
         if not self.is_fitted:
             raise RuntimeError("Model is not fitted yet. Call .fit() before inference.")
 
-    def predict_treatment(self, X: Union[pd.DataFrame, np.ndarray]) -> np.ndarray:
+    def predict_treatment(self, X: pd.DataFrame | np.ndarray) -> np.ndarray:
         """Predicts P(Y=1 | T=1, X)."""
         self._check_fitted()
         probs = self.model_t.predict_proba(X)
         res = probs[:, 1] if probs.shape[1] > 1 else probs[:, 0]
         return np.asarray(res, dtype=float)
 
-    def predict_control(self, X: Union[pd.DataFrame, np.ndarray]) -> np.ndarray:
+    def predict_control(self, X: pd.DataFrame | np.ndarray) -> np.ndarray:
         """Predicts P(Y=1 | T=0, X)."""
         self._check_fitted()
         probs = self.model_c.predict_proba(X)
         res = probs[:, 1] if probs.shape[1] > 1 else probs[:, 0]
         return np.asarray(res, dtype=float)
 
-    def predict_uplift(self, X: Union[pd.DataFrame, np.ndarray]) -> np.ndarray:
+    def predict_uplift(self, X: pd.DataFrame | np.ndarray) -> np.ndarray:
         """Predicts incremental lift: P(Y=1 | T=1, X) - P(Y=1 | T=0, X)."""
         res = self.predict_treatment(X) - self.predict_control(X)
         return np.asarray(res, dtype=float)

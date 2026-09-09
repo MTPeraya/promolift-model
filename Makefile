@@ -9,7 +9,7 @@ help:
 	@echo "  make train         Train T-Learner and save production model artifact"
 	@echo "  make score         Score sample campaign using batch CLI"
 	@echo "  make docker-build  Build Docker images"
-	@echo "  make docker-up     Start API and Dashboard services via Docker Compose"
+	@echo "  make docker-up     Start API, Dashboard, and Frontend services via Docker Compose"
 	@echo "  make docker-down   Stop and remove Docker containers"
 	@echo "  make docker-logs   Follow container logs"
 	@echo "  make docker-test   Execute end-to-end container smoke test"
@@ -39,6 +39,7 @@ docker-build:
 docker-up:
 	docker compose up -d --build
 	@echo "\nPromoLift is running!"
+	@echo "  Frontend:   http://localhost:8080"
 	@echo "  Dashboard:  http://localhost:8501"
 	@echo "  API:        http://localhost:8000"
 	@echo "  API Docs:   http://localhost:8000/docs"
@@ -58,6 +59,7 @@ docker-test:
 		-H "Content-Type: application/json" \
 		-d '{"campaign_id":"P001","customers":{"customer_id":"C001","recency_days":10,"frequency_30d":2,"monetary_90d":200,"total_spend":800,"total_visits":4,"total_items":10,"avg_basket_value":200,"promo_ratio":0.2,"customer_segment_code":2}}' > /dev/null && echo "✓ /predict endpoint OK" || (echo "✗ /predict failed"; exit 1)
 	@curl -s -f http://localhost:8501/_stcore/health > /dev/null && echo "✓ Dashboard healthcheck OK" || (echo "✗ Dashboard healthcheck failed"; exit 1)
+	@curl -s -f http://localhost:8080/nginx-health > /dev/null && echo "✓ Frontend (nginx) OK" || (echo "✗ Frontend healthcheck failed"; exit 1)
 	@echo "All container smoke tests passed successfully!"
 
 clean:

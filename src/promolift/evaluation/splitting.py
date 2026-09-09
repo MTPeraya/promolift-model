@@ -1,8 +1,7 @@
 """Stratified dataset splitting for causal uplift modeling."""
 
 import logging
-from typing import Tuple
-import numpy as np
+
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -16,7 +15,7 @@ def stratified_uplift_split(
     test_size: float = 0.20,
     val_size: float = 0.20,
     random_state: int = 42
-) -> Tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
+) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """
     Performs stratified train/validation/test split for uplift datasets.
     

@@ -2,6 +2,7 @@
 
 import os
 import sys
+
 import numpy as np
 import pandas as pd
 
@@ -10,11 +11,11 @@ REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 if REPO_ROOT not in sys.path:
     sys.path.insert(0, REPO_ROOT)
 
+from promolift.business.policy import apply_targeting_policy
+from promolift.business.scoring import calculate_value_scores
 from promolift.data_loader import load_raw_data
 from promolift.features import compute_rfm_features
 from promolift.models.t_learner import TLearnerUpliftModel
-from promolift.business.scoring import calculate_value_scores
-from promolift.business.policy import apply_targeting_policy
 from promolift.types import FeatureNames
 
 

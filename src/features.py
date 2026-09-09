@@ -1,8 +1,8 @@
 """Backwards compatibility shim for features."""
 
-from promolift.features import compute_rfm_features, DEFAULT_SEGMENT_MAPPING
+from promolift.features import DEFAULT_SEGMENT_MAPPING, compute_rfm_features
 
-__all__ = ["compute_rfm_features", "DEFAULT_SEGMENT_MAPPING"]
+__all__ = ["DEFAULT_SEGMENT_MAPPING", "compute_rfm_features"]
 
 if __name__ == "__main__":
     from data_loader import load_data
@@ -12,5 +12,5 @@ if __name__ == "__main__":
         print("Features computed successfully!")
         print(features.head())
         print(features.describe())
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error computing features: {e}")

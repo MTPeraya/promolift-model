@@ -1,18 +1,17 @@
 """End-to-end integration test for the full PromoLift pipeline."""
 
 import os
-import pytest
+
 import pandas as pd
+
 from promolift.pipeline import train_and_evaluate_pipeline
-from promolift.inference import score_customers
-from promolift.types import CampaignFinancialParams
 
 
 def test_full_pipeline_end_to_end(tmp_path):
     model_dir = str(tmp_path / "model_out")
     scoring_dir = str(tmp_path / "scoring_out")
 
-    artifact, test_metrics, baselines, scored_df = train_and_evaluate_pipeline(
+    _artifact, test_metrics, baselines, _scored_df = train_and_evaluate_pipeline(
         data_dir="data",
         model_output_dir=model_dir,
         scoring_output_dir=scoring_dir,

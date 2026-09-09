@@ -1,9 +1,10 @@
 """Backwards compatibility shim for uplift_model."""
 
 import numpy as np
-from promolift.models.t_learner import TLearnerUpliftModel
-from promolift.evaluation.metrics import calculate_qini_curve
+
 from promolift.business.scoring import calculate_value_scores
+from promolift.evaluation.metrics import calculate_qini_curve
+from promolift.models.t_learner import TLearnerUpliftModel
 
 __all__ = ["TLearnerUpliftModel", "calculate_qini_curve", "calculate_value_scores"]
 

@@ -1,8 +1,8 @@
 """Unit tests for feature engineering."""
 
-import pytest
 import pandas as pd
-import numpy as np
+import pytest
+
 from promolift.features import compute_rfm_features
 from promolift.types import FeatureNames
 

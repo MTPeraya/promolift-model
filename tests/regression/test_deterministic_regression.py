@@ -1,12 +1,10 @@
 """Regression tests to protect against accidental model performance degradation."""
 
-import pytest
-import numpy as np
 from promolift.data_loader import load_raw_data
+from promolift.evaluation.metrics import evaluate_uplift_full
+from promolift.evaluation.splitting import stratified_uplift_split
 from promolift.features import compute_rfm_features
 from promolift.models.t_learner import TLearnerUpliftModel
-from promolift.evaluation.splitting import stratified_uplift_split
-from promolift.evaluation.metrics import evaluate_uplift_full
 from promolift.types import FeatureNames
 
 

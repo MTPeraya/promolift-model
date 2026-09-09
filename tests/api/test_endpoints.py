@@ -1,9 +1,11 @@
 """Tests for FastAPI endpoints."""
 
 import os
+
 import pytest
 from fastapi.testclient import TestClient
-from promolift.api.app import app, _app_state
+
+from promolift.api.app import _app_state, app
 from promolift.artifacts.bundle import PromoLiftArtifact
 
 

@@ -1,18 +1,19 @@
 """Model artifact bundling, persistence, metadata tracking, and schema validation."""
 
-import os
 import json
 import logging
+import os
 import subprocess
 from datetime import datetime, timezone
-from typing import Dict, Any, List, Optional
+from typing import Any
+
 import joblib
-import pandas as pd
 import numpy as np
+import pandas as pd
 from pydantic import BaseModel, Field
 
 from promolift.models.t_learner import TLearnerUpliftModel
-from promolift.validation import validate_features_df, ValidationError
+from promolift.validation import validate_features_df
 
 logger = logging.getLogger(__name__)
 
@@ -25,7 +26,7 @@ def get_git_commit_hash() -> str:
             stderr=subprocess.DEVNULL
         ).decode("ascii").strip()
         return output
-    except Exception:
+    except (OSError, subprocess.SubprocessError):
         return "unknown"
 
 
@@ -35,11 +36,11 @@ class ModelArtifactMetadata(BaseModel):
     model_type: str = Field(default="TLearnerUpliftModel")
     created_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
     git_commit: str = Field(default_factory=get_git_commit_hash)
-    feature_names: List[str]
-    training_config: Dict[str, Any] = Field(default_factory=dict)
-    test_metrics: Dict[str, Any] = Field(default_factory=dict)
-    val_metrics: Optional[Dict[str, Any]] = None
-    baseline_comparisons: Optional[List[Dict[str, Any]]] = None
+    feature_names: list[str]
+    training_config: dict[str, Any] = Field(default_factory=dict)
+    test_metrics: dict[str, Any] = Field(default_factory=dict)
+    val_metrics: dict[str, Any] | None = None
+    baseline_comparisons: list[dict[str, Any]] | None = None
 
 
 class PromoLiftArtifact:

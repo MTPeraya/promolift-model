@@ -1,9 +1,10 @@
 """Data validation and schema integrity enforcement for PromoLift."""
 
 import logging
-from typing import Dict, List, Optional
+
 import numpy as np
 import pandas as pd
+
 from promolift.types import FeatureNames
 
 logger = logging.getLogger(__name__)
@@ -11,10 +12,9 @@ logger = logging.getLogger(__name__)
 
 class ValidationError(ValueError):
     """Raised when dataset fails schema or integrity validation."""
-    pass
 
 
-def validate_raw_datasets(dfs: Dict[str, pd.DataFrame]) -> None:
+def validate_raw_datasets(dfs: dict[str, pd.DataFrame]) -> None:
     """
     Validates essential columns and integrity for raw input datasets.
     
@@ -63,7 +63,7 @@ def validate_raw_datasets(dfs: Dict[str, pd.DataFrame]) -> None:
     logger.info("Raw datasets validated successfully.")
 
 
-def validate_features_df(df: pd.DataFrame, required_features: Optional[List[str]] = None) -> None:
+def validate_features_df(df: pd.DataFrame, required_features: list[str] | None = None) -> None:
     """
     Validates feature matrix before model training or inference.
     

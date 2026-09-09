@@ -17,5 +17,5 @@ if __name__ == "__main__":
         data = load_data()
         for k, v in data.items():
             print(f"Loaded {k}: {v.shape}")
-    except Exception as e:
+    except Exception as e:  # noqa: BLE001
         print(f"Error loading data: {e}")

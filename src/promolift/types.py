@@ -1,8 +1,8 @@
 """Domain types, enums, and schemas for PromoLift."""
 
 from enum import Enum
-from typing import Optional, List, Dict, Any
-from pydantic import BaseModel, Field, ConfigDict
+
+from pydantic import BaseModel, ConfigDict, Field
 
 
 class UpliftSegment(str, Enum):
@@ -51,7 +51,7 @@ class FeatureNames:
     CUSTOMER_SEGMENT_CODE = "customer_segment_code"
 
     @classmethod
-    def all_features(cls) -> List[str]:
+    def all_features(cls) -> list[str]:
         return [
             cls.RECENCY_DAYS,
             cls.FREQUENCY_30D,
@@ -68,7 +68,7 @@ class FeatureNames:
 class CustomerScoringRecord(BaseModel):
     """Output record for scored customer targeting."""
     customer_id: str
-    campaign_id: Optional[str] = None
+    campaign_id: str | None = None
     p_buy_treatment: float
     p_buy_control: float
     uplift_score: float
@@ -76,4 +76,4 @@ class CustomerScoringRecord(BaseModel):
     expected_incremental_profit: float
     uplift_segment: UpliftSegment
     recommended_action: TargetingAction
-    model_version: Optional[str] = None
+    model_version: str | None = None
