@@ -184,11 +184,11 @@ docker compose up --build
 ### Access Local Endpoints & UIs
 
 Once the containers report `healthy`:
+*   🌐 **Interactive Web Frontend**: [http://localhost:8080](http://localhost:8080) (or open [`demo.html`](demo.html) directly)
 *   🎯 **Streamlit Campaign Dashboard**: [http://localhost:8501](http://localhost:8501)
 *   ⚡ **FastAPI REST API & Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
 *   🩺 **API Health Diagnostic**: [http://localhost:8000/health](http://localhost:8000/health)
 *   📊 **Model Holdout Provenance & Baselines**: [http://localhost:8000/model-info](http://localhost:8000/model-info)
-*   🌐 **Standalone Interactive Web Optimizer**: Open [`demo.html`](demo.html) directly in any modern browser!
 
 ### Developer Commands (`Makefile`)
 

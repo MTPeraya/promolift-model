@@ -115,14 +115,14 @@ class TLearnerUpliftModel(UpliftModel):
     def predict_treatment(self, X: pd.DataFrame | np.ndarray) -> np.ndarray:
         """Predicts P(Y=1 | T=1, X)."""
         self._check_fitted()
-        probs = self.model_t.predict_proba(X)
+        probs: np.ndarray = np.asarray(self.model_t.predict_proba(X))
         res = probs[:, 1] if probs.shape[1] > 1 else probs[:, 0]
         return np.asarray(res, dtype=float)
 
     def predict_control(self, X: pd.DataFrame | np.ndarray) -> np.ndarray:
         """Predicts P(Y=1 | T=0, X)."""
         self._check_fitted()
-        probs = self.model_c.predict_proba(X)
+        probs: np.ndarray = np.asarray(self.model_c.predict_proba(X))
         res = probs[:, 1] if probs.shape[1] > 1 else probs[:, 0]
         return np.asarray(res, dtype=float)
 

@@ -63,11 +63,10 @@ def calculate_qini_curve(
 
 def _integrate(y: Any, x: Any) -> float:
     """Calculates numerical trapezoidal integration, supporting numpy 2.0+ and older."""
-    if hasattr(np, "trapezoid"):
-        return float(np.trapezoid(y, x))
-    # Fallback for older numpy
-    trapz_fn = np.trapz
-    return float(trapz_fn(y, x))
+    # np.trapezoid was added in NumPy 2.0; np.trapz was removed in 2.0.
+    # Use getattr so this works on both versions and mypy stays happy.
+    trapezoid_fn = getattr(np, "trapezoid", None) or getattr(np, "trapz")
+    return float(trapezoid_fn(y, x))
 
 
 def calculate_qini_score(df_qini: pd.DataFrame) -> float:

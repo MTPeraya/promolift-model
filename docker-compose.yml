@@ -3,6 +3,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    image: promolift:latest
     container_name: promolift-api
     restart: unless-stopped
     ports:
@@ -19,9 +20,7 @@ services:
       start_period: 10s
 
   dashboard:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: promolift:latest  # reuse the same image built above — no double build
     container_name: promolift-dashboard
     restart: unless-stopped
     command: [
@@ -56,6 +55,9 @@ services:
     volumes:
       - ./demo.html:/usr/share/nginx/html/demo.html:ro
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      api:
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "wget", "-qO-", "http://localhost:8080/nginx-health"]
       interval: 10s

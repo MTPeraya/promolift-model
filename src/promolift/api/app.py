@@ -139,7 +139,7 @@ class PredictRequest(BaseModel):
     customers: CustomerFeaturePayload | list[CustomerFeaturePayload] = Field(
         ..., description="Single customer object or array of customer objects"
     )
-    financial_params: CampaignFinancialParams | None = Field(
+    financial_params: CampaignFinancialParams = Field(
         default_factory=lambda: CampaignFinancialParams(
             price=163.37,
             cogs=89.89,
