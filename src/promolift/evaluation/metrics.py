@@ -64,8 +64,9 @@ def calculate_qini_curve(
 def _integrate(y: Any, x: Any) -> float:
     """Calculates numerical trapezoidal integration, supporting numpy 2.0+ and older."""
     # np.trapezoid was added in NumPy 2.0; np.trapz was removed in 2.0.
-    # Use getattr so this works on both versions and mypy stays happy.
-    trapezoid_fn = getattr(np, "trapezoid", None) or getattr(np, "trapz")
+    trapezoid_fn = getattr(np, "trapezoid", None) or getattr(np, "trapz", None)
+    if trapezoid_fn is None:
+        raise AttributeError("Neither np.trapezoid nor np.trapz is available.")
     return float(trapezoid_fn(y, x))
 
 
