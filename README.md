@@ -1,129 +1,111 @@
-# PromoLift: Production Uplift Modeling & Promotion Targeting
+# PromoLift
 
-> **AI-Powered Promotion Response & Expected Incremental Profit Optimizer for Retail**
+> **A production-oriented uplift modeling and causal decision engine that optimizes retail promotional spend by targeting incremental customer profit and suppressing margin-destroying discounts.**
 
 [![CI Pipeline](https://github.com/MTPeraya/promolift-model/actions/workflows/ci.yml/badge.svg)](https://github.com/MTPeraya/promolift-model/actions)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![Python 3.11 | 3.12](https://img.shields.io/badge/python-3.11%20%7C%203.12-blue.svg)](https://www.python.org/)
+[![Tests](https://img.shields.io/badge/tests-33%20passed-brightgreen.svg)]()
+[![Coverage](https://img.shields.io/badge/coverage-93%25-success.svg)]()
+[![Type Checked](https://img.shields.io/badge/mypy-checked-blue.svg)]()
+[![Docker](https://img.shields.io/badge/docker-ready-blue.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-PromoLift is a production-oriented machine learning system designed to reduce promotional budget waste and maximize incremental profit (ROI) for retail businesses. Instead of standard propensity modeling ("who will buy?"), PromoLift estimates **individual causal treatment effects** ("who will buy *specifically because* of this promotion?").
+---
+
+## Overview
+
+Retail promotions frequently destroy profit through blanket discounting. Traditional machine learning approaches rely on **propensity models** (*"Who is most likely to buy?"*). However, high-propensity buyers frequently convert anyway without discounts, causing heavy margin cannibalization.
+
+**PromoLift** reframes the problem as **causal inference and uplift modeling** (*"Who will buy specifically because of this promotion, and will their incremental margin exceed the promotional cost?"*).
+
+PromoLift estimates customer-level Individual Treatment Effects (ITE) using a two-model **T-Learner** architecture, applies leak-free RFM feature engineering, and maps predicted uplift into **Expected Incremental Revenue (EIR)** and **Expected Incremental Profit (EIP)** to generate concrete promotional decisions (`TARGET`, `SKIP`, or `SLEEPING DOG`).
 
 ---
 
-## Table of Contents
+## Why Uplift Modeling?
 
-1. [Business Problem](#business-problem)
-2. [Causal Uplift & Financial Methodology](#causal-uplift--financial-methodology)
-3. [System Architecture](#system-architecture)
-4. [Project Structure](#project-structure)
-5. [Local Setup & Installation](#local-setup--installation)
-6. [Model Training & Stratified Splitting](#model-training--stratified-splitting)
-7. [Evaluation Methodology & Benchmark Baselines](#evaluation-methodology--benchmark-baselines)
-8. [Batch Inference CLI](#batch-inference-cli)
-9. [REST API Service](#rest-api-service)
-10. [Streamlit Dashboard](#streamlit-dashboard)
-11. [Testing & Quality Assurance](#testing--quality-assurance)
-12. [CI/CD Pipeline](#cicd-pipeline)
-13. [Observability & Monitoring](#observability--monitoring)
-14. [Model Limitations & Assumptions](#model-limitations--assumptions)
+In promotional campaigns, customers fall into four distinct causal quadrants:
 
----
+| Customer Segment | Behavior Under Control (No Promo) | Behavior Under Treatment (Promo) | Blanket Blast Impact | PromoLift Policy |
+|---|---|---|---|---|
+| **Persuadables** | Would not buy | **Buys** | True incremental revenue | **TARGET** (if $EIP > 0$) |
+| **Sure Things** | **Buys** | **Buys** | Cannibalized discount margin | **SKIP** (Protect margin) |
+| **Lost Causes** | Would not buy | Would not buy | Wasted campaign & messaging cost | **SKIP** (Save budget) |
+| **Sleeping Dogs** | **Buys** | Would not buy (Unsubscribe/Churn) | Negative lift & net revenue destruction | **NEVER DISTURB** |
 
-## Business Problem
+### Mathematical Formulation
 
-Retailers frequently launch **uniform promotions** (same discounts blasted to everyone or based purely on customer purchase propensity). This leads to severe budget cannibalization and revenue destruction:
+1. **Causal Uplift (Individual Treatment Effect $\tau_i$):**
+   $$\tau_i = P(\text{Buy} = 1 \mid W = 1, X_i) - P(\text{Buy} = 1 \mid W = 0, X_i) = \mu_1(X_i) - \mu_0(X_i)$$
 
-| Customer Archetype | Behavior | Business Impact under Blanket Promo | PromoLift Decision |
-|---|---|---|---|
-| **Persuadables** | Buy *only if* promoted | Generate true incremental revenue | **TARGET** |
-| **Sure Things (Inertia Buyers)** | Buy regardless of promotion | Wasted discount margin (Cannibalization) | **SKIP** |
-| **Lost Causes** | Never buy regardless of promo | Wasted messaging/delivery expense | **SKIP** |
-| **Sleeping Dogs (Do Not Disturb)** | Less likely to buy if spammed/discounted | Brand cheapening, churn, direct net loss | **SLEEPING DOG (NEVER DISTURB)** |
+2. **Expected Incremental Revenue (EIR):**
+   $$EIR_i = \tau_i \times \text{Price} - \text{Discount} \times \mu_1(X_i)$$
 
-The goal is not to maximize conversion probability, but to **maximize Expected Incremental Profit (EIP)** while protecting Sleeping Dogs.
+3. **Expected Incremental Profit (EIP):**
+   $$EIP_i = \tau_i \times (\text{Price} - \text{COGS}) - \text{Discount} \times \mu_1(X_i) - \text{Cost}_{\text{campaign}}$$
+
+**Targeting Decision Rule**:
+* If $\tau_i < 0 \implies$ `SLEEPING DOG (DO NOT DISTURB)`
+* Else if $EIP_i > 0 \implies$ `TARGET`
+* Else $\implies$ `SKIP`
 
 ---
 
-## Causal Uplift & Financial Methodology
+## Architecture
 
-### 1. Causal Uplift Formulation
-For each customer $i$ with feature vector $X_i$:
+```mermaid
+flowchart TD
+    subgraph Data["1. Data & Preprocessing"]
+        A["Retail Transactions & Master Tables"] --> B["Data Validation & Schema Checks\n(promolift.validation)"]
+        B --> C["Temporal Leak-Free RFM Extraction\n(promolift.features)"]
+        C --> D["Stratified Joint Split (60/20/20)\n(promolift.evaluation.splitting)"]
+    end
 
-$$\tau_i = P(\text{Buy} = 1 \mid \text{Treatment}, X_i) - P(\text{Buy} = 1 \mid \text{Control}, X_i)$$
+    subgraph Modeling["2. Causal Uplift Modeling"]
+        D --> E["T-Learner Estimator\n(promolift.models.t_learner)"]
+        E --> F["Treatment Model μ1 (LightGBM)"]
+        E --> G["Control Model μ0 (LightGBM)"]
+        F & G --> H["Causal Metrics: AUUC, Qini, Uplift@K\n(promolift.evaluation.metrics)"]
+        H --> I["Versioned Artifact Bundle\n(model.joblib + metadata.json)"]
+    end
 
-### 2. T-Learner Estimator
-PromoLift implements an abstracted two-model (`TLearnerUpliftModel`) framework:
-*   $\mu_1(X)$: Base classifier trained strictly on the treatment cohort ($\{i : W_i = 1\}$).
-*   $\mu_0(X)$: Base classifier trained strictly on the control cohort ($\{i : W_i = 0\}$).
-*   Individual Uplift Estimate: $\hat{\tau}(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)$.
+    subgraph Decisioning["3. Financial & Decision Layer"]
+        I --> J["Inference Engine\n(promolift.inference)"]
+        J --> K["Vectorized EIR & EIP Scoring\n(promolift.business.scoring)"]
+        K --> L["Targeting Policy & Quadrants\n(promolift.business.policy)"]
+    end
 
-### 3. Financial Scoring: Expected Incremental Revenue & Profit
-Uplift alone is insufficient for business targeting because items have different margins and discounts. We calculate:
-
-*   **Expected Incremental Revenue (EIR):**
-    $$EIR_i = \tau_i \times \text{Price} - \text{Discount} \times P(\text{Buy} \mid \text{Treatment})_i$$
-*   **Expected Incremental Profit (EIP):**
-    $$EIP_i = \tau_i \times (\text{Price} - \text{COGS}) - \text{Discount} \times P(\text{Buy} \mid \text{Treatment})_i - \text{Cost}_{\text{campaign}}$$
-
-Customers are targeted **if and only if** $\tau_i \ge 0$ and $EIP_i > 0$.
-
----
-
-## System Architecture
-
-```text
-               ┌──────────────────────────────┐
-               │    Raw Data (CSV / Lake)     │
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │  Data Validation & Schema    │  (promolift.validation)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │ Leak-free Feature Extraction │  (promolift.features)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │ Stratified Split (T/V/Test)  │  (promolift.evaluation.splitting)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │     T-Learner UpliftModel    │  (promolift.models)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │ Uplift Evaluation & Baselines│  (promolift.evaluation)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │    Versioned Model Bundle    │  (promolift.artifacts)
-               └──────────────┬───────────────┘
-                              │
-                 ┌────────────┴────────────┐
-                 ▼                         ▼
-      ┌──────────────────────┐  ┌──────────────────────┐
-      │  Batch Inference CLI │  │   FastAPI REST API   │
-      └──────────┬───────────┘  └──────────┬───────────┘
-                 │                         │
-                 └────────────┬────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │ Pure Financial & Policy Layer│  (promolift.business)
-               └──────────────┬───────────────┘
-                              │
-                              ▼
-               ┌──────────────────────────────┐
-               │  Decoupled Streamlit App     │  (src/app.py)
-               └──────────────────────────────┘
+    subgraph Serving["4. Serving & Deployment"]
+        L --> M["FastAPI REST API\n(:8000/predict)"]
+        L --> N["Streamlit Dashboard\n(:8501)"]
+        L --> O["Typer CLI\n(promolift score)"]
+        L --> P["Interactive Frontend\n(:8080)"]
+    end
 ```
+
+---
+
+## Key Features
+
+* **Strict Temporal Leakage Prevention**: Features are computed strictly using historical transactions prior to campaign dispatch cutoff (`reference_date = "2026-06-01"`).
+* **Two-Model T-Learner**: Decoupled treatment and control gradient boosting classifiers (`LightGBM`) wrapped under an abstract `BaseUpliftModel` protocol.
+* **Causal Evaluation Suite**: Full implementations of Qini Curves, Qini Score, Area Under the Uplift Curve (AUUC), Uplift@K, and Average Treatment Effect (ATE).
+* **Pure Financial Optimization Layer**: Translates statistical uplift into real currency units (THB), directly balancing margins, discounts, and communication costs.
+* **Multi-Format Inference**: High-throughput batch scoring via CLI (supporting Parquet and CSV) and low-latency REST API scoring (<5 ms).
+* **Zero-Retrain UI**: Streamlit dashboard connects directly to the REST API or local serialized artifact without retraining models inside UI threads.
+
+---
+
+## Tech Stack
+
+* **Language & Runtime**: Python 3.11 / 3.12
+* **Machine Learning**: LightGBM, scikit-learn, joblib
+* **Data Processing**: pandas, numpy, pyarrow
+* **Type Safety & Schemas**: Pydantic v2, Mypy
+* **Serving & Web**: FastAPI, Uvicorn, Streamlit, Nginx
+* **CLI Engine**: Typer, Rich
+* **Testing & Quality**: pytest, pytest-cov, Ruff
+* **Containerization**: Multi-stage Docker, Docker Compose
 
 ---
 
@@ -131,49 +113,52 @@ Customers are targeted **if and only if** $\tau_i \ge 0$ and $EIP_i > 0$.
 
 ```text
 promolift-model/
-├── pyproject.toml              # Build config, dependencies, CLI entry points, and tool settings
-├── .github/workflows/ci.yml    # GitHub Actions CI for lint, mypy, pytest, and build
-├── data/                       # Mock data files & data dictionary
+├── Dockerfile                  # Multi-stage container build (builder & minimal runtime)
+├── docker-compose.yml          # Multi-service stack (API, Streamlit, Nginx Frontend)
+├── Makefile                    # Standard developer automation commands
+├── pyproject.toml              # Build config, package dependencies, CLI entry points
+├── .github/workflows/ci.yml    # GitHub Actions CI (lint, mypy, pytest, build, docker-smoke)
+├── data/                       # Retail mock transactions, customer master, products
+│   ├── customer_features.parquet
+│   └── data_dictionary.md
+├── docs/
+│   └── validation.md           # Empirical validation report with measured metrics
 ├── models/
-│   └── promolift_latest/       # Packaged model artifact bundle
-│       ├── model.joblib        # Fitted treatment & control models
-│       └── metadata.json       # Schema, git commit, metrics & training config
-├── outputs/                    # Scored targeting outputs
-│   └── targeting_list_sample.csv
+│   └── production/             # Serialized production model bundle
+│       ├── model.joblib        # Serialized treatment and control estimators
+│       └── metadata.json       # Hyperparameters, test metrics, schema & git commit
+├── outputs/                    # Scored customer lists and targeting recommendations
 ├── src/
 │   ├── promolift/              # Core installable Python package
-│   │   ├── __init__.py
-│   │   ├── types.py            # Domain schemas, enums, and dataclasses
-│   │   ├── validation.py       # Data integrity and schema verification
-│   │   ├── features.py         # Leak-free RFM and promo features
-│   │   ├── models/             # UpliftModel abstraction & T-Learner
-│   │   ├── business/           # Pure EIR/EIP scoring & targeting policy
-│   │   ├── evaluation/         # Qini, AUUC, Uplift@K, splitting & baselines
-│   │   ├── artifacts/          # Model serialization, versioning & schema checks
+│   │   ├── api/                # FastAPI REST API implementation
+│   │   ├── artifacts/          # Model artifact bundling, metadata, and loading
+│   │   ├── business/           # Pure EIR/EIP financial math and targeting policies
+│   │   ├── evaluation/         # Causal metrics (Qini, AUUC, Uplift@K, baselines)
+│   │   ├── models/             # BaseUpliftModel protocol & TLearner implementation
+│   │   ├── cli.py              # Typer CLI commands (train, score)
+│   │   ├── features.py         # Leak-free RFM feature engineering
 │   │   ├── inference.py        # Batch scoring engine
-│   │   ├── pipeline.py         # End-to-end training & evaluation pipeline
-│   │   ├── cli.py              # Command-line interface
-│   │   └── api/                # FastAPI application
-│   ├── app.py                  # Decoupled Streamlit dashboard
-│   ├── data_loader.py          # Backwards-compatibility shim
-│   ├── features.py             # Backwards-compatibility shim
-│   ├── uplift_model.py         # Backwards-compatibility shim
-│   └── scoring.py              # Backwards-compatibility shim
+│   │   ├── pipeline.py         # End-to-end training and evaluation pipeline
+│   │   ├── types.py            # Pydantic schemas, enums, and dataclasses
+│   │   └── validation.py       # Data integrity and schema validators
+│   └── app.py                  # Decoupled Streamlit optimization dashboard
 └── tests/
-    ├── unit/                   # Unit tests (features, models, scoring, policy, validation)
-    ├── integration/            # End-to-end pipeline integration tests
-    ├── regression/             # Deterministic model metric regression tests
-    └── api/                    # REST API endpoint tests
+    ├── api/                    # FastAPI test suite (HTTP status codes, schemas)
+    ├── integration/            # Full end-to-end pipeline integration test
+    ├── regression/             # Deterministic model metric regression protection
+    └── unit/                   # Unit tests (features, math, policy, CLI, artifacts)
 ```
 
 ---
 
-## ⚡ Quickstart with Docker (Zero Configuration)
+## Quick Start
 
-PromoLift is fully containerized and production-ready. You can spin up both the **FastAPI Inference Service** and the **Streamlit Optimization Dashboard** with a single command:
+### Docker (Recommended)
+
+The entire multi-service stack (FastAPI + Streamlit Dashboard + Web Frontend) runs via Docker Compose with zero manual configuration:
 
 ```bash
-# 1. Clone the repository
+# 1. Clone repository
 git clone https://github.com/MTPeraya/promolift-model.git
 cd promolift-model
 
@@ -181,215 +166,228 @@ cd promolift-model
 docker compose up --build
 ```
 
-### Access Local Endpoints & UIs
+#### Verified Service Endpoints
 
-Once the containers report `healthy`:
-*   🌐 **Interactive Web Frontend**: [http://localhost:8080](http://localhost:8080) (or open [`demo.html`](demo.html) directly)
-*   🎯 **Streamlit Campaign Dashboard**: [http://localhost:8501](http://localhost:8501)
-*   ⚡ **FastAPI REST API & Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
-*   🩺 **API Health Diagnostic**: [http://localhost:8000/health](http://localhost:8000/health)
-*   📊 **Model Holdout Provenance & Baselines**: [http://localhost:8000/model-info](http://localhost:8000/model-info)
+* **Streamlit Optimization Dashboard**: [http://localhost:8501](http://localhost:8501)
+* **FastAPI Interactive Swagger Docs**: [http://localhost:8000/docs](http://localhost:8000/docs)
+* **FastAPI Service Health**: [http://localhost:8000/health](http://localhost:8000/health)
+* **Model Provenance & Test Metrics**: [http://localhost:8000/model-info](http://localhost:8000/model-info)
+* **Interactive Web Frontend**: [http://localhost:8080](http://localhost:8080)
 
-### Developer Commands (`Makefile`)
-
+Run the automated container smoke test:
 ```bash
-make docker-up      # Launch FastAPI and Streamlit in background
-make docker-test    # Run automated smoke tests against live containers
-make docker-down    # Cleanly stop and tear down containers
-make docker-logs    # Stream live logs from all containers
-make test           # Run complete pytest test suite (unit + integration + api + regression)
-make lint           # Check formatting and typing (Ruff + Mypy)
+make docker-test
 ```
-
-### Key Environment Variables
-
-| Variable | Default | Service | Description |
-|---|---|---|---|
-| `MODEL_PATH` | `/app/models/production` | API & Dashboard | Path to the production model bundle directory containing `model.joblib` and `metadata.json` |
-| `API_URL` | `http://api:8000` | Dashboard | Hostname and port of the FastAPI inference service |
-| `LOG_LEVEL` | `INFO` | API | Application logging verbosity (`DEBUG`, `INFO`, `WARNING`, `ERROR`) |
-| `MPLCONFIGDIR` | `/tmp/matplotlib` | Dashboard | Writable temporary directory for Matplotlib cache |
 
 ---
 
-## Local Setup & Installation (Python Virtualenv)
+### Local Development
 
-### Prerequisites
+#### Prerequisites
 * Python 3.11 or 3.12
 * Git
 
-### Installation
 ```bash
-# Clone the repository
-git clone https://github.com/MTPeraya/promolift-model.git
-cd promolift-model
-
-# Create and activate virtual environment
+# 1. Create and activate virtual environment
 python3 -m venv .venv
 source .venv/bin/activate
 
-# Install the package in editable mode with development & API extras
+# 2. Install editable package with all extras
+pip install --upgrade pip
 pip install -e ".[all]"
+
+# 3. Run full test suite with coverage
+make test
+
+# 4. Run linter and type checker
+make lint
+make typecheck
 ```
 
----
-
-## Model Training & Stratified Splitting
-
-To prevent data leakage, features are computed strictly using transactions prior to campaign launch (`reference_date = "2026-06-01"`).
-
-PromoLift partitions data into:
-* **Train (60%)**: Used solely to train treatment and control base estimators.
-* **Validation (20%)**: Used for hyperparameter checks.
-* **Holdout Test (20%)**: Untouched dataset used exclusively for final evaluation and baseline comparisons.
-
-Stratification is performed jointly over $(W_i, Y_i)$ combinations to guarantee matching treatment fractions and base conversion rates across all splits.
-
-### Run Training via CLI
+#### Train Model via CLI
 ```bash
-promolift train --data-dir data --output-dir models/promolift_latest --seed 42
+python3 -m promolift.cli train --data-dir data --output-dir models/production --seed 42
 ```
 
----
-
-## Evaluation Methodology & Benchmark Baselines
-
-PromoLift avoids standard AUC as the primary success metric, reporting causal metrics instead:
-*   **Qini Curve & Qini Score**: Area between model cumulative incremental gain and random baseline.
-*   **AUUC**: Area Under the Uplift Curve.
-*   **Uplift@K**: Uplift achieved in the top 10%, 20%, 30%, 50% of ranked customers.
-*   **Average Treatment Effect (ATE)**: Overall population lift.
-
-### Benchmark Comparison on Holdout Test Set (N=200)
-
-| Targeting Strategy | Customers Targeted | Target Rate | Expected Incremental Profit | Profit vs. Uniform (THB) | Budget Cost Saved |
-|---|---|---|---|---|---|
-| **1. Uniform (Target All)** | 200 | 100% | -2,071.48 THB | 0.00 THB | 0.0% |
-| **2. Customer Segment-Based** | 106 | 53% | -1,312.08 THB | +759.40 THB | 46.8% |
-| **3. Propensity Targeting (Top 30%)** | 60 | 30% | -350.81 THB | +1,720.67 THB | 63.9% |
-| **4. Uplift Targeting (Top 30%)** | 60 | 30% | **+226.58 THB** | **+2,298.06 THB** | **67.4%** |
-| **5. Value-Optimized Uplift (EIP > 0)**| 44 | 22% | **+276.35 THB** | **+2,347.83 THB** | **76.8%** |
-
-*Key finding: Propensity targeting selects customers likely to buy anyway (Sure Things), leading to negative incremental profits. Uplift and Value-Optimized targeting generate positive net profits while cutting promotional marketing costs by over 75%.*
-
----
-
-## Batch Inference CLI
-
-Score customer features for a specific promotional campaign:
-
+#### Score Campaign via Batch CLI
 ```bash
-promolift score \
-  --campaign P003 \
+python3 -m promolift.cli score \
+  --campaign P001 \
   --input data/customer_features.parquet \
-  --output outputs/targeting_p003.csv \
-  --price 85.0 \
-  --cogs 51.0 \
-  --discount-rate 0.10 \
+  --output outputs/targeting_list_sample.csv \
+  --price 163.37 \
+  --cogs 89.89 \
+  --discount-rate 0.20 \
   --campaign-cost 0.50
 ```
 
-### Output Schema
-The generated CSV or Parquet file contains:
-* `customer_id`: Unique customer identifier.
-* `campaign_id`: Campaign code.
-* `p_treatment`: Estimated purchase probability if given promotion.
-* `p_control`: Estimated purchase probability if NOT given promotion.
-* `uplift_score`: Net causal lift ($p_{\text{treatment}} - p_{\text{control}}$).
-* `expected_incremental_revenue`: Revenue lift minus discount payout.
-* `expected_incremental_profit`: Profit lift minus discount & messaging cost.
-* `recommendation`: Decision (`TARGET`, `SKIP`, or `SLEEPING DOG (DO NOT DISTURB)`).
-* `model_version`: Serialized model version identifier.
-
 ---
 
-## REST API Service
+## API Reference
 
-Launch the FastAPI production inference service:
+The FastAPI service exposes high-performance REST endpoints for online inference and model observability.
+
+### Endpoints
+
+| Method | Path | Description | Verified Status |
+|---|---|---|---|
+| `GET` | `/health` | Service liveness, readiness, uptime, and model loading check | `HTTP 200` |
+| `GET` | `/model-info` | Non-sensitive model version, git commit, training config & test metrics | `HTTP 200` |
+| `POST` | `/predict` | Unified online scoring endpoint (accepts single customer or list) | `HTTP 200` |
+| `POST` | `/score/single`| Dedicated single-customer scoring endpoint | `HTTP 200` |
+| `POST` | `/score/batch` | Dedicated batch scoring endpoint | `HTTP 200` |
+
+### Sample Request: `POST /predict`
 
 ```bash
-uvicorn promolift.api:app --host 0.0.0.0 --port 8000 --reload
+curl -X POST http://localhost:8000/predict \
+  -H "Content-Type: application/json" \
+  -d '{
+    "campaign_id": "P001",
+    "customers": {
+      "customer_id": "C0001",
+      "recency_days": 10.0,
+      "frequency_30d": 3.0,
+      "monetary_90d": 500.0,
+      "total_spend": 2000.0,
+      "total_visits": 10.0,
+      "total_items": 25.0,
+      "avg_basket_value": 200.0,
+      "promo_ratio": 0.20,
+      "customer_segment_code": 3
+    },
+    "financial_params": {
+      "price": 163.37,
+      "cogs": 89.89,
+      "discount_rate": 0.20,
+      "campaign_cost": 0.50
+    }
+  }'
 ```
 
-Interactive OpenAPI Swagger docs are available at `http://localhost:8000/docs`.
+### Sample Response
 
-### Key Endpoints
-* `GET /health`: Service health and model loading status.
-* `GET /metadata`: Loaded model metadata, training configuration, and test metrics.
-* `POST /score/single`: Real-time scoring for a single customer.
-* `POST /score/batch`: Batch scoring for multiple customer feature vectors.
-
----
-
-## Streamlit Dashboard
-
-The Streamlit dashboard is decoupled from the model-training loop and consumes pre-computed model artifacts and scored data.
-
-Run the dashboard:
-```bash
-streamlit run src/app.py
+```json
+[
+  {
+    "customer_id": "C0001",
+    "campaign_id": "P001",
+    "p_treatment": 0.7214,
+    "p_control": 0.2304,
+    "uplift_score": 0.4910,
+    "expected_incremental_revenue": 56.64,
+    "expected_incremental_profit": 12.01,
+    "uplift_segment": "Persuadal",
+    "recommendation": "TARGET",
+    "model_version": "0.1.0"
+  }
+]
 ```
 
-Features:
-* **Campaign Control Panel**: Interactive retail price, discount %, and COGS recalculations.
-* **KPI Metrics**: Net profit projection, budget waste reduction %, and Sleeping Dog protection count.
-* **4-Quadrant Uplift Distribution**: Visual breakdown of Persuadables, Sure Things, Lost Causes, and Sleeping Dogs.
-* **Holdout Test Set Validation**: Displays AUUC, Qini score, and baseline comparison table directly from the serialized artifact.
-* **Target List Export**: One-click download of targeted customer IDs for campaign dispatch tools.
+---
+
+## Model & Evaluation
+
+### Training Methodology
+* **Dataset Partition**: 600 Train (60%), 200 Validation (20%), 200 Untouched Holdout Test (20%).
+* **Stratified Splitting**: Stratified jointly on treatment flag ($W \in \{0, 1\}$) and purchase outcome ($Y \in \{0, 1\}$) to ensure uniform treatment-to-control ratios across splits.
+* **Leak-Free Features**: 9 RFM metrics calculated strictly on transactions before campaign cutoff date.
 
 ---
 
-## Testing & Quality Assurance
+## Validation & Engineering Results
 
-Run the comprehensive test suite:
+All results below are verified from direct executions on the repository codebase. See [`docs/validation.md`](docs/validation.md) for full benchmark outputs.
 
-```bash
-# Run all tests
-pytest
+### 1. Engineering & Quality Validation
 
-# Run with test coverage
-pytest --cov=promolift --cov-report=term-missing
+| Quality Check | Tool | Measured Result |
+|---|---|---|
+| **Test Suite** | `pytest` 9.0.1 | **33 passed**, 0 failed in 7.01s |
+| **Code Coverage** | `pytest-cov` | **93%** total package coverage |
+| **Linter** | `Ruff` | **PASS** (0 errors) |
+| **Static Type Check** | `Mypy` | **PASS** (0 issues across 22 source files) |
+| **Docker Smoke Test** | `make docker-test` | **PASS** (All 5 service health checks OK) |
+| **Container Status** | `docker compose ps` | **3 / 3 services healthy** (`api`, `dashboard`, `frontend`) |
 
-# Run static type checking
-mypy src/promolift
-```
+### 2. Machine Learning Holdout Metrics (N=200 Test Customers)
 
-Test suite overview:
-* `tests/unit/test_features.py`: Temporal leakage prevention, RFM calculations, missing value handling.
-* `tests/unit/test_uplift_model.py`: T-Learner interface compliance, probability bounds, error handling.
-* `tests/unit/test_financial_scoring.py`: EIR & EIP formulas and sensitivity to discounts and costs.
-* `tests/unit/test_targeting_policy.py`: Quadrant classification and Sleeping Dog isolation.
-* `tests/unit/test_validation.py`: Input schema validation and duplicate/negative value rejection.
-* `tests/unit/test_artifacts.py`: Model bundle persistence, metadata tracking, and schema enforcement.
-* `tests/integration/test_pipeline_e2e.py`: End-to-end pipeline from raw data to export CSV.
-* `tests/regression/test_deterministic_regression.py`: Protects against silent performance regressions.
-* `tests/api/test_endpoints.py`: Integration testing for FastAPI routes.
+| Metric | Measured Value | Meaning |
+|---|---|---|
+| **AUUC (Area Under Uplift Curve)** | **0.0526** | Normalized cumulative causal response vs random baseline |
+| **Qini Score** | **1.61** | Area between model gain curve and uniform random line |
+| **Uplift @ 10%** | **0.3297** (33.0%) | Empirical causal lift in the top decile |
+| **Uplift @ 20%** | **0.3262** (32.6%) | Empirical causal lift in the top 20% ranked customers |
+| **Uplift @ 30%** | **0.1250** (12.5%) | Empirical causal lift in the top 30% ranked customers |
+| **Average Treatment Effect (ATE)**| **0.1039** (10.39%) | Population-wide lift difference ($p_T - p_C$) |
+| **Treatment Response Rate** | **0.5294** (52.94%) | Response rate among treated holdout customers |
+| **Control Response Rate** | **0.4255** (42.55%) | Response rate among unprompted control holdout customers |
+
+### 3. Business Strategy Simulation (Holdout Test N=200)
+
+> [!NOTE]
+> **Simulation Disclaimer**: The values below represent simulated financial outcomes calculated using campaign parameters on the repository's retail mock dataset ($Price = 163.37 \text{ THB}, COGS = 89.89 \text{ THB}, Discount = 20\%$). They do not represent real-world commercial results.
+
+| Targeting Strategy | Targeted (N) | Target % | Expected Incremental Conversions | Expected Incremental Profit | Budget Cost Saved | Profit vs. Uniform Blast |
+|---|---|---|---|---|---|---|
+| **1. Uniform Blast (Target All)** | 200 | 100% | 20.78 | **-2,071.48 THB** | 0.0% | Baseline (0.00 THB) |
+| **2. Customer Segment-Based** | 106 | 53% | 8.19 | **-1,312.08 THB** | 46.8% | +759.40 THB |
+| **3. Propensity Top 30%** | 60 | 30% | 12.91 | **-350.81 THB** | 63.9% | +1,720.67 THB |
+| **4. Uplift Top 30%** | 60 | 30% | 19.05 | **+226.58 THB** | 67.4% | +2,298.06 THB |
+| **5. Value-Optimized Uplift ($EIP > 0$)**| 44 | 22% | 15.13 | **+276.35 THB** | **76.8%** | **+2,347.83 THB** |
+
+*Key finding: Blanket and Propensity targeting both result in negative incremental profit by granting unnecessary discounts to Sure Things who would have bought anyway. Uplift targeting delivers positive net incremental profit while cutting promotional budget costs by 76.8%.*
+
+### 4. Local Performance Benchmarks
+
+* **Batch Scoring Throughput**: **10,000 customers scored in 12.41 ms** (~1.24 µs / customer, ~805,800 customers/sec) on Apple Silicon.
+* **REST API Latency** (`POST /predict` over 50 requests):
+  * **Mean**: 4.92 ms
+  * **p50**: 4.90 ms
+  * **p95**: 5.35 ms
+  * **p99**: 5.47 ms
 
 ---
 
-## CI/CD Pipeline
+## Deployment
 
-The `.github/workflows/ci.yml` pipeline runs on every push and pull request:
-1. Installs dependencies on Python 3.11 and 3.12.
-2. Runs Ruff linter.
-3. Performs static type analysis with Mypy (`mypy src/promolift`).
-4. Executes full pytest suite with coverage.
-5. Verifies package build capability via `build`.
+### Multi-Stage Docker Build
+The project uses a clean multi-stage `Dockerfile`:
+1. **Builder Stage**: Installs compiler tools (`build-essential`, `libgomp1`), caches dependencies independently from source changes, and compiles wheels.
+2. **Runtime Stage**: Installs wheels into a minimal `python:3.12-slim` image, creates a dedicated non-root application user (`appuser:10001`), packages model artifacts, and configures native Docker healthchecks.
 
----
-
-## Observability & Monitoring
-
-In a production deployment, monitor the following signals:
-1. **Covariate Feature Drift**: Monitor Kolmogorov-Smirnov (KS) test statistics on `recency_days`, `frequency_30d`, and `monetary_90d` between training and inference data.
-2. **Treatment-to-Control Ratio**: Verify that pilot holdout campaigns maintain the planned control fraction (minimum 20%).
-3. **Uplift Calibration Drift**: Periodically evaluate empirical uplift against predicted uplift across score deciles.
-4. **Targeting Volume Drift**: Alert if `TARGET` recommendation percentage swings significantly between model versions.
+### Docker Compose Architecture
+* `api`: FastAPI inference service running Uvicorn on port `8000`.
+* `dashboard`: Streamlit campaign optimization dashboard on port `8501`, depending on `api` health.
+* `frontend`: Alpine Nginx web server hosting interactive UI on port `8080`, listening on IPv4 and IPv6.
 
 ---
 
-## Model Limitations & Assumptions
+## Limitations
 
-1. **Unconfoundedness Assumption**: T-Learner assumes treatment assignment is conditionally independent of potential outcomes given features ($Y(1), Y(0) \perp W \mid X$). In production, this requires randomized holdout experiments or propensity-weighted adjustments.
-2. **Control Sample Size**: When control group size is small, the control estimator $\mu_0$ may have higher variance than $\mu_1$, occasionally exaggerating negative uplift predictions. Maintain at least a 20% (ideally 50%) control group during pilot testing.
-3. **Single-Item Cross-Elasticity**: Current EIP calculates incremental profit assuming no basket-level cannibalization across substitute categories. Future iterations should incorporate category-level basket elasticity.
+1. **Synthetic / Mock Data**: The dataset bundled with the repository is a synthetic retail database. While designed to accurately reflect retail RFM distributions and treatment response dynamics, performance figures should be interpreted as simulation benchmarks rather than real-world campaign metrics.
+2. **Unconfoundedness Assumption**: The T-Learner estimator assumes treatment assignment is conditionally unconfounded given observed covariates ($Y(1), Y(0) \perp W \mid X$). In a real production deployment, this requires randomized holdout experiments (A/B testing) or propensity score weighting.
+3. **Single-Item Cross-Elasticity**: Current EIR/EIP formulas calculate incremental profit per campaign product and do not yet model cross-category basket cannibalization.
+4. **Local Hardware Benchmarking**: Throughput and latency figures reflect local development hardware (Apple Silicon) and will vary based on production cloud compute, vCPU allocations, and network topography.
+
+---
+
+## Roadmap
+
+- [x] Strict temporal feature engineering & leakage prevention
+- [x] T-Learner causal uplift model with LightGBM estimators
+- [x] Causal evaluation metrics (Qini curve, AUUC, Uplift@K)
+- [x] Vectorized Expected Incremental Revenue (EIR) and Profit (EIP) formulas
+- [x] Production FastAPI REST service with Pydantic validation
+- [x] Decoupled Streamlit campaign optimization dashboard
+- [x] Containerized multi-service deployment with healthchecks
+- [x] 93% test coverage and CI workflow
+- [ ] X-Learner and DR-Learner estimators for imbalanced treatment groups
+- [ ] Cross-category product substitution and elasticity modeling
+- [ ] Automated drift detection (Kolmogorov-Smirnov monitoring for RFM feature drift)
+
+---
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

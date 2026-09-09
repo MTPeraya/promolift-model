@@ -1,5 +1,7 @@
 .PHONY: help install test lint typecheck train score docker-build docker-up docker-down docker-logs docker-test clean
 
+PYTHON ?= python3
+
 help:
 	@echo "PromoLift Development & Deployment Commands:"
 	@echo "  make install       Install local package in editable mode with all extras"
@@ -15,23 +17,23 @@ help:
 	@echo "  make docker-test   Execute end-to-end container smoke test"
 
 install:
-	pip install --upgrade pip
-	pip install -e ".[all]"
+	$(PYTHON) -m pip install --upgrade pip
+	$(PYTHON) -m pip install -e ".[all]"
 
 test:
-	pytest tests/ --cov=promolift --cov-report=term-missing
+	$(PYTHON) -m pytest tests/ --cov=promolift --cov-report=term-missing
 
 lint:
 	ruff check src/ tests/
 
 typecheck:
-	mypy src/promolift
+	$(PYTHON) -m mypy src/promolift
 
 train:
-	python -m promolift.cli train --output-dir models/production
+	$(PYTHON) -m promolift.cli train --output-dir models/production
 
 score:
-	python -m promolift.cli score --campaign P001 --input data/customer_features.parquet --output outputs/targeting_list_sample.csv
+	$(PYTHON) -m promolift.cli score --campaign P001 --input data/customer_features.parquet --output outputs/targeting_list_sample.csv
 
 docker-build:
 	docker compose build

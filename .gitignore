@@ -39,7 +39,9 @@ Thumbs.db
 # Project local caches
 .pytest_cache/
 .mypy_cache/
-.ipynb_checkpoints/
+.ruff_cache/
+.coverage
+htmlcov/
 *.egg-info/
 build/
 dist/
