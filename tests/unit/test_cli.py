@@ -28,7 +28,7 @@ def test_cli_score_command_csv(tmp_path):
             "--campaign", "P001",
             "--input", "data/customer_features.parquet",
             "--output", out_csv,
-            "--model-dir", "models/promolift_latest",
+            "--model-dir", "models/production",
             "--price", "160.0",
             "--cogs", "80.0",
             "--discount-rate", "0.20",
@@ -52,7 +52,7 @@ def test_cli_score_command_parquet(tmp_path):
             "--campaign", "P003",
             "--input", "data/customer_features.parquet",
             "--output", out_parquet,
-            "--model-dir", "models/promolift_latest"
+            "--model-dir", "models/production"
         ]
     )
     assert result.exit_code == 0
@@ -60,3 +60,55 @@ def test_cli_score_command_parquet(tmp_path):
     assert os.path.exists(out_parquet)
     df = pd.read_parquet(out_parquet)
     assert len(df) == 1000
+
+
+def test_cli_score_command_default_model(tmp_path):
+    out_csv = str(tmp_path / "scored_default.csv")
+    result = runner.invoke(
+        app,
+        [
+            "score",
+            "--campaign", "P001",
+            "--input", "data/customer_features.parquet",
+            "--output", out_csv
+        ]
+    )
+    assert result.exit_code == 0
+    assert "Scoring complete!" in result.stdout
+    assert os.path.exists(out_csv)
+
+
+def test_cli_score_command_promolift_latest_fallback(tmp_path):
+    out_csv = str(tmp_path / "scored_fallback.csv")
+    result = runner.invoke(
+        app,
+        [
+            "score",
+            "--campaign", "P001",
+            "--input", "data/customer_features.parquet",
+            "--output", out_csv,
+            "--model-dir", "models/promolift_latest"
+        ]
+    )
+    assert result.exit_code == 0
+    assert "Scoring complete!" in result.stdout
+    assert os.path.exists(out_csv)
+
+
+def test_cli_score_command_auto_train(tmp_path):
+    auto_model_dir = str(tmp_path / "auto_model")
+    out_csv = str(tmp_path / "scored_autotrain.csv")
+    result = runner.invoke(
+        app,
+        [
+            "score",
+            "--campaign", "P002",
+            "--input", "data/customer_features.parquet",
+            "--output", out_csv,
+            "--model-dir", auto_model_dir
+        ]
+    )
+    assert result.exit_code == 0
+    assert "Training initial model now..." in result.stdout
+    assert os.path.exists(os.path.join(auto_model_dir, "model.joblib"))
+    assert os.path.exists(out_csv)

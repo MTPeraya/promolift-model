@@ -16,7 +16,7 @@ app = typer.Typer(help="PromoLift: Uplift Modeling & Campaign Optimization CLI")
 @app.command()
 def train(
     data_dir: str = typer.Option("data", "--data-dir", "-d", help="Path to raw CSV data directory"),
-    model_output: str = typer.Option("models/promolift_latest", "--output-dir", "-o", help="Directory to save model artifact"),
+    model_output: str = typer.Option("models/production", "--output-dir", "-o", help="Directory to save model artifact"),
     seed: int = typer.Option(42, "--seed", "-s", help="Random seed for reproducibility")
 ):
     """Train T-Learner uplift model with stratified train/val/test split and export versioned artifact."""
@@ -36,7 +36,7 @@ def score(
     campaign: str = typer.Option(..., "--campaign", "-c", help="Campaign/Product ID (e.g. P001, P003)"),
     input_path: str = typer.Option(..., "--input", "-i", help="Path to input features file (.parquet or .csv)"),
     output_path: str = typer.Option(..., "--output", "-o", help="Path to save scored targeting list (.csv or .parquet)"),
-    model_dir: str = typer.Option("models/promolift_latest", "--model-dir", "-m", help="Path to model artifact directory"),
+    model_dir: str = typer.Option("models/production", "--model-dir", "-m", help="Path to model artifact directory"),
     price: float = typer.Option(163.37, "--price", help="Product retail price (THB)"),
     cogs: float = typer.Option(89.89, "--cogs", help="Product cost of goods sold (THB)"),
     discount_rate: float = typer.Option(0.20, "--discount-rate", help="Discount rate (e.g. 0.20 for 20%)"),
@@ -45,10 +45,15 @@ def score(
     """
     Score customer features and produce targeted recommendation list for a promotion campaign.
     """
-    if not os.path.exists(model_dir):
-        # If model doesn't exist yet, run training pipeline first
-        typer.echo(f"Model artifact not found at '{model_dir}'. Training initial model now...")
-        train_and_evaluate_pipeline(model_output_dir=model_dir)
+    model_file = os.path.join(model_dir, "model.joblib")
+    if not os.path.exists(model_file):
+        if model_dir == "models/promolift_latest" and os.path.exists("models/production/model.joblib"):
+            typer.echo(f"Model artifact not found at '{model_dir}'. Falling back to 'models/production'...")
+            model_dir = "models/production"
+        else:
+            # If model doesn't exist yet, run training pipeline first
+            typer.echo(f"Model artifact not found at '{model_dir}'. Training initial model now...")
+            train_and_evaluate_pipeline(model_output_dir=model_dir)
 
     typer.echo(f"Loading model artifact from '{model_dir}'...")
     artifact = PromoLiftArtifact.load(model_dir)

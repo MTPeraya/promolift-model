@@ -13,7 +13,7 @@ from promolift.artifacts.bundle import PromoLiftArtifact
 def client():
     # Load model from models/production or models/promolift_latest
     for model_dir in ["models/production", "models/promolift_latest"]:
-        if os.path.exists(model_dir):
+        if os.path.exists(os.path.join(model_dir, "model.joblib")):
             _app_state["artifact"] = PromoLiftArtifact.load(model_dir)
             break
 

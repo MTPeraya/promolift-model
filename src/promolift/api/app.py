@@ -30,11 +30,11 @@ logger = logging.getLogger("promolift.api")
 # Determine default model path: check MODEL_PATH, then PROMOLIFT_MODEL_DIR, then models/production, then models/promolift_latest
 def get_default_model_dir() -> str:
     env_path = os.environ.get("MODEL_PATH") or os.environ.get("PROMOLIFT_MODEL_DIR")
-    if env_path and os.path.exists(env_path):
+    if env_path and os.path.exists(os.path.join(env_path, "model.joblib")):
         return env_path
-    if os.path.exists("models/production"):
+    if os.path.exists(os.path.join("models/production", "model.joblib")):
         return "models/production"
-    if os.path.exists("models/promolift_latest"):
+    if os.path.exists(os.path.join("models/promolift_latest", "model.joblib")):
         return "models/promolift_latest"
     return "models/production"
 
