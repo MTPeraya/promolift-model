@@ -1,0 +1,65 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "promolift"
+version = "0.1.0"
+description = "Production-oriented uplift modeling and campaign optimization for retail promotions"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "PromoLift Team" }
+]
+dependencies = [
+    "pandas>=2.0.0",
+    "numpy>=1.24.0",
+    "scikit-learn>=1.2.0",
+    "lightgbm>=4.0.0",
+    "joblib>=1.3.0",
+    "pydantic>=2.0.0",
+    "typer>=0.9.0",
+    "pyarrow>=12.0.0",
+]
+
+[project.optional-dependencies]
+api = [
+    "fastapi>=0.100.0",
+    "uvicorn>=0.22.0",
+]
+dashboard = [
+    "streamlit>=1.25.0",
+    "matplotlib>=3.7.0",
+    "seaborn>=0.12.0",
+]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "mypy>=1.5.0",
+    "ruff>=0.1.0",
+    "httpx>=0.24.0",
+]
+all = [
+    "promolift[api,dashboard,dev]"
+]
+
+[project.scripts]
+promolift = "promolift.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["promolift*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+python_functions = ["test_*"]
+addopts = "-v --tb=short"
+
+[tool.mypy]
+python_version = "3.12"
+warn_return_any = true
+warn_unused_configs = true
+ignore_missing_imports = true
+exclude = ["build", "dist", ".venv"]

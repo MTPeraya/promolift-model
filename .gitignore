@@ -38,3 +38,6 @@ Thumbs.db
 .pytest_cache/
 .mypy_cache/
 .ipynb_checkpoints/
+*.egg-info/
+build/
+dist/

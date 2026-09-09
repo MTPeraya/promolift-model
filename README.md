@@ -1,223 +1,357 @@
-# promolift: Promotion Response Model
-### AI-Powered Promo Targeting for SME Retail | DS/AI Solution Proposal
+# PromoLift: Production Uplift Modeling & Promotion Targeting
 
-> **Goal:** ลด promo waste และเพิ่ม promo ROI ด้วยการ predict ว่าลูกค้าคนไหน "ตอบสนอง" ต่อ promotion จริงๆ ก่อนยิง campaign
+> **AI-Powered Promotion Response & Expected Incremental Profit Optimizer for Retail**
 
----
+[![CI Pipeline](https://github.com/MTPeraya/promolift-model/actions/workflows/ci.yml/badge.svg)](https://github.com/MTPeraya/promolift-model/actions)
+[![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-## ที่มาและความสำคัญของปัญหา (Problem Statement)
-
-ร้านค้า SME Retail ส่วนใหญ่ยิง promotion แบบ **uniform** — ให้ส่วนลดเหมือนกันทุกคน ทุกสาขา ทุก segment ซึ่งทำให้เกิด promo waste จาก 2 กรณีหลัก:
-
-| กรณี | คำอธิบาย | ผลกระทบ |
-|---|---|---|
-| **Inertia Buyer** | ลูกค้าซื้ออยู่แล้วโดยไม่ต้องการ promo | เสียส่วนลดโดยเปล่าประโยชน์ |
-| **Sleeping Dogs / Do Not Disturb** | ลูกค้าที่ซื้ออยู่แล้วตามปกติ แต่เมื่อได้รับโปรโมชัน จะเกิดความไม่พอใจหรือหลีกเลี่ยงการซื้อ | ส่งผลกระทบเชิงลบต่อแบรนด์และรายได้โดยตรง |
-
-**โจทย์จริงจึงไม่ใช่ "ใครจะซื้อ?" แต่คือ "ใครจะซื้อ *เพราะ* promo นี้?"**
+PromoLift is a production-oriented machine learning system designed to reduce promotional budget waste and maximize incremental profit (ROI) for retail businesses. Instead of standard propensity modeling ("who will buy?"), PromoLift estimates **individual causal treatment effects** ("who will buy *specifically because* of this promotion?").
 
 ---
 
-## Proposed Solution: Uplift Modeling & Value-Based Scoring
+## Table of Contents
 
-### 1. การแบ่งกลุ่มลูกค้าด้วย Uplift (4-Quadrant Model)
-การทำโปรโมชันแบบเดิมจะดูเพียงโอกาสในการซื้อ (Propensity) แต่ Uplift Model จะคำนวณ **Incremental Effect** เพื่อแบ่งลูกค้าออกเป็น 4 กลุ่มหลักอย่างชัดเจน:
+1. [Business Problem](#business-problem)
+2. [Causal Uplift & Financial Methodology](#causal-uplift--financial-methodology)
+3. [System Architecture](#system-architecture)
+4. [Project Structure](#project-structure)
+5. [Local Setup & Installation](#local-setup--installation)
+6. [Model Training & Stratified Splitting](#model-training--stratified-splitting)
+7. [Evaluation Methodology & Benchmark Baselines](#evaluation-methodology--benchmark-baselines)
+8. [Batch Inference CLI](#batch-inference-cli)
+9. [REST API Service](#rest-api-service)
+10. [Streamlit Dashboard](#streamlit-dashboard)
+11. [Testing & Quality Assurance](#testing--quality-assurance)
+12. [CI/CD Pipeline](#cicd-pipeline)
+13. [Observability & Monitoring](#observability--monitoring)
+14. [Model Limitations & Assumptions](#model-limitations--assumptions)
 
-*   **Persuadables (กลุ่มจูงใจได้):** ลูกค้าที่จะซื้อ**ก็ต่อเมื่อ**ได้รับโปรโมชันเท่านั้น (Uplift > 0 สูง) *ควรส่งโปรโมชันให้กลุ่มนี้เพื่อสร้างยอดขายเพิ่ม (Incremental Revenue)*
-*   **Inertia Buyer (กลุ่มของตาย):** ลูกค้าที่จะซื้อ**ไม่ว่าจะได้**โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity สูง) *ไม่ควรส่งโปรโมชันให้ เพราะทำให้เสียส่วนลดเปล่าประโยชน์ (Cannibalization)*
-*   **Lost Causes (กลุ่มปล่อยไป):** ลูกค้าที่**อย่างไรก็ไม่ซื้อ** ไม่ว่าจะได้โปรโมชันหรือไม่ (Uplift ≈ 0, Propensity ต่ำ) *ไม่ควรส่งโปรโมชันให้ เพราะสิ้นเปลืองงบการตลาด*
-*   **Sleeping Dogs (กลุ่มหมาหลับ - Do Not Disturb):** ลูกค้าที่จะซื้อหากปล่อยไว้เฉยๆ แต่**หากส่งโปรโมชันไปจะเลิกซื้อ** (Uplift < 0 ต่ำมาก) *ห้ามส่งโปรโมชันให้เด็ดขาด เช่น ลูกค้าเกิดความรำคาญจน Unsubscribe หรือส่วนลดทำให้ภาพลักษณ์แบรนด์ลดลง (Cheapening Effect) การหลีกเลี่ยงกลุ่มนี้ช่วยป้องกันการสูญเสียรายได้โดยตรง*
+---
 
-### 2. แนวคิดการคำนวณ Uplift Score
-```
-Uplift Score (τ) = P(Buy | Treatment) − P(Buy | Control)
-```
+## Business Problem
 
-### 3. การประเมินมูลค่าลูกค้า: กำไรส่วนเพิ่มที่คาดหวัง (Expected Incremental Profit: EIP)
-เนื่องจากเป้าหมายคือการเพิ่มรายได้และกำไรสูงสุด การใช้เพียง Uplift Score อาจไม่สะท้อนมูลค่าจริง (เช่น ลูกค้าเปลี่ยนมาซื้อสินค้าถูกลง) เราจึงนำผลลัพธ์จากโมเดลมาคำนวณเป็นตัวเงินด้วย **Expected Incremental Profit (EIP)** สำหรับลูกค้าแต่ละคน $i$:
+Retailers frequently launch **uniform promotions** (same discounts blasted to everyone or based purely on customer purchase propensity). This leads to severe budget cannibalization and revenue destruction:
+
+| Customer Archetype | Behavior | Business Impact under Blanket Promo | PromoLift Decision |
+|---|---|---|---|
+| **Persuadables** | Buy *only if* promoted | Generate true incremental revenue | **TARGET** |
+| **Sure Things (Inertia Buyers)** | Buy regardless of promotion | Wasted discount margin (Cannibalization) | **SKIP** |
+| **Lost Causes** | Never buy regardless of promo | Wasted messaging/delivery expense | **SKIP** |
+| **Sleeping Dogs (Do Not Disturb)** | Less likely to buy if spammed/discounted | Brand cheapening, churn, direct net loss | **SLEEPING DOG (NEVER DISTURB)** |
+
+The goal is not to maximize conversion probability, but to **maximize Expected Incremental Profit (EIP)** while protecting Sleeping Dogs.
+
+---
+
+## Causal Uplift & Financial Methodology
+
+### 1. Causal Uplift Formulation
+For each customer $i$ with feature vector $X_i$:
+
+$$\tau_i = P(\text{Buy} = 1 \mid \text{Treatment}, X_i) - P(\text{Buy} = 1 \mid \text{Control}, X_i)$$
+
+### 2. T-Learner Estimator
+PromoLift implements an abstracted two-model (`TLearnerUpliftModel`) framework:
+*   $\mu_1(X)$: Base classifier trained strictly on the treatment cohort ($\{i : W_i = 1\}$).
+*   $\mu_0(X)$: Base classifier trained strictly on the control cohort ($\{i : W_i = 0\}$).
+*   Individual Uplift Estimate: $\hat{\tau}(X) = \hat{\mu}_1(X) - \hat{\mu}_0(X)$.
+
+### 3. Financial Scoring: Expected Incremental Revenue & Profit
+Uplift alone is insufficient for business targeting because items have different margins and discounts. We calculate:
 
 *   **Expected Incremental Revenue (EIR):**
-    $$EIR_i = \tau_i \times \text{Price} - \text{Discount} \times P(\text{Buy} | \text{Treatment})_i$$
+    $$EIR_i = \tau_i \times \text{Price} - \text{Discount} \times P(\text{Buy} \mid \text{Treatment})_i$$
 *   **Expected Incremental Profit (EIP):**
-    $$EIP_i = \tau_i \times (\text{Price} - \text{COGS}) - \text{Discount} \times P(\text{Buy} | \text{Treatment})_i - \text{Cost}_{\text{campaign}}$$
+    $$EIP_i = \tau_i \times (\text{Price} - \text{COGS}) - \text{Discount} \times P(\text{Buy} \mid \text{Treatment})_i - \text{Cost}_{\text{campaign}}$$
 
-เราจะ Target เฉพาะลูกค้าที่มี **EIP > 0** เท่านั้นเพื่อการันตีว่า Campaign จะเพิ่มกำไรได้จริง
-
-### 4. แนวทางที่เลือกใช้: Two-Model (T-Learner)
-เราใช้ **T-Learner** ในการประมาณค่าความน่าจะเป็น:
-*   **Model T:** Train บนกลุ่ม Treatment (ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Treatment})$
-*   **Model C:** Train บนกลุ่ม Control (ไม่ได้รับโปรโมชัน) เพื่อทำนาย $P(\text{Buy} | \text{Control})$
-*   **Uplift Score (τ):** คำนวณจากผลต่างของคำทำนายจากทั้งสองโมเดล
+Customers are targeted **if and only if** $\tau_i \ge 0$ and $EIP_i > 0$.
 
 ---
 
-## Repository Structure
+## System Architecture
 
+```text
+               ┌──────────────────────────────┐
+               │    Raw Data (CSV / Lake)     │
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │  Data Validation & Schema    │  (promolift.validation)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │ Leak-free Feature Extraction │  (promolift.features)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │ Stratified Split (T/V/Test)  │  (promolift.evaluation.splitting)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │     T-Learner UpliftModel    │  (promolift.models)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │ Uplift Evaluation & Baselines│  (promolift.evaluation)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │    Versioned Model Bundle    │  (promolift.artifacts)
+               └──────────────┬───────────────┘
+                              │
+                 ┌────────────┴────────────┐
+                 ▼                         ▼
+      ┌──────────────────────┐  ┌──────────────────────┐
+      │  Batch Inference CLI │  │   FastAPI REST API   │
+      └──────────┬───────────┘  └──────────┬───────────┘
+                 │                         │
+                 └────────────┬────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │ Pure Financial & Policy Layer│  (promolift.business)
+               └──────────────┬───────────────┘
+                              │
+                              ▼
+               ┌──────────────────────────────┐
+               │  Decoupled Streamlit App     │  (src/app.py)
+               └──────────────────────────────┘
 ```
+
+---
+
+## Project Structure
+
+```text
 promolift-model/
-│
-├── README.md                           ← ไฟล์อธิบายโปรเจกต์ (ไฟล์นี้)
-├── demo.html                           ← Interactive dashboard (HTML/JS) เปิดดูได้ทันทีบนเบราว์เซอร์
-├── .gitignore                          ← การระบุไฟล์ที่ต้องการให้ Git ข้ามการติดตาม
-│
-├── data/                               ← โฟลเดอร์เก็บข้อมูลจำลอง (Mock Data)
-│   ├── mock_sales_transactions.csv     ← ประวัติการทำรายการซื้อขายย้อนหลัง
-│   ├── mock_customer_master.csv        ← ข้อมูลลูกค้าหลักและหมวดหมู่การแบ่งกลุ่มลูกค้า
-│   ├── mock_product_master.csv         ← ข้อมูลสินค้าหลัก ราคาสินค้า และต้นทุน (COGS)
-│   ├── mock_promotion_master.csv       ← ข้อมูลรูปแบบโปรโมชัน ส่วนลด และช่วงเวลาแคมเปญ
-│   ├── mock_store_master.csv           ← ข้อมูลสาขาของร้านค้า
-│   ├── mock_campaign_dispatch.csv      ← ข้อมูลลูกค้า 1,000 คนในแคมเปญทดสอบ (Treatment/Control Split)
-│   ├── mock_customer_master_with_ground_truth.csv ← ข้อมูลลูกค้าที่มี Uplift Segment จริง สำหรับตรวจสอบโมเดล
-│   └── data_dictionary.md              ← คำอธิบายของแต่ละคอลัมน์ในตารางข้อมูลข้างต้น
-│
-├── src/                                ← โค้ดหลักในการประมวลผลโมเดลและแอปพลิเคชัน
-│   ├── mock_data_generator.py          ← สคริปต์สำหรับสุ่มสร้างชุดข้อมูล Mock Data ทั้งหมด
-│   ├── data_loader.py                  ← สคริปต์ช่วยโหลดข้อมูล (Helper class) จาก CSV เข้าสู่ Pandas
-│   ├── features.py                     ← คำนวณพฤติกรรมลูกค้าเชิงประวัติ (RFM & Promo Redemptions)
-│   ├── uplift_model.py                 ← ตัวโมเดล T-Learner (LightGBM) และสูตรคำนวณ Qini Curve
-│   ├── scoring.py                      ← สคริปต์ประเมินความคุ้มค่าแคมเปญรายบุคคล (EIP, EIR) และจัดทำข้อเสนอแนะ
-│   └── app.py                          ← แอปพลิเคชัน Streamlit Dashboard ในการจำลองแคมเปญจริง
-│
-├── tests/                              ← โฟลเดอร์เก็บโค้ดการทดสอบระบบ
-│   └── test_pipeline.py                ← การทดสอบความถูกต้องของการคำนวณและขั้นตอนการทำงานทั้งหมด
-│
-└── outputs/                            ← โฟลเดอร์เก็บผลลัพธ์ของโมเดล
-    └── targeting_list_sample.csv       ← รายชื่อลูกค้าเป้าหมายที่โมเดลแนะนำสำหรับการส่งโปรโมชัน
+├── pyproject.toml              # Build config, dependencies, CLI entry points, and tool settings
+├── .github/workflows/ci.yml    # GitHub Actions CI for lint, mypy, pytest, and build
+├── data/                       # Mock data files & data dictionary
+├── models/
+│   └── promolift_latest/       # Packaged model artifact bundle
+│       ├── model.joblib        # Fitted treatment & control models
+│       └── metadata.json       # Schema, git commit, metrics & training config
+├── outputs/                    # Scored targeting outputs
+│   └── targeting_list_sample.csv
+├── src/
+│   ├── promolift/              # Core installable Python package
+│   │   ├── __init__.py
+│   │   ├── types.py            # Domain schemas, enums, and dataclasses
+│   │   ├── validation.py       # Data integrity and schema verification
+│   │   ├── features.py         # Leak-free RFM and promo features
+│   │   ├── models/             # UpliftModel abstraction & T-Learner
+│   │   ├── business/           # Pure EIR/EIP scoring & targeting policy
+│   │   ├── evaluation/         # Qini, AUUC, Uplift@K, splitting & baselines
+│   │   ├── artifacts/          # Model serialization, versioning & schema checks
+│   │   ├── inference.py        # Batch scoring engine
+│   │   ├── pipeline.py         # End-to-end training & evaluation pipeline
+│   │   ├── cli.py              # Command-line interface
+│   │   └── api/                # FastAPI application
+│   ├── app.py                  # Decoupled Streamlit dashboard
+│   ├── data_loader.py          # Backwards-compatibility shim
+│   ├── features.py             # Backwards-compatibility shim
+│   ├── uplift_model.py         # Backwards-compatibility shim
+│   └── scoring.py              # Backwards-compatibility shim
+└── tests/
+    ├── unit/                   # Unit tests (features, models, scoring, policy, validation)
+    ├── integration/            # End-to-end pipeline integration tests
+    ├── regression/             # Deterministic model metric regression tests
+    └── api/                    # REST API endpoint tests
 ```
 
 ---
 
-## แผนงานจัดการข้อมูล (Data Plan)
+## Local Setup & Installation
 
-### ตารางข้อมูลที่ใช้งาน (ตาม Schema ที่กำหนด)
+### Prerequisites
+* Python 3.11 or 3.12
+* Git
 
-| ตาราง | คีย์หลัก (Key Columns) | การนำไปใช้งาน |
-|---|---|---|
-| `sales_transactions` | datetime, product_id, price, qty, customer_id, promotion_id, store_id | ตารางธุรกรรมหลัก (Fact Table) — ใช้ระบุกลุ่ม Treatment และ Control |
-| `customer_master` | customer_id, customer_taxonomies | สำหรับสร้างฟีเจอร์พฤติกรรมลูกค้า (Customer Segment Features) |
-| `promotion_master` | promotion_id, discount, product_id, start_date, end_date | ข้อมูลรายละเอียดโปรโมชันและส่วนลด (Promo Metadata & Discount Depth) |
-| `product_master` | product_id, price, product_taxonomies | สำหรับสร้างฟีเจอร์ประเภทและรายละเอียดของสินค้า (Product Category Features) |
-| `store_master` | store_id, store_taxonomies | สำหรับสร้างฟีเจอร์ระบุสาขาและพื้นที่ร้านค้า (Store Type/Region Features) |
+### Installation
+```bash
+# Clone the repository
+git clone https://github.com/MTPeraya/promolift-model.git
+cd promolift-model
 
-### ขั้นตอนการเชื่อมโยงข้อมูล (Join Logic)
-```sql
-SELECT
-    t.*,
-    c.customer_taxonomies,
-    p.discount, p.start_date, p.end_date,
-    pr.product_taxonomies, pr.price AS product_price,
-    s.store_taxonomies
-FROM sales_transactions t
-LEFT JOIN customer_master  c  ON t.customer_id   = c.customer_id
-LEFT JOIN promotion_master p  ON t.promotion_id  = p.promotion_id
-LEFT JOIN product_master   pr ON t.product_id    = pr.product_id
-LEFT JOIN store_master     s  ON t.store_id      = s.store_id
-```
+# Create and activate virtual environment
+python3 -m venv .venv
+source .venv/bin/activate
 
-### ข้อมูลจำลองที่สร้างเพิ่มเติม (Mock Data)
-
-| คอลัมน์ (Column) | เหตุผลที่เพิ่มเติมเข้ามา |
-|---|---|
-| `recency_days` | วันนับจากครั้งสุดท้ายที่ซื้อ — RFM feature สำคัญ |
-| `frequency_30d` | จำนวนครั้งที่ซื้อใน 30 วันที่ผ่านมา |
-| `monetary_90d` | ยอดใช้จ่ายใน 90 วัน |
-| `is_treatment` | 1 = ได้รับ promo, 0 = control group (Randomized Holdout) |
-| `bought_after_promo` | binary label — ซื้อสินค้าประเภทนั้นภายใน 7 วันหลังเริ่ม Campaign หรือไม่ |
-
-> **Assumption:** ใช้การออกแบบ **Randomized Holdout (A/B Test)** โดยสุ่มลูกค้า 20% ไว้เป็น Control Group เพื่อเป็นเกณฑ์เปรียบเทียบมาตรฐาน (Gold Standard) หรือในกรณีที่ไม่มีการเก็บ Holdout สามารถทำ **Synthetic Control** จากกลุ่มลูกค้าที่มีพฤติกรรมคล้ายคลึงกันและไม่ได้รับโปรโมชันในช่วงเวลาเดียวกัน
-
----
-
-## ฟีเจอร์ที่ใช้ในโมเดล (Features)
-
-```python
-# ฟีเจอร์จริงที่ใช้ประมวลผลใน uplift_model.py / scoring.py
-FEATURE_COLS = [
-    # RFM features (derived from historical transactions)
-    "recency_days",          # Days since last purchase (lower = more active)
-    "frequency_30d",         # Number of distinct orders in last 30 days
-    "monetary_90d",          # Total spend (THB) in last 90 days
-    "total_spend",           # All-time total spend (THB)
-    "total_visits",          # All-time number of distinct orders
-    "total_items",           # All-time total units purchased
-    "avg_basket_value",      # total_spend / total_visits
-    # Promo engagement
-    "promo_ratio",           # Share of historical transactions with a promo applied
-    # Customer segment (encoded)
-    "customer_segment_code", # Encoded from customer_taxonomies (High Value=3 … Occasional=0)
-]
+# Install the package in editable mode with development & API extras
+pip install -e ".[all]"
 ```
 
 ---
 
-## ผลลัพธ์ที่คาดหวัง (Expected Output)
+## Model Training & Stratified Splitting
 
-### สิ่งที่จะส่งมอบ (Deliverables)
+To prevent data leakage, features are computed strictly using transactions prior to campaign launch (`reference_date = "2026-06-01"`).
 
-1. **Targeting List (รายชื่อกลุ่มเป้าหมาย)** — รายชื่อลูกค้าเรียงตามลำดับความคุ้มค่าที่ควรได้รับข้อเสนอโปรโมชันแต่ละแคมเปญ
-   ```
-   customer_id | promo_id | uplift_score | recommended_action
-   C001        | P003     | 0.42         | TARGET
-   C002        | P003     | 0.03         | SKIP
-   C003        | P003     | -0.08        | SLEEPING DOG (DO NOT DISTURB)
-   ```
+PromoLift partitions data into:
+* **Train (60%)**: Used solely to train treatment and control base estimators.
+* **Validation (20%)**: Used for hyperparameter checks.
+* **Holdout Test (20%)**: Untouched dataset used exclusively for final evaluation and baseline comparisons.
 
-2. **Budget Efficiency Report (รายงานประสิทธิภาพงบประมาณ)** — รายงานการเปรียบเทียบรายได้ที่คาดว่าจะได้รับระหว่างการทำการตลาดเฉพาะกลุ่ม Top 30% แรกเทียบกับการส่งโปรโมชันให้ลูกค้าทั้งหมด (Uniform)
+Stratification is performed jointly over $(W_i, Y_i)$ combinations to guarantee matching treatment fractions and base conversion rates across all splits.
 
-3. **Mock Dashboard (แดชบอร์ดจำลอง)** — แดชบอร์ดพัฒนาด้วย Streamlit/Looker Studio เพื่อช่วยให้ฝ่ายวางแผน (Planner) กรองข้อมูลโปรโมชันและดูรายชื่อลูกค้าอันดับแรกๆ ได้ทันที
-
----
-
-## แนวทางการวัดผลและตรวจสอบความถูกต้อง (Validation Approach)
-
-### ก่อนมีโมเดลที่สมบูรณ์ (การทดสอบความเป็นไปได้)
-```
-1. แบ่งกลุ่มลูกค้าด้วยคะแนน RFM Score ออกเป็น 4 ส่วนเท่าๆ กัน (Quartiles)
-2. สังเกตสัดส่วนการใช้โปรโมชัน (Redemption Rate) ของลูกค้าในแต่ละกลุ่ม
-3. หากกลุ่ม Q1 (ลูกค้ามูลค่าสูง) มีอัตราการใช้สูงกว่ากลุ่ม Q4 อย่างมีนัยสำคัญ แสดงว่ามีสัญญาณบ่งชี้ที่สามารถใช้ได้จริง
+### Run Training via CLI
+```bash
+promolift train --data-dir data --output-dir models/promolift_latest --seed 42
 ```
 
-### เมื่อพัฒนาโมเดลเรียบร้อย
-| ตัวชี้วัด (Metric) | เป้าหมาย (Target) |
-|---|---|
-| AUC-ROC | ≥ 0.72 |
-| Precision@20% | ≥ 65% |
-| ยอดขายส่วนเพิ่มจำลอง (Simulated Revenue Uplift) | +15% เมื่อเทียบกับแคมเปญแบบปกติ (Uniform Promo) |
+---
 
-### เกณฑ์เปรียบเทียบมาตรฐาน (Baselines)
-- **Baseline A:** ส่งโปรโมชันให้ลูกค้าทุกคน (แนวทางปัจจุบัน)
-- **Baseline B:** ส่งเฉพาะกลุ่มลูกค้า (Customer Segment) ที่เคยซื้อสินค้าในหมวดหมู่นั้นๆ มาก่อน
-- **Model (โมเดล):** เลือกส่งให้เฉพาะกลุ่มที่มีคะแนน Uplift สูงสุด 30% แรก (Top 30% targeting) ด้วย T-Learner
+## Evaluation Methodology & Benchmark Baselines
 
-### ข้อจำกัดที่ควรทราบ (สำหรับข้อมูลจำลอง)
+PromoLift avoids standard AUC as the primary success metric, reporting causal metrics instead:
+*   **Qini Curve & Qini Score**: Area between model cumulative incremental gain and random baseline.
+*   **AUUC**: Area Under the Uplift Curve.
+*   **Uplift@K**: Uplift achieved in the top 10%, 20%, 30%, 50% of ranked customers.
+*   **Average Treatment Effect (ATE)**: Overall population lift.
 
-| สิ่งที่พบ (Observation) | สาเหตุหลัก (Root Cause) | ผลกระทบ (Impact) |
-|---|---|---|
-| โมเดลทำนายกลุ่ม Sleeping Dogs ประมาณ 280 คน แต่ข้อมูลจริง (Ground Truth) มีเพียงประมาณ 97 คน | T-Learner ถูกฝึกสอนด้วยข้อมูลนำร่องขนาดเล็กที่ไม่มีความสมดุล (Treatment 768 คน / Control 232 คน) เมื่อกลุ่มตัวอย่าง Control มีน้อย โมเดล C จึงเรียนรู้พฤติกรรมได้ไม่เสถียรและประเมินโอกาสซื้อต่ำเกินไป ส่งผลให้ค่าความแตกต่าง (Uplift) ติดลบมากกว่าความเป็นจริง | การจำแนกประเภทเป็น `SLEEPING DOG` จะมีความรัดกุมสูงกว่าปกติ (จัดกลุ่มเซฟไว้ก่อน) ซึ่งการใช้ข้อมูลจริงที่มีการแบ่งกลุ่ม Holdout อย่างสมดุลจะช่วยลดสัดส่วนนี้ลงได้อย่างมาก |
-| การเทรนโมเดลและวัดผลบนลูกค้ารายเดียวกัน (ไม่มีชุดข้อมูลทดสอบแยกต่างหาก) | เป็นเพียงท่อประมวลผลต้นแบบ (Prototype/Demo Pipeline) เท่านั้น | ห้ามนำค่า AUC/Qini ไปใช้ในการตัดสินใจสำหรับการใช้งานจริงบนระบบงานจริง หากยังไม่มีการแบ่งชุดข้อมูล Train/Validation/Test ที่เหมาะสม |
+### Benchmark Comparison on Holdout Test Set (N=200)
 
-> **คำแนะนำสำหรับการใช้งานจริง (On production data):** ควรแบ่งอัตราส่วนระหว่างกลุ่ม Treatment และ Control อย่างน้อย 50/50 และประเมินผลลัพธ์ประสิทธิภาพ (เช่น Qini Curve) บนชุดข้อมูลทดสอบ (Test Set) ที่ถูกแยกออกมาโดยสมบูรณ์
+| Targeting Strategy | Customers Targeted | Target Rate | Expected Incremental Profit | Profit vs. Uniform (THB) | Budget Cost Saved |
+|---|---|---|---|---|---|
+| **1. Uniform (Target All)** | 200 | 100% | -2,071.48 THB | 0.00 THB | 0.0% |
+| **2. Customer Segment-Based** | 106 | 53% | -1,312.08 THB | +759.40 THB | 46.8% |
+| **3. Propensity Targeting (Top 30%)** | 60 | 30% | -350.81 THB | +1,720.67 THB | 63.9% |
+| **4. Uplift Targeting (Top 30%)** | 60 | 30% | **+226.58 THB** | **+2,298.06 THB** | **67.4%** |
+| **5. Value-Optimized Uplift (EIP > 0)**| 44 | 22% | **+276.35 THB** | **+2,347.83 THB** | **76.8%** |
+
+*Key finding: Propensity targeting selects customers likely to buy anyway (Sure Things), leading to negative incremental profits. Uplift and Value-Optimized targeting generate positive net profits while cutting promotional marketing costs by over 75%.*
 
 ---
 
-## เทคโนโลยีที่ใช้งาน (Tech Stack)
+## Batch Inference CLI
 
-| ส่วนของงาน (Layer) | เครื่องมือที่ใช้ (Tools) |
-|---|---|
-| การจัดการข้อมูล | Python, Pandas, SQL |
-| การพัฒนาโมเดล | LightGBM, Scikit-learn |
-| หลักเกณฑ์การวัดผล | Qini Curve, Uplift@k |
-| หน้าแสดงผล (Dashboard) | Streamlit (ตัวต้นแบบ) / HTML (ตัวอย่างพร้อมใช้งานแบบอินเทอร์แอคทีฟ) |
-| ระบบควบคุมเวอร์ชัน | GitHub |
+Score customer features for a specific promotional campaign:
+
+```bash
+promolift score \
+  --campaign P003 \
+  --input data/customer_features.parquet \
+  --output outputs/targeting_p003.csv \
+  --price 85.0 \
+  --cogs 51.0 \
+  --discount-rate 0.10 \
+  --campaign-cost 0.50
+```
+
+### Output Schema
+The generated CSV or Parquet file contains:
+* `customer_id`: Unique customer identifier.
+* `campaign_id`: Campaign code.
+* `p_treatment`: Estimated purchase probability if given promotion.
+* `p_control`: Estimated purchase probability if NOT given promotion.
+* `uplift_score`: Net causal lift ($p_{\text{treatment}} - p_{\text{control}}$).
+* `expected_incremental_revenue`: Revenue lift minus discount payout.
+* `expected_incremental_profit`: Profit lift minus discount & messaging cost.
+* `recommendation`: Decision (`TARGET`, `SKIP`, or `SLEEPING DOG (DO NOT DISTURB)`).
+* `model_version`: Serialized model version identifier.
 
 ---
 
-## เครื่องมือ AI ที่ใช้
+## REST API Service
 
-| งาน | เครื่องมือที่ใช้ | วิธีตรวจสอบความถูกต้องของผลลัพธ์ |
-| --- | --- | --- |
-| ร่างเนื้อหาคู่มือและนำเสนอโครงสร้างโครงการ | Claude + Antigravity | ตรวจทานและปรับปรุงเนื้อหาให้ตรงกับบริบททางธุรกิจจริง |
-| สร้างข้อมูลจำลองสำหรับโครงการ | Antigravity | ตรวจสอบการกระจายตัวของข้อมูลด้วยฟังก์ชัน `.describe()` และแสดงผลด้วยกราฟฮิสโตแกรม |
-| เขียนรหัสโครงสร้างจำลองโมเดล Uplift | Antigravity | ทดสอบการทำงานด้วยกระบวนการ Unit Test ร่วมกับข้อมูลจำลอง |
-| ปรับแต่งและแก้ไข Demo Dashboard | Antigravity | ตรวจสอบการแสดงผลของ UI/UX, การตอบสนองของกราฟ และความถูกต้องของตัวเลขบน Dashboard แบบ Real-time |
-| เนื้อหาสไลด์ | Antigravity + Canva AI | ตรวจสอบเนื้อหาของสไลด์แต่ละหน้าว่าครบถ้วนตามความต้องการเชิงลึก |
+Launch the FastAPI production inference service:
+
+```bash
+uvicorn promolift.api:app --host 0.0.0.0 --port 8000 --reload
+```
+
+Interactive OpenAPI Swagger docs are available at `http://localhost:8000/docs`.
+
+### Key Endpoints
+* `GET /health`: Service health and model loading status.
+* `GET /metadata`: Loaded model metadata, training configuration, and test metrics.
+* `POST /score/single`: Real-time scoring for a single customer.
+* `POST /score/batch`: Batch scoring for multiple customer feature vectors.
+
+---
+
+## Streamlit Dashboard
+
+The Streamlit dashboard is decoupled from the model-training loop and consumes pre-computed model artifacts and scored data.
+
+Run the dashboard:
+```bash
+streamlit run src/app.py
+```
+
+Features:
+* **Campaign Control Panel**: Interactive retail price, discount %, and COGS recalculations.
+* **KPI Metrics**: Net profit projection, budget waste reduction %, and Sleeping Dog protection count.
+* **4-Quadrant Uplift Distribution**: Visual breakdown of Persuadables, Sure Things, Lost Causes, and Sleeping Dogs.
+* **Holdout Test Set Validation**: Displays AUUC, Qini score, and baseline comparison table directly from the serialized artifact.
+* **Target List Export**: One-click download of targeted customer IDs for campaign dispatch tools.
+
+---
+
+## Testing & Quality Assurance
+
+Run the comprehensive test suite:
+
+```bash
+# Run all tests
+pytest
+
+# Run with test coverage
+pytest --cov=promolift --cov-report=term-missing
+
+# Run static type checking
+mypy src/promolift
+```
+
+Test suite overview:
+* `tests/unit/test_features.py`: Temporal leakage prevention, RFM calculations, missing value handling.
+* `tests/unit/test_uplift_model.py`: T-Learner interface compliance, probability bounds, error handling.
+* `tests/unit/test_financial_scoring.py`: EIR & EIP formulas and sensitivity to discounts and costs.
+* `tests/unit/test_targeting_policy.py`: Quadrant classification and Sleeping Dog isolation.
+* `tests/unit/test_validation.py`: Input schema validation and duplicate/negative value rejection.
+* `tests/unit/test_artifacts.py`: Model bundle persistence, metadata tracking, and schema enforcement.
+* `tests/integration/test_pipeline_e2e.py`: End-to-end pipeline from raw data to export CSV.
+* `tests/regression/test_deterministic_regression.py`: Protects against silent performance regressions.
+* `tests/api/test_endpoints.py`: Integration testing for FastAPI routes.
+
+---
+
+## CI/CD Pipeline
+
+The `.github/workflows/ci.yml` pipeline runs on every push and pull request:
+1. Installs dependencies on Python 3.11 and 3.12.
+2. Runs Ruff linter.
+3. Performs static type analysis with Mypy (`mypy src/promolift`).
+4. Executes full pytest suite with coverage.
+5. Verifies package build capability via `build`.
+
+---
+
+## Observability & Monitoring
+
+In a production deployment, monitor the following signals:
+1. **Covariate Feature Drift**: Monitor Kolmogorov-Smirnov (KS) test statistics on `recency_days`, `frequency_30d`, and `monetary_90d` between training and inference data.
+2. **Treatment-to-Control Ratio**: Verify that pilot holdout campaigns maintain the planned control fraction (minimum 20%).
+3. **Uplift Calibration Drift**: Periodically evaluate empirical uplift against predicted uplift across score deciles.
+4. **Targeting Volume Drift**: Alert if `TARGET` recommendation percentage swings significantly between model versions.
+
+---
+
+## Model Limitations & Assumptions
+
+1. **Unconfoundedness Assumption**: T-Learner assumes treatment assignment is conditionally independent of potential outcomes given features ($Y(1), Y(0) \perp W \mid X$). In production, this requires randomized holdout experiments or propensity-weighted adjustments.
+2. **Control Sample Size**: When control group size is small, the control estimator $\mu_0$ may have higher variance than $\mu_1$, occasionally exaggerating negative uplift predictions. Maintain at least a 20% (ideally 50%) control group during pilot testing.
+3. **Single-Item Cross-Elasticity**: Current EIP calculates incremental profit assuming no basket-level cannibalization across substitute categories. Future iterations should incorporate category-level basket elasticity.
+
+---
+
+## License
+
+This project is licensed under the MIT License.
